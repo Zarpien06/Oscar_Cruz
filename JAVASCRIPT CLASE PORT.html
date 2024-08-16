@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sistema de Gestión de Operaciones</title>
+    <script>
+        function solicitarCredenciales() {
+            var usuario = prompt('Ingrese el Usuario');
+            var contraseña = prompt('Ingrese su Contraseña');
+
+            if (usuario === 'sena' && contraseña === 'adso') {
+                alert('Usuario y contraseña válidos. Bienvenido al sistema.');
+                realizarOperacion();
+            } else if (usuario === 'sena' && contraseña !== 'adso') {
+                alert('Contraseña incorrecta.');
+            } else {
+                alert('Usuario incorrecto.');
+            }
+        }
+
+        function realizarOperacion() {
+            var operacion = prompt('Elija una operación: sumar, restar, multiplicar, dividir');
+
+            if (operacion) {
+                var num1 = parseFloat(prompt('Ingrese el primer número'));
+                var num2 = parseFloat(prompt('Ingrese el segundo número'));
+
+                if (isNaN(num1) || isNaN(num2)) {
+                    alert('Por favor, ingrese números válidos.');
+                    return;
+                }
+
+                switch (operacion.toLowerCase()) {
+                    case 'sumar':
+                        alert('Resultado: ' + (num1 + num2));
+                        break;
+                    case 'restar':
+                        alert('Resultado: ' + (num1 - num2));
+                        break;
+                    case 'multiplicar':
+                        alert('Resultado: ' + (num1 * num2));
+                        break;
+                    case 'dividir':
+                        if (num2 === 0) {
+                            alert('No se puede dividir por cero.');
+                        } else {
+                            alert('Resultado: ' + (num1 / num2));
+                        }
+                        break;
+                    default:
+                        alert('Operación no válida.');
+                }
+            } else {
+                alert('No se seleccionó ninguna operación. Finalizar.');
+            }
+
+            realizarOperacion(); 
+        }
+
+        window.onload = solicitarCredenciales;
+    </script>
+</head>
+</html>
+ 
