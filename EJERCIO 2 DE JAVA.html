@@ -15,7 +15,7 @@
 
     <script>
         const numeroSecreto = Math.floor(Math.random() * 100) + 1;
-        let intentos = 0;
+        var intentos = 0;
         const maxIntentos = 10;
 
         function adivinar() {
@@ -23,7 +23,7 @@
             intentos++;
 
             if (userGuess === numeroSecreto) {
-                document.getElementById("result").textContent = `¡Felicidades! Adivinaste el número ${numeroSecreto} en ${intentos} intentos.`;
+                document.getElementById("result").textContent = '¡Felicidades! Adivinaste el número'+ numeroSecreto +'en' + intentos + 'intentos.';
                 document.getElementById("attempts").textContent = '';
             } else if (userGuess > numeroSecreto) {
                 document.getElementById("result").textContent = "El número es menor.";
@@ -32,10 +32,10 @@
             }
 
             if (intentos >= maxIntentos) {
-                document.getElementById("attempts").textContent = `Has alcanzado el máximo de intentos. El número era ${numeroSecreto}.`;
+                document.getElementById("attempts").textContent = 'Has alcanzado el máximo de intentos. El número era' +numeroSecreto;
                 document.getElementById("inputNumber").disabled = true;
             } else {
-                document.getElementById("attempts").textContent = `Intentos: ${intentos} de ${maxIntentos}.`;
+                document.getElementById("attempts").textContent = 'Intentos:'+ intentos+'de'+ maxIntentos;
             }
         }
     </script>
