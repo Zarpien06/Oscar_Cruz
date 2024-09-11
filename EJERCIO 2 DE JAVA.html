@@ -28,7 +28,7 @@
 
                
                 if (userGuess === numeroSecreto) {
-                    alert('¡Felicidades! Adivinaste el número ' + numeroSecreto + ' en ' + intentos + ' intentos.');
+                    document.write('¡Felicidades! Adivinaste el número ' + numeroSecreto + ' en ' + intentos + ' intentos.');
                     break;  
                 } else if (userGuess > numeroSecreto) {
                     alert("El número es menor.");
@@ -37,7 +37,7 @@
                 }
 
                 if (intentos >= maxIntentos) {
-                    alert('Has alcanzado el máximo de intentos. El número era ' + numeroSecreto);
+                    document.write('Has alcanzado el máximo de intentos. El número era ' + numeroSecreto);
                     break;
                 } else {
                     alert('Intentos: ' + intentos + ' de ' + maxIntentos);
