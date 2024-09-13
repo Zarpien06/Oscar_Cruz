@@ -37,5 +37,18 @@
             echo "<br>La division de ".$n1." y ".$n2." es = ".$division."<br>";
             ?>
         </font>
+        <font size="5" color="blue" face="comic sans ms">
+            <center>Formularios en php</center>
+
+            <form name="formulario" method="post" action="datos.php">
+                <table border="2">
+                    <th>Nombre <input type="text" name="nombre" size="25" maxlength="50"></th>
+                    <th>Apellido <input type="text" name="nombre" size="25" maxlength="50"></th>
+                    <tr><td align="center">
+                        <input type="submit" value="Enviar">
+                    </td></tr>
+                </table>
+            </form>
+        </font>
 </body>
 </html>
