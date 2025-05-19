@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Finanzas Personales</title>
+    <link rel="shortcut icon" href="facebook.png" type="image/x-icon">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Finanzas Personales</h1>
+        <p>Control de ingresos y gastos: 
+            <span id="fecha">
+                <script>
+                    const fecha = new Date();
+                    document.getElementById('fecha').textContent = fecha.toLocaleDateString('es-ES');
+                </script>
+            </span>
+        </p>
+        <div class="formulario">
+            <input type="text" id="descripcion" placeholder="Descripción">
+            <input type="number" id="monto" placeholder="Monto">
+            <select id="tipo">
+                <option value="ingreso">Ingreso</option>
+                <option value="gasto">Gasto</option>
+            </select>
+            <button onclick="agregarTransaccion()">Agregar</button>
+        </div>
+        <div class="resumen">
+            <h2>Resumen</h2>
+            <p id="total">Total: $0.00</p>
+        </div>
+        <ul id="lista"></ul>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
