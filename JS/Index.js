@@ -25,3 +25,17 @@ http.createServer(function (req, res) {
 
 // Url http://localhost:8080
 // url es la direccion de la pagina web que se conecta con el servidor http 
+
+// Ejercicio 5
+
+var url = require('url');
+var adr = 'http://localhost:8080/default.html?year=2017&month=february';
+var q = url.parse(adr);
+
+console.log(q.host); //returns 'localhost:8080'
+console.log(q.pathname); //returns '/default.html'
+console.log(q.search); //returns '?year=2017&month=february'
+
+var qdata = q.query; //returns an object: { year: 2017, month: 'february' }
+
+console.log(qdata.month); //returns 'february'
