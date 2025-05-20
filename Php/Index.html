@@ -1,0 +1,54 @@
+<html>
+    <head><title>Php</title></head>
+    <meta http-equiv="Content-type"Content="text/html; charset="utf-8"/>
+    <meta charset="utf-8">
+    <body>
+        <font size="5" color="red" face="comic sans ms">
+            <center>Bienvenido al mundo de php</center>
+        </font>
+        <?php
+        echo "hola mundo en php <p>";
+        ?>
+        <font size="5" color="red" face="comic sans ms">
+            <center>Declarar variables</center>
+        </font>
+        <?php
+        $inicio="hola";
+        $fin="mundo";
+        $todo= $inicio." ".$fin;
+        echo $todo
+        ?>
+         <font size="5" color="blue" face="comic sans ms">
+            <center>Operaciones con variables en php</center>
+        </font>
+        <font size="5" color="blue" face="comic sans ms">
+            <?php
+
+            $n1=1;
+            $n2=2;
+            echo $n1."<br>".$n2;
+            $suma=$n1+$n2;
+            echo "<br>La suma de ".$n1." y ".$n2." es = ".$suma."<br>";
+            $resta=$n1-$n2;
+            echo "<br>La resta de ".$n1." y ".$n2." es = ".$resta."<br>";
+            $multiplicacion=$n1*$n2;
+            echo "<br>La multiplicacion de ".$n1." y ".$n2." es = ".$multiplicacion."<br>";
+            $division=$n1/$n2;
+            echo "<br>La division de ".$n1." y ".$n2." es = ".$division."<br>";
+            ?>
+        </font>
+        <font size="5" color="blue" face="comic sans ms">
+            <center>Formularios en php</center>
+
+            <form name="formulario" method="post" action="datos.php">
+                <table border="2">
+                    <th>Nombre <input type="text" name="nombre" size="25" maxlength="50"></th>
+                    <th>Apellido <input type="text" name="nombre" size="25" maxlength="50"></th>
+                    <tr><td align="center">
+                        <input type="submit" value="Enviar">
+                    </td></tr>
+                </table>
+            </form>
+        </font>
+</body>
+</html>
