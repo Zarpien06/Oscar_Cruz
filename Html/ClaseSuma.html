@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clase Suma</title>
+</head>
+<body>
+    <script>
+       
+        class Suma {
+            
+            constructor() {
+                this.valor1 = 0;
+                this.valor2 = 0;
+            }
+
+            
+            cargarValor1(v1) {
+                this.valor1 = v1;
+            }
+
+            
+            cargarValor2(v2) {
+                this.valor2 = v2;
+            }
+
+           
+            retornarResultado() {
+                return this.valor1 + this.valor2;
+            }
+        }
+
+        
+        let s = new Suma();
+        s.cargarValor1(10); 
+        s.cargarValor2(20);  
+
+        
+        document.write('La suma de los dos valores es: ' + s.retornarResultado());
+    </script>
+</body>
+</html>
