@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adivina el Número</title>
+</head>
+<body>
+    <script>
+        function iniciarJuego() {
+           
+            alert("¡Bienvenido al juego de adivinar un número!\nElige un número entre 1 y 100.");
+            
+            const numeroSecreto = Math.floor(Math.random() * 100) + 1;
+            let intentos = 0;
+            const maxIntentos = 10;
+
+          
+            while (intentos < maxIntentos) {
+                const userGuess = parseInt(prompt("Adivina un número entre 1 y 100:"));
+                intentos++;
+
+              
+                if (isNaN(userGuess)) {
+                    alert("Por favor, ingresa un número válido.");
+                    continue;  
+                }
+
+               
+                if (userGuess === numeroSecreto) {
+                    document.write('¡Felicidades! Adivinaste el número ' + numeroSecreto + ' en ' + intentos + ' intentos.');
+                    break;  
+                } else if (userGuess > numeroSecreto) {
+                    alert("El número es menor.");
+                } else {
+                    alert("El número es mayor.");
+                }
+
+                if (intentos >= maxIntentos) {
+                    document.write('Has alcanzado el máximo de intentos. El número era ' + numeroSecreto);
+                    break;
+                } else {
+                    alert('Intentos: ' + intentos + ' de ' + maxIntentos);
+                }
+            }
+        }
+
+        iniciarJuego();
+    </script>
+</body>
+</html>
