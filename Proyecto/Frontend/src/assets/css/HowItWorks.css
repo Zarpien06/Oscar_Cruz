@@ -1,0 +1,94 @@
+.how-it-works-section {
+    padding: 6rem 0;
+    background-color: #fff;
+}
+
+.steps-container {
+    position: relative;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 0;
+}
+
+.step {
+    display: flex;
+    position: relative;
+    margin-bottom: 4rem;
+}
+
+.step:last-child {
+    margin-bottom: 0;
+}
+
+.step-number {
+    background-color: #04173f;
+    /* Azul oscuro - color de la empresa */
+    color: #fff;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin-right: 1.5rem;
+    position: relative;
+    z-index: 2;
+    flex-shrink: 0;
+}
+
+.step-content {
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    padding: 2rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    flex-grow: 1;
+}
+
+.step-icon {
+    font-size: 2rem;
+    color: #04173f;
+    /* Azul oscuro - color de la empresa */
+    margin-bottom: 1rem;
+}
+
+.step-content h3 {
+    font-size: 1.3rem;
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+.step-content p {
+    color: #666;
+    line-height: 1.6;
+}
+
+.connector {
+    position: absolute;
+    top: 40px;
+    left: 20px;
+    width: 2px;
+    background-color: #3a5998;
+    /* Azul oscuro - color de la empresa */
+    height: calc(100% + 2rem);
+    z-index: 1;
+}
+
+@media screen and (max-width: 768px) {
+    .how-it-works-section {
+        padding: 4rem 0;
+    }
+
+    .step {
+        flex-direction: column;
+    }
+
+    .step-number {
+        margin-bottom: 1rem;
+        margin-right: 0;
+    }
+
+    .connector {
+        display: none;
+    } }
