@@ -447,3 +447,57 @@ footer {
     margin-bottom: 20px;
   }
 }
+
+/* Navbar responsivo */
+@media screen and (max-width: 768px) {
+  .navbar-menu {
+    position: absolute;
+    top: 60px;
+    right: 0;
+    width: 200px;
+    background-color: rgba(0, 0, 0, 0.9);
+    display: none;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px;
+  }
+
+  .navbar-menu.active {
+    display: block;
+  }
+
+  .navbar-hamburger {
+    display: flex;
+  }
+
+  .navbar-menu ul {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .navbar-menu a {
+    font-size: 20px;
+  }
+}
+
+/* Testimonios responsivos */
+@media (max-width: 768px) {
+  .col-md-4 {
+    flex: 1 1 100%;
+    /* Columna ocupa todo el ancho */
+  }
+}
+
+/* Footer responsivo */
+@media (max-width: 768px) {
+  .cards-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .card {
+    width: 100%;
+    max-width: 350px;
+    margin-bottom: 20px;
+  }
+}
