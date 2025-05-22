@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import '../assets/css/FormAuth.css';
+import Footer from '../components/Footer';
+import Navbar from '../components/Navbar';
 
 const Registro: React.FC = () => {
     const [isRegistering, setIsRegistering] = useState<boolean>(false);
@@ -47,6 +49,8 @@ const Registro: React.FC = () => {
     };
 
     return (
+        <>
+        <Navbar scrolled={false} />
         <div className="form-container">
             <h2>{isRegistering ? 'Registrarse' : 'Iniciar Sesión'}</h2>
             <form onSubmit={handleSubmit}>
@@ -130,8 +134,11 @@ const Registro: React.FC = () => {
                     </p>
                 )}
             </div>
-        </div>
-    );
+            </div>
+            <Footer />
+        </>
+    )
 };
 
 export default Registro;
+
