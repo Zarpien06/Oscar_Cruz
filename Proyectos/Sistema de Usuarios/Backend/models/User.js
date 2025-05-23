@@ -1,21 +1,30 @@
-const db = require('../config/db');
+const db = require('../config/db'); // tu conexión a MySQL
 
-const User = {
-  findByEmail: (email, callback) => {
-    db.query("SELECT * FROM usuarios WHERE email = ?", [email], callback);
-  },
-  create: (user, callback) => {
-    db.query("INSERT INTO usuarios SET ?", user, callback);
-  },
-  getAll: (callback) => {
-    db.query("SELECT * FROM usuarios", callback);
-  },
-  update: (id, user, callback) => {
-    db.query("UPDATE usuarios SET ? WHERE id = ?", [user, id], callback);
-  },
-  delete: (id, callback) => {
-    db.query("DELETE FROM usuarios WHERE id = ?", [id], callback);
-  }
+module.exports = {
+    create: (user, callback) => {
+        const { nombre, email, password } = user;
+        const sql = 'INSERT INTO usuarios (nombre, email, password) VALUES (?, ?, ?)';
+        db.query(sql, [nombre, email, password], callback);
+    },
+
+    findByEmail: (email, callback) => {
+        const sql = 'SELECT * FROM usuarios WHERE email = ?';
+        db.query(sql, [email], callback);
+    },
+
+    getAll: (callback) => {
+        const sql = 'SELECT * FROM usuarios';
+        db.query(sql, callback);
+    },
+
+    update: (id, data, callback) => {
+        const { nombre, email } = data;
+        const sql = 'UPDATE usuarios SET nombre = ?, email = ? WHERE id = ?';
+        db.query(sql, [nombre, email, id], callback);
+    },
+
+    delete: (id, callback) => {
+        const sql = 'DELETE FROM usuarios WHERE id = ?';
+        db.query(sql, [id], callback);
+    }
 };
-
-module.exports = User;
