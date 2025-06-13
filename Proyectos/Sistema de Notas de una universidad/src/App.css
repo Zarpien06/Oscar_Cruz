@@ -1,0 +1,140 @@
+.container {
+  max-width: 600px;
+  margin: 80px auto;
+  padding: 30px;
+  text-align: center;
+  background-color: #ffffffdd;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.logo {
+  width: 80px;
+  height: auto;
+  margin-top: 10px;
+}
+
+h1 {
+  color: #111;
+  font-size: 28px;
+  margin-bottom: 5px;
+}
+
+h2 {
+  color: #222;
+  font-size: 22px;
+  margin: 10px 0 20px;
+}
+
+p {
+  color: #444;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+input {
+  padding: 10px;
+  width: 100%;
+  max-width: 280px;
+  font-size: 16px;
+  border: 1px solid #aaa;
+  border-radius: 6px;
+  transition: border-color 0.2s ease;
+}
+
+input:focus {
+  border-color: #fecd00;
+  /* Amarillo Universidad de los Andes */
+  outline: none;
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #000000;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #333333;
+}
+
+.result {
+  margin-top: 20px;
+  font-size: 18px;
+  font-weight: bold;
+  color: green;
+}
+
+.result.failed {
+  color: red;
+}
+
+/* 🔁 Media Queries para Responsividad */
+@media (max-width: 768px) {
+  .container {
+    margin: 40px 20px;
+    padding: 20px;
+  }
+
+  h1 {
+    font-size: 24px;
+  }
+
+  h2 {
+    font-size: 20px;
+  }
+
+  p {
+    font-size: 15px;
+  }
+
+  input {
+    width: 90%;
+    max-width: 100%;
+  }
+
+  button {
+    width: 100%;
+    max-width: 300px;
+  }
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: 20px;
+  }
+
+  h2 {
+    font-size: 18px;
+  }
+
+  .logo {
+    width: 60px;
+  }
+
+  .container {
+    margin: 20px 10px;
+    padding: 15px;
+  }
+}
