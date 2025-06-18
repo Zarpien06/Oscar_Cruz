@@ -1,0 +1,110 @@
+:root {
+  --font-family: 'Courier New', Courier, monospace;
+  /* Estilo tipográfico tipo "cuaderno" */
+  --primary-color: #3498db;
+  /* Azul matemático */
+  --error-color: #e74c3c;
+  /* Rojo de error */
+  --bg-color: #f5f5f5;
+  /* Fondo suave y neutro */
+  --border-radius: 4px;
+  --button-padding: 0.8em 1.6em;
+  --button-font-size: 1.2em;
+  --button-bg: #34495e;
+  --button-hover-bg: #2980b9;
+  --button-border: 1px solid transparent;
+  --transition-speed: 0.3s;
+  --error-font-size: 1em;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--bg-color);
+  color: #2c3e50;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  margin: 0;
+  padding: 20px;
+}
+
+h1 {
+  font-size: 2.5em;
+  margin-bottom: 20px;
+  color: var(--primary-color);
+  text-align: center;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  /* Sombra suave en el título */
+}
+
+h2 {
+  font-size: 3em;
+  color: #2c3e50;
+  font-weight: bold;
+  margin-top: 20px;
+  text-align: center;
+}
+
+p {
+  font-size: 1.1em;
+  color: #34495e;
+  text-align: center;
+  max-width: 600px;
+  margin: 10px 0;
+}
+
+button {
+  font-size: var(--button-font-size);
+  padding: var(--button-padding);
+  margin: 20px;
+  border: var(--button-border);
+  border-radius: var(--border-radius);
+  background-color: var(--button-bg);
+  color: white;
+  cursor: pointer;
+  transition: background-color var(--transition-speed), transform var(--transition-speed);
+}
+
+button:hover {
+  background-color: var(--button-hover-bg);
+  transform: scale(1.05);
+  /* Botón con leve efecto de "zoom" */
+}
+
+button:focus {
+  outline: 3px solid var(--primary-color);
+}
+
+.error-message {
+  color: var(--error-color);
+  font-size: var(--error-font-size);
+  font-weight: bold;
+  text-align: center;
+  margin-top: 20px;
+  background-color: #f9f9f9;
+  border: 2px solid var(--error-color);
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 0 8px rgba(231, 76, 60, 0.2);
+}
+
+@media (max-width: 600px) {
+  h1 {
+    font-size: 2em;
+  }
+
+  h2 {
+    font-size: 2.5em;
+  }
+
+  button {
+    font-size: 1em;
+    padding: 0.6em 1.2em;
+  }
+
+  p {
+    font-size: 1em;
+  }
+}
