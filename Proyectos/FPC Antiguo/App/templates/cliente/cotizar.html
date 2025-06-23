@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cotizar Servicios | Full Paint Cars</title>
+    <!-- Ícono de pestaña -->
+    <link rel="icon" href="{{ url_for('static', filename='IMG/logos/logo.png') }}" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2c3e50;
+            --accent-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #34495e;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            padding-top: 56px;
+        }
+        
+        .navbar {
+            background-color: rgba(0, 0, 0, 0.8) !important;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            color: white !important;
+        }
+        
+        .nav-link {
+            color: rgba(255, 255, 255, 0.8) !important;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        
+        .nav-link:hover {
+            color: white !important;
+            transform: translateY(-2px);
+        }
+        
+        .nav-link.active {
+            color: white !important;
+            border-bottom: 2px solid var(--primary-color);
+        }
+        
+        .page-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1.5rem 0;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card {
+            border-radius: 10px;
+            border: none;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .card-header {
+            background-color: var(--secondary-color);
+            color: white;
+            font-weight: 600;
+            padding: 0.8rem 1.2rem;
+        }
+        
+        .service-card {
+            height: 100%;
+        }
+        
+        .service-card img {
+            height: 160px;
+            object-fit: cover;
+        }
+        
+        .service-card .card-body {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .service-card .card-footer {
+            margin-top: auto;
+            background-color: transparent;
+            border-top: 1px solid rgba(0,0,0,0.1);
+            padding: 1rem;
+        }
+        
+        .cart-item {
+            position: relative;
+            padding-right: 30px;
+        }
+        
+        .cart-item .remove-btn {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .btn-outline-primary {
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .btn-outline-primary:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .price-tag {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--accent-color);
+        }
+        
+        .quantity-input {
+            max-width: 70px;
+        }
+        
+        #carrito-container {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .sticky-sidebar {
+            position: sticky;
+            top: 80px;
+        }
+        
+        .alert-container {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            z-index: 9999;
+            max-width: 350px;
+        }
+        
+        .toast {
+            opacity: 1 !important;
+        }
+        
+        @media (max-width: 768px) {
+            .service-card img {
+                height: 120px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="./">
+                <i class="fas fa-spray-can-sparkles me-2"></i>
+                Full Paint Cars
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('cliente_bp.dashboard') }}">
+                            <i class="fas fa-gauge-high me-1"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('cliente_bp.vehiculos') }}">
+                            <i class="fas fa-car me-1"></i> Mis Vehículos
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{{ url_for('cliente_bp.cotizar') }}">
+                            <i class="fas fa-tags me-1"></i> Cotizar Servicios
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('cliente_bp.reservas') }}">
+                            <i class="fas fa-calendar-check me-1"></i> Mis Reservas
+                        </a>
+                    </li>
+                </ul>
+                <div class="dropdown">
+                    <button class="btn btn-outline-light dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown">
+                        <i class="fas fa-user-circle me-1"></i>
+                        <span id="username">{{ session.get('user_name', 'Usuario') }}</span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="{{ url_for('cliente_bp.perfil') }}"><i class="fas fa-user-gear me-2"></i>Mi Perfil</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="{{ url_for('cliente_bp.logout') }}"><i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="page-header">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <h1><i class="fas fa-tags me-2"></i>Cotizar Servicios</h1>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-0">
+                        <li class="breadcrumb-item"><a href="{{ url_for('cliente_bp.dashboard') }}" class="text-white">Dashboard</a></li>
+                        <li class="breadcrumb-item active text-white" aria-current="page">Cotizar Servicios</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container py-4">
+        <div class="row">
+            <!-- Services Column -->
+            <div class="col-lg-8 mb-4">
+                <div class="card mb-4">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0"><i class="fas fa-list me-2"></i>Servicios Disponibles</h5>
+                        <div class="input-group" style="max-width: 300px;">
+                            <input type="text" class="form-control" id="searchService" placeholder="Buscar servicio...">
+                            <button class="btn btn-outline-secondary" type="button">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row" id="services-container">
+                            {% for servicio in servicios %}
+                            <div class="col-md-6 col-lg-4 mb-3 service-item">
+                                <div class="card service-card">
+                                    <img src="{{ servicio.imagen }}" class="card-img-top" alt="{{ servicio.nombre }}">
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ servicio.nombre }}</h5>
+                                        <p class="card-text small">{{ servicio.descripcion }}</p>
+                                        <div class="price-tag mb-3">${{ servicio.precio }}</div>
+                                    </div>
+                                    <div class="card-footer">
+                                        <form action="{{ url_for('cliente_bp.agregar_al_carrito') }}" method="POST" class="add-to-cart-form">
+                                            <input type="hidden" name="servicio_id" value="{{ servicio.servicio_id }}">
+                                            <div class="d-flex">
+                                                <input type="number" name="cantidad" class="form-control quantity-input me-2" value="1" min="1" max="10">
+                                                <button type="submit" class="btn btn-primary flex-grow-1">
+                                                    <i class="fas fa-cart-plus me-1"></i> Agregar
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Cart Column -->
+            <div class="col-lg-4">
+                <div class="sticky-sidebar">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="fas fa-shopping-cart me-2"></i>Carrito de Servicios</h5>
+                        </div>
+                        <div class="card-body">
+                            <div id="carrito-container">
+                                {% if carrito|length > 0 %}
+                                    {% for item in carrito %}
+                                    <div class="cart-item d-flex justify-content-between align-items-center mb-2 pb-2 border-bottom">
+                                        <div>
+                                            <h6 class="mb-0">{{ item.nombre }}</h6>
+                                            <div class="d-flex align-items-center">
+                                                <span class="text-muted small">{{ item.cantidad }} x ${{ item.precio }}</span>
+                                                <span class="fw-bold ms-2">${{ item.precio * item.cantidad }}</span>
+                                            </div>
+                                        </div>
+                                        <form action="{{ url_for('cliente_bp.eliminar_del_carrito', carrito_id=item.carrito_id) }}" method="POST" class="remove-btn">
+                                            <button type="submit" class="btn btn-sm btn-outline-danger">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                    {% endfor %}
+                                {% else %}
+                                    <div class="text-center py-4">
+                                        <i class="fas fa-shopping-cart fa-3x text-muted mb-3"></i>
+                                        <p>Tu carrito está vacío</p>
+                                        <p class="small text-muted">Agrega servicios para crear una cotización</p>
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="cart-summary mt-3">
+                                <div class="d-flex justify-content-between fw-bold mb-3">
+                                    <span>Total:</span>
+                                    <span>${{ total_carrito }}</span>
+                                </div>
+                                
+                                {% if carrito|length > 0 %}
+                                <button class="btn btn-primary w-100 mb-2" data-bs-toggle="modal" data-bs-target="#cotizacionModal">
+                                    <i class="fas fa-file-invoice-dollar me-1"></i> Crear Cotización
+                                </button>
+                                {% else %}
+                                <button class="btn btn-primary w-100 mb-2" disabled>
+                                    <i class="fas fa-file-invoice-dollar me-1"></i> Crear Cotización
+                                </button>
+                                {% endif %}
+                                
+                                <a href="{{ url_for('cliente_bp.reservas') }}" class="btn btn-outline-secondary w-100">
+                                    <i class="fas fa-receipt me-1"></i> Ver Mis Cotizaciones
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i>Información</h5>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-unstyled">
+                                <li class="mb-2">
+                                    <i class="fas fa-check-circle text-success me-2"></i> 
+                                    Cotizaciones sin compromiso
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-clock text-primary me-2"></i> 
+                                    Validez de cotización: 15 días
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-tools text-secondary me-2"></i> 
+                                    Servicios con garantía
+                                </li>
+                                <li>
+                                    <i class="fas fa-star text-warning me-2"></i> 
+                                    Atención personalizada
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Crear Cotización -->
+    <div class="modal fade" id="cotizacionModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title">
+                        <i class="fas fa-file-invoice-dollar me-2"></i>Crear Cotización
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="{{ url_for('cliente_bp.crear_cotizacion') }}" method="POST">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="vehiculo_id" class="form-label">Seleccionar Vehículo</label>
+                            <select name="vehiculo_id" id="vehiculo_id" class="form-select" required>
+                                <option value="">-- Seleccionar vehículo --</option>
+                                {% for vehiculo in vehiculos %}
+                                <option value="{{ vehiculo.vehiculo_id }}">
+                                    {{ vehiculo.marca }} {{ vehiculo.modelo }} ({{ vehiculo.anio }}) - {{ vehiculo.placa }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                            <div class="form-text">
+                                <i class="fas fa-info-circle me-1"></i>
+                                Esta cotización se aplicará al vehículo seleccionado
+                            </div>
+                        </div>
+
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle me-2"></i>
+                            <span>Tu cotización incluirá {{ carrito|length }} servicio(s) por un total de ${{ total_carrito }}</span>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save me-1"></i>Crear Cotización
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Toast Notifications (Flash Messages) -->
+    <div class="alert-container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                <div class="toast show mb-3 bg-light" role="alert">
+                    <div class="toast-header {% if category == 'success' %}bg-success text-white{% elif category == 'error' %}bg-danger text-white{% else %}bg-info text-white{% endif %}">
+                        <i class="fas {% if category == 'success' %}fa-check-circle{% elif category == 'error' %}fa-exclamation-circle{% else %}fa-info-circle{% endif %} me-2"></i>
+                        <strong class="me-auto">{{ category|capitalize }}</strong>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast"></button>
+                    </div>
+                    <div class="toast-body">
+                        {{ message }}
+                    </div>
+                </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white mt-5 py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5><i class="fas fa-spray-can-sparkles me-2"></i>Full Paint Cars</h5>
+                    <p class="small mb-0">Sistema de gestión de servicios automotrices</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p class="small mb-0">&copy; 2025 Full Paint Cars. Todos los derechos reservados.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Script para búsqueda de servicios
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('searchService');
+            const serviceItems = document.querySelectorAll('.service-item');
+
+            searchInput.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase().trim();
+
+                serviceItems.forEach(item => {
+                    const title = item.querySelector('.card-title').textContent.toLowerCase();
+                    const description = item.querySelector('.card-text').textContent.toLowerCase();
+                    
+                    if (title.includes(searchTerm) || description.includes(searchTerm)) {
+                        item.style.display = 'block';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+
+            // Auto-dismiss para los toast messages
+            const toasts = document.querySelectorAll('.toast');
+            toasts.forEach(toast => {
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 5000);
+            });
+            
+            // Validación de la forma de cotización
+            const cotizacionForm = document.querySelector('form[action*="crear-cotizacion"]');
+            if (cotizacionForm) {
+                cotizacionForm.addEventListener('submit', function(e) {
+                    const vehiculoId = document.getElementById('vehiculo_id').value;
+                    if (!vehiculoId) {
+                        e.preventDefault();
+                        alert('Por favor selecciona un vehículo para la cotización');
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1247 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Administrativo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Reset y estilos base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+:root {
+    --primary-color: #0a2463; /* Azul oscuro como color principal */
+    --primary-light: #3e5c97;
+    --primary-dark: #051a4d;
+    --secondary-color: #1e3a8a;
+    --light-color: #f5f5f5;
+    --dark-color: #333;
+    --danger-color: #dc3545;
+    --success-color: #28a745;
+    --warning-color: #ffc107;
+    --gray-color: #6c757d;
+    --light-gray: #e9ecef;
+    --sidebar-width: 250px;
+    --header-height: 70px;
+    --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    --transition: all 0.3s ease;
+}
+
+body {
+    background-color: #f9fafb;
+    color: var(--text-color);
+}
+
+.container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+    width: var(--sidebar-width);
+    background-color: #fff;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    height: 100%;
+    z-index: 1000;
+    transition: var(--transition);
+}
+
+.logo {
+    padding: 20px;
+    text-align: center;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.logo h2 {
+    color: var(--primary-color);
+    font-weight: 700;
+}
+
+.menu {
+    list-style: none;
+    padding: 20px 0;
+}
+
+.menu li {
+    margin-bottom: 5px;
+}
+
+.menu li a {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    color: var(--text-color);
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.menu li a i {
+    margin-right: 10px;
+    font-size: 1.2rem;
+}
+
+.menu li.active a,
+.menu li a:hover {
+    background-color: rgba(67, 97, 238, 0.1);
+    color: var(--primary-color);
+    border-left: 4px solid var(--primary-color);
+}
+
+.logout {
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
+    padding: 0 20px;
+}
+
+.logout a {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    color: var(--danger-color);
+    text-decoration: none;
+    transition: var(--transition);
+    border-radius: 5px;
+}
+
+.logout a i {
+    margin-right: 10px;
+}
+
+.logout a:hover {
+    background-color: rgba(244, 67, 54, 0.1);
+}
+
+/* Main Content */
+.content {
+    flex: 1;
+    margin-left: var(--sidebar-width);
+    transition: var(--transition);
+}
+
+/* Header */
+.header {
+    height: var(--header-height);
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 30px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    position: sticky;
+    top: 0;
+    z-index: 999;
+}
+
+.toggle-menu {
+    display: none;
+    cursor: pointer;
+    font-size: 1.5rem;
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    background-color: #f5f5f5;
+    border-radius: 50px;
+    padding: 5px 15px;
+    flex: 0 0 400px;
+}
+
+.search-bar input {
+    background: transparent;
+    border: none;
+    padding: 8px;
+    width: 100%;
+    outline: none;
+}
+
+.search-bar button {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--text-light);
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.notifications, .messages {
+    position: relative;
+    cursor: pointer;
+}
+
+.notifications i, .messages i {
+    font-size: 1.2rem;
+    color: var(--text-light);
+}
+
+.badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: var(--danger-color);
+    color: white;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+}
+
+.profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.profile img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* Dashboard Content */
+.dashboard-content {
+    padding: 30px;
+}
+
+.page-title {
+    margin-bottom: 30px;
+}
+
+.page-title h1 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.page-title p {
+    color: var(--text-light);
+}
+
+/* Stats Cards */
+.stats-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.stat-card {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: var(--card-shadow);
+}
+
+.stat-value h3 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.stat-value p {
+    color: var(--text-light);
+    font-size: 0.9rem;
+}
+
+.stat-icon {
+    width: 60px;
+    height: 60px;
+    background-color: rgba(67, 97, 238, 0.1);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-color);
+    font-size: 1.5rem;
+}
+
+/* Widgets */
+.widgets-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.widget {
+    background-color: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: var(--card-shadow);
+}
+
+.widget-header {
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.widget-header h3 {
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.view-all {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.widget-content {
+    padding: 20px;
+}
+
+/* User List */
+.user-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.user-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.user-item img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.user-info {
+    flex: 1;
+}
+
+.user-info h4 {
+    font-size: 0.95rem;
+    margin-bottom: 3px;
+}
+
+.user-info p {
+    color: var(--text-light);
+    font-size: 0.85rem;
+}
+
+.user-role {
+    background-color: #e0e0e0;
+    padding: 3px 10px;
+    border-radius: 50px;
+    font-size: 0.75rem;
+}
+
+.user-role.admin {
+    background-color: rgba(67, 97, 238, 0.1);
+    color: var(--primary-color);
+}
+
+/* Chat */
+.chat-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.chat-message {
+    display: flex;
+    gap: 10px;
+    max-width: 80%;
+}
+
+.chat-message img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.chat-message.received {
+    align-self: flex-start;
+}
+
+.chat-message.sent {
+    align-self: flex-end;
+    flex-direction: row-reverse;
+}
+
+.message-content {
+    background-color: #f5f5f5;
+    padding: 10px 15px;
+    border-radius: 10px;
+}
+
+.message-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+
+.message-info h4 {
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.message-info span {
+    font-size: 0.75rem;
+    color: var(--text-light);
+}
+
+.chat-message.sent .message-content {
+    background-color: rgba(67, 97, 238, 0.1);
+}
+
+.chat-input {
+    display: flex;
+    margin-top: 15px;
+    gap: 10px;
+}
+
+.chat-input input {
+    flex: 1;
+    padding: 10px 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    outline: none;
+}
+
+.chat-input button {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 0 15px;
+    cursor: pointer;
+}
+
+/* Charts Row */
+.charts-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.chart-container {
+    height: 300px;
+    width: 100%;
+}
+
+.widget-actions select {
+    padding: 5px 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    outline: none;
+}
+
+/* Reports */
+.reports-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.report-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 10px;
+    border-radius: 5px;
+    transition: var(--transition);
+}
+
+.report-item:hover {
+    background-color: #f5f5f5;
+}
+
+.report-icon {
+    width: 45px;
+    height: 45px;
+    background-color: rgba(67, 97, 238, 0.1);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-color);
+    font-size: 1.2rem;
+}
+
+.report-info {
+    flex: 1;
+}
+
+.report-info h4 {
+    font-size: 0.95rem;
+    margin-bottom: 3px;
+}
+
+.report-info p {
+    color: var(--text-light);
+    font-size: 0.85rem;
+}
+
+.report-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.report-actions button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--text-light);
+    width: 30px;
+    height: 30px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+}
+
+.report-actions button:hover {
+    background-color: rgba(67, 97, 238, 0.1);
+    color: var(--primary-color);
+}
+
+/* Full Width Section */
+.full-width-section {
+    margin-bottom: 30px;
+}
+
+/* Table */
+.table-responsive {
+    overflow-x: auto;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.data-table th,
+.data-table td {
+    padding: 12px 15px;
+    text-align: left;
+}
+
+.data-table thead tr {
+    background-color: #f5f5f5;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.data-table tbody tr {
+    border-bottom: 1px solid var(--border-color);
+}
+
+.data-table tbody tr:hover {
+    background-color: rgba(245, 245, 245, 0.5);
+}
+
+.status {
+    padding: 5px 10px;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.status.pending {
+    background-color: rgba(255, 152, 0, 0.1);
+    color: var(--warning-color);
+}
+
+.status.approved {
+    background-color: rgba(76, 175, 80, 0.1);
+    color: var(--success-color);
+}
+
+.status.rejected {
+    background-color: rgba(244, 67, 54, 0.1);
+    color: var(--danger-color);
+}
+
+.btn-icon {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--text-light);
+    width: 30px;
+    height: 30px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+}
+
+.btn-icon:hover {
+    background-color: rgba(67, 97, 238, 0.1);
+    color: var(--primary-color);
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: var(--transition);
+}
+
+.btn-primary:hover {
+    background-color: var(--secondary-color);
+}
+
+/* Responsive */
+@media screen and (max-width: 992px) {
+    .sidebar {
+        transform: translateX(-100%);
+    }
+    
+    .content {
+        margin-left: 0;
+    }
+    
+    .toggle-menu {
+        display: block;
+    }
+    
+    .sidebar.active {
+        transform: translateX(0);
+    }
+    
+    .search-bar {
+        flex: 0 0 300px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .widgets-row,
+    .charts-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .search-bar {
+        flex: 0 0 200px;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .header {
+        padding: 0 15px;
+    }
+    
+    .dashboard-content {
+        padding: 15px;
+    }
+    
+    .search-bar {
+        display: none;
+    }
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="logo">
+                <h2>Admin</h2>
+            </div>
+            <ul class="menu">
+                <li class="active">
+                    <a href="#dashboard"><i class="fas fa-home"></i> Dashboard</a>
+                </li>
+                <li>
+                    <a href="Gestion Usuarios.html"><i class="fas fa-users"></i> Usuarios</a>
+                </li>
+                <li>
+                    <a href="Gestion Rol.html"><i class="fas fa-user-tag"></i> Roles</a>
+                </li>
+                <li>
+                    <a href="Gestion Automovil.html"><i class="fas fa-car"></i> Automoviles</a>
+                </li>
+                <li>
+                    <a href="Gestion Chat.html"><i class="fas fa-comments"></i> Chat</a>
+                </li>
+                <li>
+                    <a href="Gestion Reportes.HTML"><i class="fas fa-chart-bar"></i> Reportes</a>
+                </li>
+                <li>
+                    <a href="Gestion Cotizaciones.html"><i class="fas fa-file-invoice-dollar"></i> Cotizaciones</a>
+                </li>
+                <li>
+                    <a href="Gestion Procesos.html"><i class="fas fa-tasks"></i> Procesos</a>
+                </li>
+                <li>
+                    <a href="#configuracion"><i class="fas fa-cog"></i> Configuración</a>
+                </li>
+            </ul>
+            <div class="logout">
+                <a href="#"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="content">
+            <!-- Top Header -->
+            <header class="header">
+                <div class="toggle-menu">
+                    <i class="fas fa-bars"></i>
+                </div>
+                <div class="search-bar">
+                    <input type="text" placeholder="Buscar...">
+                    <button><i class="fas fa-search"></i></button>
+                </div>
+                <div class="user-info">
+                    <div class="notifications">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge">5</span>
+                    </div>
+                    <div class="messages">
+                        <i class="fas fa-envelope"></i>
+                        <span class="badge">3</span>
+                    </div>
+                    <div class="profile">
+                        <img src="/api/placeholder/40/40" alt="Usuario">
+                        <span>Admin</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dashboard Content -->
+            <div class="dashboard-content">
+                <div class="page-title">
+                    <h1>Dashboard</h1>
+                    <p>Bienvenido al panel de administración</p>
+                </div>
+                <!-- Stats Cards -->
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-value">
+                            <h3>1,254</h3>
+                            <p>Usuarios Totales</p>
+                        </div>
+                        <div class="stat-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">
+                            <h3>145</h3>
+                            <p>Nuevos Usuarios</p>
+                        </div>
+                        <div class="stat-icon">
+                            <i class="fas fa-user-plus"></i>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">
+                            <h3>50</h3>
+                            <p>Cotizaciones Pendientes</p>
+                        </div>
+                        <div class="stat-icon">
+                            <i class="fas fa-file-invoice"></i>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">
+                            <h3>24</h3>
+                            <p>Mensajes Nuevos</p>
+                        </div>
+                        <div class="stat-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Widgets Row -->
+                <div class="widgets-row">
+                    <!-- Recent Users -->
+                    <div class="widget">
+                        <div class="widget-header">
+                            <h3>Usuarios Recientes</h3>
+                            <a href="#" class="view-all">Ver Todos</a>
+                        </div>
+                        <div class="widget-content">
+                            <div class="user-list">
+                                <div class="user-item">
+                                    <img src="/api/placeholder/40/40" alt="Usuario">
+                                    <div class="user-info">
+                                        <h4>Juan Pérez</h4>
+                                        <p>juan@ejemplo.com</p>
+                                    </div>
+                                    <span class="user-role admin">Admin</span>
+                                </div>
+                                <div class="user-item">
+                                    <img src="/api/placeholder/40/40" alt="Usuario">
+                                    <div class="user-info">
+                                        <h4>María López</h4>
+                                        <p>maria@ejemplo.com</p>
+                                    </div>
+                                    <span class="user-role">Usuario</span>
+                                </div>
+                                <div class="user-item">
+                                    <img src="/api/placeholder/40/40" alt="Usuario">
+                                    <div class="user-info">
+                                        <h4>Carlos Rodríguez</h4>
+                                        <p>carlos@ejemplo.com</p>
+                                    </div>
+                                    <span class="user-role">Editor</span>
+                                </div>
+                                <div class="user-item">
+                                    <img src="/api/placeholder/40/40" alt="Usuario">
+                                    <div class="user-info">
+                                        <h4>Ana Martínez</h4>
+                                        <p>ana@ejemplo.com</p>
+                                    </div>
+                                    <span class="user-role">Usuario</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Chat Widget -->
+                    <div class="widget">
+                        <div class="widget-header">
+                            <h3>Mensajes Recientes</h3>
+                            <a href="#" class="view-all">Ver Todos</a>
+                        </div>
+                        <div class="widget-content">
+                            <div class="chat-container">
+                                <div class="chat-message received">
+                                    <img src="/api/placeholder/40/40" alt="Usuario">
+                                    <div class="message-content">
+                                        <div class="message-info">
+                                            <h4>María López</h4>
+                                            <span>Hace 10 min</span>
+                                        </div>
+                                        <p>Hola, necesito ayuda con mi cotización #1234</p>
+                                    </div>
+                                </div>
+                                <div class="chat-message sent">
+                                    <div class="message-content">
+                                        <div class="message-info">
+                                            <h4>Admin</h4>
+                                            <span>Hace 8 min</span>
+                                        </div>
+                                        <p>Claro, revisaré los detalles y te contactaré pronto.</p>
+                                    </div>
+                                    <img src="/api/placeholder/40/40" alt="Admin">
+                                </div>
+                                <div class="chat-message received">
+                                    <img src="/api/placeholder/40/40" alt="Usuario">
+                                    <div class="message-content">
+                                        <div class="message-info">
+                                            <h4>Carlos Rodríguez</h4>
+                                            <span>Hace 5 min</span>
+                                        </div>
+                                        <p>¿Cuándo estará listo el nuevo módulo?</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="chat-input">
+                                <input type="text" placeholder="Escribe un mensaje...">
+                                <button><i class="fas fa-paper-plane"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts and Reports Row -->
+                <div class="charts-row">
+                    <!-- Graph Widget -->
+                    <div class="widget">
+                        <div class="widget-header">
+                            <h3>Actividad de Usuarios</h3>
+                            <div class="widget-actions">
+                                <select>
+                                    <option>Últimos 7 días</option>
+                                    <option>Último mes</option>
+                                    <option>Último año</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="widget-content">
+                            <div class="chart-container">
+                                <canvas id="userActivityChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Reports Widget -->
+                    <div class="widget">
+                        <div class="widget-header">
+                            <h3>Reportes Recientes</h3>
+                            <a href="#" class="view-all">Ver Todos</a>
+                        </div>
+                        <div class="widget-content">
+                            <div class="reports-list">
+                                <div class="report-item">
+                                    <div class="report-icon">
+                                        <i class="fas fa-chart-line"></i>
+                                    </div>
+                                    <div class="report-info">
+                                        <h4>Reporte de Ventas Abril 2025</h4>
+                                        <p>Generado: 05/04/2025</p>
+                                    </div>
+                                    <div class="report-actions">
+                                        <button><i class="fas fa-download"></i></button>
+                                        <button><i class="fas fa-eye"></i></button>
+                                    </div>
+                                </div>
+                                <div class="report-item">
+                                    <div class="report-icon">
+                                        <i class="fas fa-users"></i>
+                                    </div>
+                                    <div class="report-info">
+                                        <h4>Actividad de Usuarios Q1 2025</h4>
+                                        <p>Generado: 01/04/2025</p>
+                                    </div>
+                                    <div class="report-actions">
+                                        <button><i class="fas fa-download"></i></button>
+                                        <button><i class="fas fa-eye"></i></button>
+                                    </div>
+                                </div>
+                                <div class="report-item">
+                                    <div class="report-icon">
+                                        <i class="fas fa-tasks"></i>
+                                    </div>
+                                    <div class="report-info">
+                                        <h4>Estado de Procesos Marzo 2025</h4>
+                                        <p>Generado: 31/03/2025</p>
+                                    </div>
+                                    <div class="report-actions">
+                                        <button><i class="fas fa-download"></i></button>
+                                        <button><i class="fas fa-eye"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cotizaciones Section -->
+                <div class="full-width-section">
+                    <div class="widget">
+                        <div class="widget-header">
+                            <h3>Cotizaciones Recientes</h3>
+                            <div class="widget-actions">
+                                <button class="btn-primary"><i class="fas fa-plus"></i> Nueva Cotización</button>
+                            </div>
+                        </div>
+                        <div class="widget-content">
+                            <div class="table-responsive">
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>#ID</th>
+                                            <th>Cliente</th>
+                                            <th>Fecha</th>
+                                            <th>Monto</th>
+                                            <th>Estado</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>#COT-001</td>
+                                            <td>Empresa ABC S.A.</td>
+                                            <td>05/04/2025</td>
+                                            <td>$1,500.00</td>
+                                            <td><span class="status pending">Pendiente</span></td>
+                                            <td>
+                                                <button class="btn-icon"><i class="fas fa-eye"></i></button>
+                                                <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                                                <button class="btn-icon"><i class="fas fa-trash"></i></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>#COT-002</td>
+                                            <td>Corporación XYZ</td>
+                                            <td>04/04/2025</td>
+                                            <td>$2,750.00</td>
+                                            <td><span class="status approved">Aprobada</span></td>
+                                            <td>
+                                                <button class="btn-icon"><i class="fas fa-eye"></i></button>
+                                                <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                                                <button class="btn-icon"><i class="fas fa-trash"></i></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>#COT-003</td>
+                                            <td>Industrias 123</td>
+                                            <td>03/04/2025</td>
+                                            <td>$950.00</td>
+                                            <td><span class="status rejected">Rechazada</span></td>
+                                            <td>
+                                                <button class="btn-icon"><i class="fas fa-eye"></i></button>
+                                                <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                                                <button class="btn-icon"><i class="fas fa-trash"></i></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>#COT-004</td>
+                                            <td>Servicios Omega</td>
+                                            <td>02/04/2025</td>
+                                            <td>$3,200.00</td>
+                                            <td><span class="status pending">Pendiente</span></td>
+                                            <td>
+                                                <button class="btn-icon"><i class="fas fa-eye"></i></button>
+                                                <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                                                <button class="btn-icon"><i class="fas fa-trash"></i></button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <script>
+        // Esperar a que el DOM esté completamente cargado
+document.addEventListener('DOMContentLoaded', function() {
+    // Toggle para el menú lateral
+    const toggleMenu = document.querySelector('.toggle-menu');
+    const sidebar = document.querySelector('.sidebar');
+    const content = document.querySelector('.content');
+    
+    toggleMenu.addEventListener('click', function() {
+        sidebar.classList.toggle('collapsed');
+        content.classList.toggle('expanded');
+    });
+    
+    // Manejo de los items del menú
+    const menuItems = document.querySelectorAll('.menu li');
+    
+    menuItems.forEach(item => {
+        item.addEventListener('click', function() {
+            // Remover clase active de todos los items
+            menuItems.forEach(i => i.classList.remove('active'));
+            // Agregar clase active al item clickeado
+            this.classList.add('active');
+        });
+    });
+    
+    // Inicializar el gráfico de actividad de usuarios
+    const ctx = document.getElementById('userActivityChart').getContext('2d');
+    
+    // Datos de ejemplo para el gráfico
+    const userData = {
+        labels: ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'],
+        datasets: [
+            {
+                label: 'Usuarios Activos',
+                data: [65, 59, 80, 81, 56, 55, 40],
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 2,
+                tension: 0.4
+            },
+            {
+                label: 'Nuevos Registros',
+                data: [28, 48, 40, 19, 26, 27, 20],
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 2,
+                tension: 0.4
+            }
+        ]
+    };
+    
+    const userActivityChart = new Chart(ctx, {
+        type: 'line',
+        data: userData,
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: {
+                        drawBorder: false
+                    }
+                },
+                x: {
+                    grid: {
+                        display: false
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    position: 'top',
+                    align: 'end'
+                }
+            }
+        }
+    });
+    
+    // Manejo del selector de tiempo para el gráfico
+    const timeSelector = document.querySelector('.widget-actions select');
+    
+    timeSelector.addEventListener('change', function() {
+        // Simular cambio de datos según la selección de tiempo
+        let newData;
+        
+        switch(this.value) {
+            case 'Último mes':
+                newData = [150, 220, 180, 250, 120, 190, 210, 170, 230, 200, 160, 180, 
+                          190, 210, 170, 150, 220, 180, 250, 120, 190, 210, 170, 230, 
+                          200, 160, 180, 190, 210, 170];
+                userActivityChart.data.labels = Array.from({length: 30}, (_, i) => i + 1);
+                userActivityChart.data.datasets[0].data = newData;
+                userActivityChart.data.datasets[1].data = newData.map(n => Math.floor(n * 0.4));
+                break;
+                
+            case 'Último año':
+                newData = [500, 620, 750, 800, 760, 820, 900, 850, 750, 820, 880, 950];
+                userActivityChart.data.labels = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+                userActivityChart.data.datasets[0].data = newData;
+                userActivityChart.data.datasets[1].data = newData.map(n => Math.floor(n * 0.3));
+                break;
+                
+            default: // Últimos 7 días
+                userActivityChart.data.labels = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
+                userActivityChart.data.datasets[0].data = [65, 59, 80, 81, 56, 55, 40];
+                userActivityChart.data.datasets[1].data = [28, 48, 40, 19, 26, 27, 20];
+        }
+        
+        userActivityChart.update();
+    });
+    
+    // Manejar la funcionalidad del chat
+    const chatInput = document.querySelector('.chat-input input');
+    const chatSendButton = document.querySelector('.chat-input button');
+    const chatContainer = document.querySelector('.chat-container');
+    
+    chatSendButton.addEventListener('click', function() {
+        sendMessage();
+    });
+    
+    chatInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            sendMessage();
+        }
+    });
+    
+    function sendMessage() {
+        const message = chatInput.value.trim();
+        if (message) {
+            // Crear nuevo mensaje enviado
+            const now = new Date();
+            const timeString = 'Ahora';
+            
+            const messageHTML = `
+                <div class="chat-message sent">
+                    <div class="message-content">
+                        <div class="message-info">
+                            <h4>Admin</h4>
+                            <span>${timeString}</span>
+                        </div>
+                        <p>${message}</p>
+                    </div>
+                    <img src="/api/placeholder/40/40" alt="Admin">
+                </div>
+            `;
+            
+            chatContainer.insertAdjacentHTML('beforeend', messageHTML);
+            chatInput.value = '';
+            
+            // Scroll al final del chat
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+    }
+    
+    // Funcionalidad para las notificaciones
+    const notificationBells = document.querySelectorAll('.notifications, .messages');
+    
+    notificationBells.forEach(bell => {
+        bell.addEventListener('click', function() {
+            // Aquí iría la lógica para mostrar las notificaciones
+            alert('Panel de notificaciones - Funcionalidad pendiente de implementar');
+        });
+    });
+    
+    // Funcionalidad para los botones de acciones en la tabla
+    const actionButtons = document.querySelectorAll('.data-table .btn-icon');
+    
+    actionButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const action = this.querySelector('i').className;
+            const row = this.closest('tr');
+            const cotizacionId = row.querySelector('td:first-child').textContent;
+            
+            if (action.includes('fa-eye')) {
+                alert(`Ver detalles de cotización ${cotizacionId}`);
+            } else if (action.includes('fa-edit')) {
+                alert(`Editar cotización ${cotizacionId}`);
+            } else if (action.includes('fa-trash')) {
+                if (confirm(`¿Está seguro que desea eliminar la cotización ${cotizacionId}?`)) {
+                    alert(`Cotización ${cotizacionId} eliminada`);
+                }
+            }
+        });
+    });
+    
+    // Botón para crear nueva cotización
+    const newQuoteButton = document.querySelector('.btn-primary');
+    
+    newQuoteButton.addEventListener('click', function() {
+        alert('Formulario para crear nueva cotización - Funcionalidad pendiente de implementar');
+    });
+    
+    // Efecto de hover para las tarjetas de estadísticas
+    const statCards = document.querySelectorAll('.stat-card');
+    
+    statCards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-5px)';
+            this.style.boxShadow = '0 8px 15px rgba(0, 0, 0, 0.1)';
+        });
+        
+        card.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0)';
+            this.style.boxShadow = '0 4px 10px rgba(0, 0, 0, 0.05)';
+        });
+    });
+});
+       
+    </script>
+</body>
+</html>

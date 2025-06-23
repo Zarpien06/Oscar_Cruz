@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Cliente</title>
+    <!-- Ícono de pestaña -->
+    <link rel="icon" href="{{ url_for('static', filename='IMG/logos/logo.png') }}" type="image/x-icon">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- Custom CSS -->
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2c3e50;
+            --accent-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #34495e;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            padding-top: 56px;
+        }
+        
+        .navbar {
+            background-color: rgba(0, 0, 0, 0.8) !important;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            color: white !important;
+        }
+        
+        .nav-link {
+            color: rgba(255, 255, 255, 0.8) !important;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        
+        .nav-link:hover {
+            color: white !important;
+            transform: translateY(-2px);
+        }
+        
+        .nav-link.active {
+            color: white !important;
+            border-bottom: 2px solid var(--primary-color);
+        }
+        
+        .dashboard-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card {
+            border-radius: 10px;
+            border: none;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .card-header {
+            background-color: var(--secondary-color);
+            color: white;
+            font-weight: 600;
+            padding: 0.8rem 1.2rem;
+        }
+        
+        .status-badge {
+            border-radius: 20px;
+            padding: 0.3rem 0.8rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .vehicle-card {
+            position: relative;
+            height: 100%;
+        }
+        
+        .vehicle-card img {
+            height: 140px;
+            object-fit: cover;
+        }
+        
+        .vehicle-status {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 10;
+        }
+        
+        .welcome-section {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .welcome-section h2 {
+            font-weight: 600;
+        }
+        
+        .stats-card {
+            text-align: center;
+            padding: 1.5rem;
+        }
+        
+        .stats-card i {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+        
+        .stats-card h3 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stats-card p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .reservation-card {
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .quotation-card {
+            border-left: 4px solid var(--accent-color);
+        }
+        
+        .alert-container {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            z-index: 9999;
+            max-width: 350px;
+        }
+        
+        .toast {
+            opacity: 1 !important;
+        }
+        
+        @media (max-width: 768px) {
+            .welcome-section h2 {
+                font-size: 1.5rem;
+            }
+            
+            .stats-card h3 {
+                font-size: 1.5rem;
+            }
+            
+            .stats-card i {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Barra de navegación transparente -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('cliente_bp.dashboard') }}">
+                <i class="fas fa-car-side"></i> Full Paint Cars
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{{ url_for('cliente_bp.dashboard') }}">
+                            <i class="fas fa-tachometer-alt"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('cliente_bp.vehiculos') }}">
+                            <i class="fas fa-car"></i> Mis Vehículos
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('cliente_bp.cotizar') }}">
+                            <i class="fas fa-shopping-cart"></i> Cotizar Servicios
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('cliente_bp.reservas') }}">
+                            <i class="fas fa-calendar-check"></i> Mis Reservas
+                        </a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-user-circle"></i> {{ session.get('user_name', 'Usuario') }}
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="{{ url_for('cliente_bp.perfil') }}"><i class="fas fa-user-cog"></i> Mi Perfil</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenido principal -->
+    <div class="container mt-5 pt-3">
+        <!-- Sección de bienvenida -->
+        <div class="welcome-section">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h2>Bienvenido, {{ session.get('user_name', 'Usuario') }}</h2>
+                    <p>Este es tu panel de control donde podrás gestionar tus vehículos, reservas y cotizaciones.</p>
+                </div>
+                <div class="col-md-4 text-md-end">
+                    <a href="{{ url_for('cliente_bp.cotizar') }}" class="btn btn-light">
+                        <i class="fas fa-plus"></i> Nueva Cotización
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tarjetas de estadísticas -->
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <div class="card stats-card">
+                    <i class="fas fa-car"></i>
+                    <h3>{{ vehiculos|length }}</h3>
+                    <p>Vehículos Registrados</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card stats-card">
+                    <i class="fas fa-calendar-check"></i>
+                    {% set reservas_activas = reservas|selectattr('estado', 'ne', 'Completada')|selectattr('estado', 'ne', 'Cancelada')|list %}
+                    <h3>{{ reservas_activas|length }}</h3>
+                    <p>Servicios Activos</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card stats-card">
+                    <i class="fas fa-clipboard-list"></i>
+                    <h3>{{ cotizaciones|length }}</h3>
+                    <p>Cotizaciones Pendientes</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Vehículos recientes -->
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <span><i class="fas fa-car"></i> Mis Vehículos</span>
+                        <a href="{{ url_for('cliente_bp.vehiculos') }}" class="btn btn-sm btn-outline-light">Ver todos</a>
+                    </div>
+                    <div class="card-body p-0">
+                        {% if vehiculos %}
+                            <div class="list-group list-group-flush">
+                                {% for vehiculo in vehiculos[:3] %}
+                                <div class="list-group-item p-3">
+                                    <div class="row align-items-center">
+                                        <div class="col-auto">
+                                            <img src="{{ vehiculo.imagen }}" alt="{{ vehiculo.marca }} {{ vehiculo.modelo }}" class="img-fluid rounded" style="width: 80px; height: 60px; object-fit: cover;">
+                                        </div>
+                                        <div class="col">
+                                            <h6 class="mb-1">{{ vehiculo.marca }} {{ vehiculo.modelo }} ({{ vehiculo.anio }})</h6>
+                                            <p class="small text-muted mb-0">Placa: {{ vehiculo.placa }} | Color: {{ vehiculo.color }}</p>
+                                        </div>
+                                        <div class="col-auto">
+                                            {% if vehiculo.estado == 'Sin servicio' %}
+                                                <span class="badge bg-secondary status-badge">Sin servicio</span>
+                                            {% elif vehiculo.estado == 'En servicio' %}
+                                                <span class="badge bg-primary status-badge">En servicio</span>
+                                            {% else %}
+                                                <span class="badge bg-success status-badge">Finalizado</span>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <div class="p-4 text-center">
+                                <p class="mb-3"><i class="fas fa-car-side fa-3x text-muted"></i></p>
+                                <h5>No tienes vehículos registrados</h5>
+                                <p class="text-muted">Añade tu primer vehículo para comenzar a utilizar nuestros servicios.</p>
+                                <a href="{{ url_for('cliente_bp.vehiculos') }}" class="btn btn-primary">Añadir Vehículo</a>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reservas recientes -->
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <span><i class="fas fa-calendar-check"></i> Mis Reservas</span>
+                        <a href="{{ url_for('cliente_bp.reservas') }}" class="btn btn-sm btn-outline-light">Ver todas</a>
+                    </div>
+                    <div class="card-body p-0">
+                        {% if reservas %}
+                            <div class="list-group list-group-flush">
+                                {% for reserva in reservas[:3] %}
+                                <div class="list-group-item p-3">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h6 class="mb-1">{{ reserva.marca }} {{ reserva.modelo }} - Placa: {{ reserva.placa }}</h6>
+                                        {% if reserva.estado == 'Pendiente' %}
+                                            <span class="badge bg-warning status-badge">Pendiente</span>
+                                        {% elif reserva.estado == 'En proceso' %}
+                                            <span class="badge bg-primary status-badge">En proceso</span>
+                                        {% elif reserva.estado == 'Completada' %}
+                                            <span class="badge bg-success status-badge">Completada</span>
+                                        {% else %}
+                                            <span class="badge bg-danger status-badge">Cancelada</span>
+                                        {% endif %}
+                                    </div>
+                                    <p class="small text-muted mb-1">
+                                        <i class="fas fa-calendar-alt"></i> {{ reserva.fecha.strftime('%d/%m/%Y') }} 
+                                        <i class="fas fa-clock ms-2"></i> {{ '{:02d}:{:02d}'.format(reserva.hora.seconds//3600, (reserva.hora.seconds//60)%60) }}
+                                    </p>
+                                    <div class="d-flex justify-content-between align-items-center mt-2">
+                                        <small class="text-muted">Total: ${{ '{:,.0f}'.format(reserva.total) }}</small>
+                                        <a href="{{ url_for('cliente_bp.reportes_vehiculo', vehiculo_id=reserva.vehiculo_id) }}" class="btn btn-sm btn-outline-primary" class="btn btn-sm btn-outline-primary">
+                                            Ver Detalles
+                                        </a>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <div class="p-4 text-center">
+                                <p class="mb-3"><i class="fas fa-calendar-alt fa-3x text-muted"></i></p>
+                                <h5>No tienes reservas activas</h5>
+                                <p class="text-muted">Cotiza nuestros servicios y agenda tu primera cita.</p>
+                                <a href="{{ url_for('cliente_bp.cotizar') }}" class="btn btn-primary">Cotizar Servicios</a>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cotizaciones pendientes -->
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-clipboard-list"></i> Cotizaciones Pendientes
+                    </div>
+                    <div class="card-body p-0">
+                        {% if cotizaciones %}
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Fecha</th>
+                                            <th>Vehículo</th>
+                                            <th>Total</th>
+                                            <th>Estado</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for cotizacion in cotizaciones %}
+                                        <tr>
+                                            <td>{{ cotizacion.fecha_creacion.strftime('%d/%m/%Y') }}</td>
+                                            <td>{{ cotizacion.marca|default('') }} {{ cotizacion.modelo|default('') }} ({{ cotizacion.placa|default('No especificado') }})</td>
+                                            <td>${{ '{:,.0f}'.format(cotizacion.total) }}</td>
+                                            <td><span class="badge bg-warning">{{ cotizacion.estado }}</span></td>
+                                            <td>
+                                                <a href="{{ url_for('cliente_bp.reservas') }}" class="btn btn-sm btn-primary">
+                                                    <i class="fas fa-calendar-plus"></i> Agendar
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% else %}
+                            <div class="p-4 text-center">
+                                <p class="mb-3"><i class="fas fa-clipboard-list fa-3x text-muted"></i></p>
+                                <h5>No tienes cotizaciones pendientes</h5>
+                                <p class="text-muted">Cotiza nuestros servicios para recibir un presupuesto personalizado.</p>
+                                <a href="{{ url_for('cliente_bp.cotizar') }}" class="btn btn-primary">Nueva Cotización</a>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Container para alertas -->
+    <div class="alert-container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    {% set alert_class = "primary" %}
+                    {% if category == "success" %}{% set alert_class = "success" %}{% endif %}
+                    {% if category == "error" %}{% set alert_class = "danger" %}{% endif %}
+                    {% if category == "info" %}{% set alert_class = "info" %}{% endif %}
+                    {% if category == "warning" %}{% set alert_class = "warning" %}{% endif %}
+                    <div class="toast show mb-3" role="alert" aria-live="assertive" aria-atomic="true">
+                        <div class="toast-header bg-{{ alert_class }} text-white">
+                            <strong class="me-auto">
+                                {% if category == "success" %}<i class="fas fa-check-circle"></i>{% endif %}
+                                {% if category == "error" %}<i class="fas fa-exclamation-circle"></i>{% endif %}
+                                {% if category == "info" %}<i class="fas fa-info-circle"></i>{% endif %}
+                                {% if category == "warning" %}<i class="fas fa-exclamation-triangle"></i>{% endif %}
+                                Notificación
+                            </strong>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+                        </div>
+                        <div class="toast-body">
+                            {{ message }}
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <!-- Modal de confirmación de cierre de sesión -->
+    <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="logoutModalLabel">Confirmar cierre de sesión</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    ¿Estás seguro de que deseas cerrar la sesión?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <a href="{{ url_for('cliente_bp.logout') }}" class="btn btn-primary">Cerrar Sesión</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Manejar el botón de logout para mostrar modal de confirmación
+        document.getElementById('logout-btn').addEventListener('click', function(e) {
+            e.preventDefault();
+            var logoutModal = new bootstrap.Modal(document.getElementById('logoutModal'));
+            logoutModal.show();
+        });
+        
+        // Hacer que la barra de navegación cambie según el scroll
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.style.backgroundColor = 'rgba(0, 0, 0, 0.9) !important';
+                navbar.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.3)';
+            } else {
+                navbar.style.backgroundColor = 'rgba(0, 0, 0, 0.8) !important';
+                navbar.style.boxShadow = 'none';
+            }
+        });
+        
+        // Auto ocultar las alertas después de 5 segundos
+        window.addEventListener('DOMContentLoaded', (event) => {
+            const toasts = document.querySelectorAll('.toast');
+            toasts.forEach(toast => {
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 5000);
+            });
+        });
+    </script>
+</body>
+</html>

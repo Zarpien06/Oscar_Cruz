@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Usuarios - Full Paint Cars</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin/gestion usuarios.css') }}">
+ <link
+  href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+  rel="stylesheet"
+  integrity="sha384-I3YJWbRUwWq0D7l6MEHRB+7yxOubymn7zogFPgY68q6QK6fka8FJ15EcGB2Xr3uH"
+  crossorigin="anonymous"
+/>
+
+
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="logo">
+                <h2>Admin</h2>
+            </div>
+            <ul class="menu">
+                <li><a href="#"><i class="fas fa-home"></i> Dashboard</a></li>
+                <li class="active"><a href="#"><i class="fas fa-users"></i> Usuarios</a></li>
+                <li><a href="#"><i class="fas fa-user-tag"></i> Roles</a></li>
+                <li><a href="#"><i class="fas fa-car"></i> Automóviles</a></li>
+                <li><a href="#"><i class="fas fa-comments"></i> Chat</a></li>
+                <li><a href="#"><i class="fas fa-chart-bar"></i> Reportes</a></li>
+                <li><a href="#"><i class="fas fa-file-invoice-dollar"></i> Cotizaciones</a></li>
+                <li><a href="#"><i class="fas fa-tasks"></i> Procesos</a></li>
+                <li><a href="#"><i class="fas fa-cog"></i> Configuración</a></li>
+            </ul>
+            <div class="logout">
+                <a href="#"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
+            </div>
+        </nav>
+
+        <!-- Contenido principal -->
+        <main class="content">
+            <header class="content-header">
+                <h1>Gestión de Usuarios</h1>
+                <div class="user-info">
+                    <span class="user-name">Admin</span>
+                    <img src="{{ url_for('static', filename='images/default-avatar.png') }}" alt="Usuario" class="user-avatar">
+                </div>
+            </header>
+
+            <!-- Mensajes Flash -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="flash-messages">
+                        {% for category, message in messages %}
+                            <div class="flash-{{ category }}">{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+
+            <!-- Barra de acciones -->
+            <div class="actions-bar">
+                <button id="btn-new-user" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Nuevo Usuario
+                </button>
+                <div class="search-container">
+                    <input type="text" id="search-user" placeholder="Buscar usuario...">
+                    <button class="btn btn-search"><i class="fas fa-search"></i></button>
+                </div>
+                <div class="filter-container">
+                    <select id="filter-role">
+                        <option value="">Todos los roles</option>
+                        <option value="1">Administrador</option>
+                        <option value="2">Empleado</option>
+                        <option value="3">Cliente</option>
+                    </select>
+                    <select id="filter-status">
+                        <option value="">Todos los estados</option>
+                        <option value="activo">Activo</option>
+                        <option value="inactivo">Inactivo</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Tabla de usuarios -->
+            <div class="users-table-container">
+                <table id="users-table" class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Correo</th>
+                            <th>Teléfono</th>
+                            <th>Rol</th>
+                            <th>Estado</th>
+                            <th>Fecha Registro</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if usuarios %}
+                            {% for user in usuarios %}
+                            <tr>
+                                <td>{{ user.usuario_id }}</td>
+                                <td>{{ user.nombre_completo }}</td>
+                                <td>{{ user.correo }}</td>
+                                <td>{{ user.telefono|default('-') }}</td>
+                                <td>{{ user.rol_nombre }}</td>
+                                <td>{{ user.estado|default('activo') }}</td>
+                                <td>{{ user.fecha_registro.strftime('%Y-%m-%d %H:%M') if user.fecha_registro else '-' }}</td>
+                                <td>
+                                    <button class="btn btn-edit" data-id="{{ usuarios.usuario_id }}"><i class="fas fa-edit"></i></button>
+                                    <button class="btn btn-delete" data-bs-toggle="modal" data-bs-target="#modalEliminar{{ user.usuario_id }}">
+                                        <i class="fas fa-trash"></i>
+                                      </button>
+                                </td>
+                            </tr>
+
+              <!-- Modal de Confirmación de Eliminación -->
+<div class="modal fade" id="modalEliminar{{ user.usuario_id }}" tabindex="-1" aria-labelledby="modalEliminarLabel{{ user.usuario_id }}" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalEliminarLabel{{ user.usuario_id }}">Eliminar Usuario</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                ¿Estás seguro de que deseas eliminar este usuario?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteBtn" data-id="{{ user.usuario_id }}">Eliminar</button>
+            </div>
+        </div>
+    </div>
+</div>
+             {% endfor %}
+                        {% else %}
+                            <tr><td colspan="8" class="no-data">No hay usuarios disponibles</td></tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Modal de formulario -->
+            <div id="user-modal" class="modal">
+                <div class="modal-content">
+                    <span class="close-modal">&times;</span>
+                    <h2 id="modal-title">Nuevo Usuario</h2>
+                    <form id="user-form" method="POST" action="{{ url_for('usuarios.guardar_usuario') }}">
+                        <input type="hidden" id="user-id" name="user_id">
+
+                        <div class="form-group">
+                            <label for="user-name">Nombre Completo *</label>
+                            <input type="text" id="user-name" name="nombre_completo" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="correo">Correo Electrónico *</label>
+                            <input type="email" id="correo" name="correo" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="telefono">Teléfono *</label>
+                            <input type="text" id="telefono" name="telefono" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="tipo_identificacion">Tipo de Identificación *</label>
+                            <select id="tipo_identificacion" name="tipo_identificacion" required>
+                                <option value="DNI">DNI</option>
+                                <option value="Cédula">Cédula</option>
+                                <option value="Pasaporte">Pasaporte</option>
+                                <option value="RUC">RUC</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="numero_identificacion">Número de Identificación *</label>
+                            <input type="text" id="numero_identificacion" name="numero_identificacion" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="user-password">Contraseña</label>
+                            <input type="password" id="user-password" name="password">
+                            <small>* Requerido solo para nuevos usuarios.</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="nuevo_rol">Rol *</label>
+                            <select id="nuevo_rol" name="rol_id" required>
+                                <option value="1">Administrador</option>
+                                <option value="2">Empleado</option>
+                                <option value="3">Cliente</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="user-status">Estado *</label>
+                            <select id="user-status" name="estado" required>
+                                <option value="activo">Activo</option>
+                                <option value="inactivo">Inactivo</option>
+                            </select>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="button" id="btn-cancel" class="btn btn-secondary">Cancelar</button>
+                            <button type="submit" class="btn btn-primary">Guardar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Script -->
+     <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const modal = document.getElementById('user-modal');
+            const btnNewUser = document.getElementById('btn-new-user');
+            const btnCancel = document.getElementById('btn-cancel');
+            const closeModal = document.querySelector('.close-modal');
+            const deleteButtons = document.querySelectorAll('.btn-delete');
+            const editButtons = document.querySelectorAll('.btn-edit');
+            const userForm = document.getElementById('user-form');
+            const modalTitle = document.getElementById('modal-title');
+            
+            // Datos de los usuarios para prellenar el formulario
+            const usersData = {
+                {% for user in usuarios %}
+                "{{ user.usuario_id }}": {
+                    nombre_completo: "{{ user.nombre_completo }}",
+                    correo: "{{ user.correo }}",
+                    telefono: "{{ user.telefono }}",
+                    tipo_identificacion: "{{ user.tipo_identificacion }}",
+                    numero_identificacion: "{{ user.numero_identificacion }}",
+                    rol_id: "{{ user.rol_id }}",
+                    estado: "{{ user.estado }}"
+                }{% if not loop.last %},{% endif %}
+                {% endfor %}
+            };
+        
+        // Abrir modal para crear nuevo usuario
+btnNewUser.addEventListener('click', function () {
+    modalTitle.textContent = 'Nuevo Usuario';
+    userForm.reset();
+    document.getElementById('user-id').value = ''; // Limpiar ID para que sea creación
+    modal.style.display = 'block';
+});
+
+// Cancelar o cerrar modal
+btnCancel.addEventListener('click', () => modal.style.display = 'none');
+closeModal.addEventListener('click', () => modal.style.display = 'none');
+
+// Abrir modal para editar usuario
+editButtons.forEach(button => {
+    button.addEventListener('click', function () {
+        const userId = this.dataset.id;
+        const userData = usersData[userId];
+
+        modalTitle.textContent = 'Editar Usuario';
+        document.getElementById('user-id').value = userId;
+        document.getElementById('user-name').value = userData.nombre_completo;
+        document.getElementById('correo').value = userData.correo;
+        document.getElementById('telefono').value = userData.telefono;
+        document.getElementById('tipo_identificacion').value = userData.tipo_identificacion;
+        document.getElementById('numero_identificacion').value = userData.numero_identificacion;
+        document.getElementById('nuevo_rol').value = userData.rol_id;
+        document.getElementById('user-status').value = userData.estado;
+
+        // Nota: No llenamos el campo contraseña en edición por seguridad
+        modalTitle.textContent = 'Editar Usuario';
+
+        modal.style.display = 'block';
+    });
+});
+
+                  
+        
+            // Eliminar usuario
+            deleteButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    const userId = this.getAttribute('data-id');
+                    const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+                    const modalEliminar = document.getElementById('modalEliminar' + userId);
+                    
+                    confirmDeleteBtn.setAttribute('data-id', userId);
+                    
+                    // Abre el modal de eliminación correspondiente
+                    const modalBootstrap = new bootstrap.Modal(modalEliminar);
+                    modalBootstrap.show();
+                });
+            });
+        
+            // Confirmar eliminación
+            document.getElementById('confirmDeleteBtn').addEventListener('click', function () {
+                const userId = this.getAttribute('data-id');
+                // Aquí rediriges o haces la solicitud para eliminar el usuario
+                window.location.href = `/usuarios/eliminar/${userId}`;
+            });
+        
+            // Cerrar modales si se hace clic fuera del contenido
+            window.addEventListener('click', function (e) {
+                if (e.target === modal) modal.style.display = 'none';
+            });
+        });
+        
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+</body>
+</html>

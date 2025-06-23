@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Full Paint Cars - Gestión de Chat</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin/gestion chat.css') }}">
+
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="logo">
+                <h2>Admin</h2>
+            </div>
+            <ul class="menu">
+                <li>
+                    <a href="Dasboard.html"><i class="fas fa-home"></i> Dashboard</a>
+                </li>
+                <li>
+                    <a href="Gestion Usuarios.html"><i class="fas fa-users"></i> Usuarios</a>
+                </li>
+                <li>
+                    <a href="Gestion Rol.html"><i class="fas fa-user-tag"></i> Roles</a>
+                </li>
+                <li>
+                    <a href="Gestion Automovil.html"><i class="fas fa-car"></i> Automoviles</a>
+                </li>
+                <li class="active">
+                    <a href="Gestion Chat.html"><i class="fas fa-comments"></i> Chat</a>
+                </li>
+                <li>
+                    <a href="Gestion Reportes.HTML"><i class="fas fa-chart-bar"></i> Reportes</a>
+                </li>
+                <li>
+                    <a href="Gestion Cotizaciones.html"><i class="fas fa-file-invoice-dollar"></i> Cotizaciones</a>
+                </li>
+                <li>
+                    <a href="Gestion Procesos.html"><i class="fas fa-tasks"></i> Procesos</a>
+                </li>
+                <li>
+                    <a href="#configuracion"><i class="fas fa-cog"></i> Configuración</a>
+                </li>
+            </ul>
+            <div class="logout">
+                <a href="#"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
+            </div>
+        </nav>
+
+        <main class="content">
+            <header>
+                <div class="header-title">
+                    <h1>Gestión de Chat</h1>
+                </div>
+                <div class="user-info">
+                    <div class="notifications">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-count">3</span>
+                    </div>
+                    <div class="user">
+                        <img src="assets/user-avatar.png" alt="Usuario" class="avatar">
+                        <span>Admin</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                </div>
+            </header>
+
+            <section class="chat-container">
+                <div class="chat-list">
+                    <div class="chat-search">
+                        <input type="text" placeholder="Buscar conversación...">
+                        <button><i class="fas fa-search"></i></button>
+                    </div>
+                    <div class="chat-filter">
+                        <button class="active">Todos</button>
+                        <button>Activos</button>
+                        <button>Cerrados</button>
+                    </div>
+                    <div class="chat-contacts">
+                        <!-- Contactos de chat -->
+                        <div class="chat-contact active" data-id="1">
+                            <div class="contact-info">
+                                <img src="assets/user1.png" alt="Cliente">
+                                <div>
+                                    <h4>Juan Pérez</h4>
+                                    <p>Ford Fiesta - Servicio #1245</p>
+                                    <small>Último mensaje: 10:45am</small>
+                                </div>
+                            </div>
+                            <div class="contact-status">
+                                <span class="unread-count">2</span>
+                                <span class="status active"></span>
+                            </div>
+                        </div>
+                        <div class="chat-contact" data-id="2">
+                            <div class="contact-info">
+                                <img src="assets/user2.png" alt="Cliente">
+                                <div>
+                                    <h4>María García</h4>
+                                    <p>Chevrolet Spark - Servicio #1246</p>
+                                    <small>Último mensaje: Ayer</small>
+                                </div>
+                            </div>
+                            <div class="contact-status">
+                                <span class="status"></span>
+                            </div>
+                        </div>
+                        <div class="chat-contact" data-id="3">
+                            <div class="contact-info">
+                                <img src="assets/user3.png" alt="Cliente">
+                                <div>
+                                    <h4>Carlos Rodríguez</h4>
+                                    <p>Toyota Corolla - Servicio #1247</p>
+                                    <small>Último mensaje: 25/03/2023</small>
+                                </div>
+                            </div>
+                            <div class="contact-status">
+                                <span class="status"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chat-messages">
+                    <div class="chat-header">
+                        <div class="chat-person">
+                            <img src="assets/user1.png" alt="Cliente">
+                            <div>
+                                <h3>Juan Pérez</h3>
+                                <p>Ford Fiesta - Servicio #1245</p>
+                            </div>
+                        </div>
+                        <div class="chat-actions">
+                            <button class="info-btn" title="Información del servicio">
+                                <i class="fas fa-info-circle"></i>
+                            </button>
+                            <button class="close-btn" title="Cerrar chat">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="message-container" id="messageContainer">
+                        <div class="date-divider">25 de marzo, 2023</div>
+                        
+                        <div class="message received">
+                            <div class="message-content">
+                                <p>Hola, buen día. Quería consultar si tienen novedades sobre mi vehículo.</p>
+                                <span class="time">09:30</span>
+                            </div>
+                        </div>
+                        
+                        <div class="message sent">
+                            <div class="message-content">
+                                <p>Buenos días Sr. Pérez. Su vehículo está en proceso de diagnóstico. El mecánico encargado es Luis Gómez.</p>
+                                <span class="time">09:45</span>
+                            </div>
+                        </div>
+                        
+                        <div class="message received">
+                            <div class="message-content">
+                                <p>Gracias por la información. ¿Tienen idea de cuánto tiempo tomará?</p>
+                                <span class="time">09:50</span>
+                            </div>
+                        </div>
+                        
+                        <div class="message sent">
+                            <div class="message-content">
+                                <p>Estimamos que el diagnóstico estará listo en 2 horas aproximadamente. Luego le informaremos el tiempo estimado para la reparación.</p>
+                                <span class="time">10:00</span>
+                            </div>
+                        </div>
+                        
+                        <div class="date-divider">Hoy</div>
+                        
+                        <div class="message received">
+                            <div class="message-content">
+                                <p>Hola, ¿hay alguna novedad sobre mi auto?</p>
+                                <span class="time">10:30</span>
+                            </div>
+                        </div>
+                        
+                        <div class="message sent">
+                            <div class="message-content">
+                                <p>Buen día. El mecánico identificó un problema con la bomba de agua. Le estamos enviando fotos y el presupuesto.</p>
+                                <span class="time">10:40</span>
+                            </div>
+                        </div>
+                        
+                        <div class="message sent">
+                            <div class="message-content">
+                                <div class="attachment">
+                                    <i class="fas fa-file-image"></i>
+                                    <span>foto_bomba_agua.jpg</span>
+                                </div>
+                                <div class="attachment">
+                                    <i class="fas fa-file-pdf"></i>
+                                    <span>presupuesto_reparacion.pdf</span>
+                                </div>
+                                <span class="time">10:42</span>
+                            </div>
+                        </div>
+                        
+                        <div class="message received">
+                            <div class="message-content">
+                                <p>Gracias. ¿Cuánto tiempo tomaría la reparación?</p>
+                                <span class="time">10:45</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="chat-input">
+                        <div class="attachment-btn">
+                            <i class="fas fa-paperclip"></i>
+                            <input type="file" id="fileInput" hidden>
+                        </div>
+                        <textarea placeholder="Escribe un mensaje..." id="messageInput"></textarea>
+                        <button id="sendBtn"><i class="fas fa-paper-plane"></i></button>
+                    </div>
+                </div>
+
+                <div class="chat-info" id="chatInfo">
+                    <div class="info-header">
+                        <h3>Detalles del Servicio</h3>
+                        <button class="close-info"><i class="fas fa-times"></i></button>
+                    </div>
+                    <div class="service-info">
+                        <div class="info-item">
+                            <span class="label">Cliente:</span>
+                            <span class="value">Juan Pérez</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">Vehículo:</span>
+                            <span class="value">Ford Fiesta 2018</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">Servicio #:</span>
+                            <span class="value">1245</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">Fecha de ingreso:</span>
+                            <span class="value">25/03/2023</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">Estado:</span>
+                            <span class="value status-in-progress">En proceso</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">Mecánico asignado:</span>
+                            <span class="value">Luis Gómez</span>
+                        </div>
+                    </div>
+                    <div class="service-history">
+                        <h4>Historial del servicio</h4>
+                        <div class="history-timeline">
+                            <div class="timeline-item">
+                                <div class="timeline-icon">
+                                    <i class="fas fa-car"></i>
+                                </div>
+                                <div class="timeline-content">
+                                    <h5>Ingreso del vehículo</h5>
+                                    <p>25/03/2023 - 09:00</p>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-icon">
+                                    <i class="fas fa-search"></i>
+                                </div>
+                                <div class="timeline-content">
+                                    <h5>Diagnóstico inicial</h5>
+                                    <p>25/03/2023 - 11:30</p>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-icon">
+                                    <i class="fas fa-tools"></i>
+                                </div>
+                                <div class="timeline-content">
+                                    <h5>Inicio de reparación</h5>
+                                    <p>25/03/2023 - 14:15</p>
+                                </div>
+                            </div>
+                            <div class="timeline-item current">
+                                <div class="timeline-icon">
+                                    <i class="fas fa-wrench"></i>
+                                </div>
+                                <div class="timeline-content">
+                                    <h5>Reemplazo de bomba de agua</h5>
+                                    <p>Hoy - 09:30</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="service-documents">
+                        <h4>Documentos</h4>
+                        <div class="document-item">
+                            <i class="fas fa-file-pdf"></i>
+                            <span>Diagnóstico inicial.pdf</span>
+                            <button><i class="fas fa-download"></i></button>
+                        </div>
+                        <div class="document-item">
+                            <i class="fas fa-file-pdf"></i>
+                            <span>Presupuesto reparación.pdf</span>
+                            <button><i class="fas fa-download"></i></button>
+                        </div>
+                        <div class="document-item">
+                            <i class="fas fa-file-image"></i>
+                            <span>Fotos del daño.zip</span>
+                            <button><i class="fas fa-download"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/admin/gestion chat.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Roles - Full Paint Cars</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin/gestion roles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="logo">
+                <h2>Admin</h2>
+            </div>
+            <ul class="menu">
+                <li >
+                    <a href="Dasboard.html"><i class="fas fa-home"></i> Dashboard</a>
+                </li>
+                <li>
+                    <a href="Gestion Usuarios.html"><i class="fas fa-users"></i> Usuarios</a>
+                </li>
+                <li class="active">
+                    <a href="Gestion Rol.html"><i class="fas fa-user-tag"></i> Roles</a>
+                </li>
+                <li>
+                    <a href="Gestion Automovil.html"><i class="fas fa-car"></i> Automoviles</a>
+                </li>
+                <li>
+                    <a href="Gestion Chat.html"><i class="fas fa-comments"></i> Chat</a>
+                </li>
+                <li>
+                    <a href="Gestion Reportes.HTML"><i class="fas fa-chart-bar"></i> Reportes</a>
+                </li>
+                <li>
+                    <a href="Gestion Cotizaciones.html"><i class="fas fa-file-invoice-dollar"></i> Cotizaciones</a>
+                </li>
+                <li>
+                    <a href="Gestion Procesos.html"><i class="fas fa-tasks"></i> Procesos</a>
+                </li>
+                <li>
+                    <a href="#configuracion"><i class="fas fa-cog"></i> Configuración</a>
+                </li>
+            </ul>
+            <div class="logout">
+                <a href="#"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
+            </div>
+        </nav>
+
+        <main class="content">
+            <header class="top-bar">
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Buscar...">
+                </div>
+                <div class="user-info">
+                    <div class="notifications">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge">3</span>
+                    </div>
+                    <div class="user">
+                        <img src="https://via.placeholder.com/40" alt="Usuario">
+                        <span>Administrador</span>
+                    </div>
+                </div>
+            </header>
+
+            <div class="role-management">
+                <div class="section-header">
+                    <h1>Gestión de Roles</h1>
+                    <button id="btnAddRole" class="btn-primary">
+                        <i class="fas fa-plus"></i> Nuevo Rol
+                    </button>
+                </div>
+
+                <div class="filter-section">
+                    <div class="search-filter">
+                        <input type="text" id="searchRoles" placeholder="Buscar roles...">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <div class="filter-options">
+                        <select id="filterStatus">
+                            <option value="all">Todos los estados</option>
+                            <option value="active">Activos</option>
+                            <option value="inactive">Inactivos</option>
+                        </select>
+                        <button id="btnRefresh" class="btn-icon">
+                            <i class="fas fa-sync-alt"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table id="rolesTable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre del Rol</th>
+                                <th>Descripción</th>
+                                <th>Permisos</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>Administrador</td>
+                                <td>Acceso completo al sistema</td>
+                                <td>
+                                    <span class="permission-badge">Crear</span>
+                                    <span class="permission-badge">Editar</span>
+                                    <span class="permission-badge">Eliminar</span>
+                                    <span class="permission-badge">Ver</span>
+                                </td>
+                                <td><span class="status-badge active">Activo</span></td>
+                                <td class="actions">
+                                    <button class="btn-icon edit-role" data-id="1"><i class="fas fa-edit"></i></button>
+                                    <button class="btn-icon delete-role" data-id="1"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Supervisor</td>
+                                <td>Gestión de procesos y reportes</td>
+                                <td>
+                                    <span class="permission-badge">Editar</span>
+                                    <span class="permission-badge">Ver</span>
+                                </td>
+                                <td><span class="status-badge active">Activo</span></td>
+                                <td class="actions">
+                                    <button class="btn-icon edit-role" data-id="2"><i class="fas fa-edit"></i></button>
+                                    <button class="btn-icon delete-role" data-id="2"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>Operador</td>
+                                <td>Solo vista de procesos asignados</td>
+                                <td>
+                                    <span class="permission-badge">Ver</span>
+                                </td>
+                                <td><span class="status-badge inactive">Inactivo</span></td>
+                                <td class="actions">
+                                    <button class="btn-icon edit-role" data-id="3"><i class="fas fa-edit"></i></button>
+                                    <button class="btn-icon delete-role" data-id="3"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="pagination">
+                    <button class="btn-page" disabled><i class="fas fa-chevron-left"></i></button>
+                    <button class="btn-page active">1</button>
+                    <button class="btn-page">2</button>
+                    <button class="btn-page">3</button>
+                    <button class="btn-page"><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+
+            <!-- Modal para Añadir/Editar Rol -->
+            <div id="roleModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2 id="modalTitle">Nuevo Rol</h2>
+                        <button class="close-modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="roleForm">
+                            <input type="hidden" id="roleId">
+                            <div class="form-group">
+                                <label for="roleName">Nombre del Rol</label>
+                                <input type="text" id="roleName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="roleDescription">Descripción</label>
+                                <textarea id="roleDescription" rows="3"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Permisos</label>
+                                <div class="permissions-grid">
+                                    <div class="permission-item">
+                                        <input type="checkbox" id="permCreate">
+                                        <label for="permCreate">Crear</label>
+                                    </div>
+                                    <div class="permission-item">
+                                        <input type="checkbox" id="permEdit">
+                                        <label for="permEdit">Editar</label>
+                                    </div>
+                                    <div class="permission-item">
+                                        <input type="checkbox" id="permDelete">
+                                        <label for="permDelete">Eliminar</label>
+                                    </div>
+                                    <div class="permission-item">
+                                        <input type="checkbox" id="permView">
+                                        <label for="permView">Ver</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="roleStatus">Estado</label>
+                                <select id="roleStatus">
+                                    <option value="active">Activo</option>
+                                    <option value="inactive">Inactivo</option>
+                                </select>
+                            </div>
+                            <div class="form-actions">
+                                <button type="button" class="btn-secondary" id="btnCancel">Cancelar</button>
+                                <button type="submit" class="btn-primary" id="btnSaveRole">Guardar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal de Confirmación para Eliminar -->
+            <div id="confirmDeleteModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2>Confirmar Eliminación</h2>
+                        <button class="close-modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <p>¿Está seguro de que desea eliminar este rol? Esta acción no se puede deshacer.</p>
+                        <div class="form-actions">
+                            <button type="button" class="btn-secondary" id="btnCancelDelete">Cancelar</button>
+                            <button type="button" class="btn-danger" id="btnConfirmDelete">Eliminar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script src="{{ url_for('static', filename='js/admin/gestion rol.js') }}"></script>
+</body>
+</html>

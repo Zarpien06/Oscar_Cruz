@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Perfil | FPC</title>
+    <!-- Ícono de pestaña -->
+    <link rel="icon" href="{{ url_for('static', filename='IMG/logos/logo.png') }}" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2c3e50;
+            --accent-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #34495e;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            padding-top: 56px;
+        }
+        
+        .navbar {
+            background-color: rgba(0, 0, 0, 0.8) !important;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            color: white !important;
+        }
+        
+        .nav-link {
+            color: rgba(255, 255, 255, 0.8) !important;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        
+        .nav-link:hover {
+            color: white !important;
+            transform: translateY(-2px);
+        }
+        
+        .nav-link.active {
+            color: white !important;
+            border-bottom: 2px solid var(--primary-color);
+        }
+        
+        .dashboard-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card {
+            border-radius: 10px;
+            border: none;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .card-header {
+            background-color: var(--secondary-color);
+            color: white;
+            font-weight: 600;
+            padding: 0.8rem 1.2rem;
+        }
+        
+        .status-badge {
+            border-radius: 20px;
+            padding: 0.3rem 0.8rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .vehicle-card {
+            position: relative;
+            height: 100%;
+        }
+        
+        .vehicle-card img {
+            height: 140px;
+            object-fit: cover;
+        }
+        
+        .vehicle-status {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 10;
+        }
+        
+        .welcome-section {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .welcome-section h2 {
+            font-weight: 600;
+        }
+        
+        .stats-card {
+            text-align: center;
+            padding: 1.5rem;
+        }
+        
+        .stats-card i {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+        
+        .stats-card h3 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stats-card p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .reservation-card {
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .quotation-card {
+            border-left: 4px solid var(--accent-color);
+        }
+        
+        .alert-container {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            z-index: 9999;
+            max-width: 350px;
+        }
+        
+        .toast {
+            opacity: 1 !important;
+        }
+
+        /* Estilos específicos para perfil */
+        .profile-img {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 3px solid var(--primary-color);
+            margin-bottom: 15px;
+        }
+        
+        .profile-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+        
+        .form-card {
+            padding: 1.5rem;
+        }
+        
+        .form-card h3 {
+            margin-bottom: 1.5rem;
+            color: var(--secondary-color);
+            font-weight: 600;
+            border-bottom: 2px solid var(--light-color);
+            padding-bottom: 0.5rem;
+        }
+        
+        .form-card label {
+            font-weight: 500;
+            color: var(--dark-color);
+        }
+        
+        .btn-update {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 0.5rem 1.5rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-update:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-password {
+            background-color: var(--accent-color);
+            color: white;
+        }
+        
+        .btn-password:hover {
+            background-color: #c0392b;
+        }
+        
+        @media (max-width: 768px) {
+            .profile-header {
+                padding: 1rem;
+            }
+            
+            .form-card {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-car-mechanic me-2"></i>Full Paint Cars
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('cliente_bp.dashboard') }}">
+                            <i class="fas fa-tachometer-alt me-1"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('cliente_bp.vehiculos') }}">
+                            <i class="fas fa-car me-1"></i> Mis Vehículos
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('cliente_bp.cotizar') }}">
+                            <i class="fas fa-tags me-1"></i> Cotizar Servicios
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('cliente_bp.reservas') }}">
+                            <i class="fas fa-calendar-check me-1"></i> Mis Reservas
+                        </a>
+                    </li>
+                </ul>
+                <div class="navbar-nav">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-user-circle me-1"></i> {{ session.get('user_name', 'Usuario') }}
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="{{ url_for('cliente_bp.perfil') }}"><i class="fas fa-user-cog me-2"></i>Mi Perfil</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="{{ url_for('cliente_bp.logout') }}"><i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión</a></li>
+                        </ul>
+                    </li>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenido Principal -->
+    <div class="container mt-4">
+        <!-- Mensajes flash -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="alert-container">
+                    {% for category, message in messages %}
+                        <div class="toast show mb-3" role="alert" aria-live="assertive" aria-atomic="true">
+                            <div class="toast-header bg-{{ 'success' if category == 'success' else 'danger' }}">
+                                <strong class="me-auto text-white">
+                                    {% if category == 'success' %}
+                                        <i class="fas fa-check-circle me-1"></i> Éxito
+                                    {% else %}
+                                        <i class="fas fa-exclamation-circle me-1"></i> Error
+                                    {% endif %}
+                                </strong>
+                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+                            </div>
+                            <div class="toast-body">
+                                {{ message }}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <!-- Encabezado de perfil -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="welcome-section">
+                    <h2><i class="fas fa-user-circle me-2"></i>Mi Perfil</h2>
+                    <p>Gestiona tu información personal y preferencias de cuenta</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contenido de perfil -->
+        <div class="row">
+            <!-- Columna izquierda - Foto e información -->
+            <div class="col-md-4 mb-4">
+                <div class="card profile-header">
+                    {% if usuario.foto_perfil %}
+                        <img src="{{ usuario.foto_perfil }}" alt="Foto de perfil" class="profile-img mx-auto d-block">
+                    {% else %}
+                        <img src="{{ url_for('static', filename='img/default_profile.png') }}" alt="Foto de perfil" class="profile-img mx-auto d-block">
+                    {% endif %}
+                    <h4 class="text-center">{{ usuario.nombre_completo }}</h4>
+                    <p class="text-center mb-0"><i class="fas fa-user-tag me-2"></i>Cliente</p>
+                    <p class="text-center text-light"><small>Desde: {{ usuario.fecha_registro.strftime('%d/%m/%Y') if usuario.fecha_registro else 'N/A' }}</small></p>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-info-circle me-2"></i>Información de contacto
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                <i class="fas fa-envelope me-2 text-primary"></i>
+                                {{ usuario.correo }}
+                            </li>
+                            <li class="list-group-item">
+                                <i class="fas fa-phone me-2 text-primary"></i>
+                                {{ usuario.telefono or 'No especificado' }}
+                            </li>
+                            <li class="list-group-item">
+                                <i class="fas fa-id-card me-2 text-primary"></i>
+                                {{ usuario.identificacion }}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card mt-3">
+                    <div class="card-header">
+                        <i class="fas fa-shield-alt me-2"></i>Seguridad
+                    </div>
+                    <div class="card-body">
+                        <p><i class="fas fa-clock me-2 text-primary"></i>Último acceso:<br>
+                        <small>{{ usuario.ultimo_acceso.strftime('%d/%m/%Y %H:%M:%S') if usuario.ultimo_acceso else 'No disponible' }}</small></p>
+                        <hr>
+                        <div class="text-center">
+                            <a href="{{ url_for('cliente_bp.logout') }}" class="btn btn-danger">
+                                <i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Columna derecha - Formularios -->
+            <div class="col-md-8">
+                <!-- Actualizar datos -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-user-edit me-2"></i>Actualizar Información
+                    </div>
+                    <div class="card-body form-card">
+                        <form action="{{ url_for('cliente_bp.actualizar_perfil') }}" method="POST" enctype="multipart/form-data">
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="nombre" class="form-label">Nombre Completo</label>
+                                    <input type="text" class="form-control" id="nombre" value="{{ usuario.nombre_completo }}" readonly>
+                                    <div class="form-text">Para cambiar tu nombre, contacta a soporte</div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="identificacion" class="form-label">Identificación</label>
+                                    <input type="text" class="form-control" id="identificacion" value="{{ usuario.identificacion }}" readonly>
+                                </div>
+                            </div>
+                            
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="correo" class="form-label">Correo Electrónico</label>
+                                    <input type="email" class="form-control" id="correo" name="correo" value="{{ usuario.correo }}" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="telefono" class="form-label">Teléfono</label>
+                                    <input type="text" class="form-control" id="telefono" name="telefono" value="{{ usuario.telefono }}">
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="foto_perfil" class="form-label">Cambiar Foto de Perfil</label>
+                                <input type="file" class="form-control" id="foto_perfil" name="foto_perfil" accept="image/*">
+                                <div class="form-text">Formatos permitidos: JPG, PNG. Máximo 2MB.</div>
+                            </div>
+                            
+                            <div class="text-end">
+                                <button type="submit" class="btn btn-update">
+                                    <i class="fas fa-save me-2"></i>Guardar Cambios
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Cambiar contraseña -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-lock me-2"></i>Cambiar Contraseña
+                    </div>
+                    <div class="card-body form-card">
+                        <form action="{{ url_for('cliente_bp.actualizar_perfil') }}" method="POST">
+                            <input type="hidden" name="correo" value="{{ usuario.correo }}">
+                            <input type="hidden" name="telefono" value="{{ usuario.telefono }}">
+                            
+                            <div class="mb-3">
+                                <label for="password_actual" class="form-label">Contraseña Actual</label>
+                                <input type="password" class="form-control" id="password_actual" name="password_actual" required>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="password_nuevo" class="form-label">Nueva Contraseña</label>
+                                <input type="password" class="form-control" id="password_nuevo" name="password_nuevo" required>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="password_confirmar" class="form-label">Confirmar Nueva Contraseña</label>
+                                <input type="password" class="form-control" id="password_confirmar" oninput="validatePassword()">
+                                <div id="password-feedback" class="invalid-feedback">
+                                    Las contraseñas no coinciden
+                                </div>
+                            </div>
+                            
+                            <div class="text-end">
+                                <button type="submit" id="btn-change-password" class="btn btn-update btn-password">
+                                    <i class="fas fa-key me-2"></i>Cambiar Contraseña
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Función para validar contraseñas
+        function validatePassword() {
+            const passwordNuevo = document.getElementById('password_nuevo');
+            const passwordConfirmar = document.getElementById('password_confirmar');
+            const btnChangePassword = document.getElementById('btn-change-password');
+            const feedback = document.getElementById('password-feedback');
+            
+            if (passwordNuevo.value === passwordConfirmar.value) {
+                passwordConfirmar.classList.remove('is-invalid');
+                passwordConfirmar.classList.add('is-valid');
+                btnChangePassword.disabled = false;
+            } else {
+                passwordConfirmar.classList.remove('is-valid');
+                passwordConfirmar.classList.add('is-invalid');
+                feedback.style.display = 'block';
+                btnChangePassword.disabled = true;
+            }
+        }
+        
+        // Inicializar componentes cuando el DOM esté listo
+        document.addEventListener('DOMContentLoaded', function() {
+            // Auto-cerrar toasts después de 5 segundos
+            const toasts = document.querySelectorAll('.toast');
+            toasts.forEach(toast => {
+                setTimeout(() => {
+                    const bsToast = new bootstrap.Toast(toast);
+                    bsToast.hide();
+                }, 5000);
+            });
+            
+            // Cambiar imagen de perfil cuando se selecciona archivo
+            const inputFoto = document.getElementById('foto_perfil');
+            if (inputFoto) {
+                inputFoto.addEventListener('change', function(e) {
+                    const file = e.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            const profileImg = document.querySelector('.profile-img');
+                            profileImg.src = e.target.result;
+                        }
+                        reader.readAsDataURL(file);
+                    }
+                });
+            }
+            
+            // Inicializar validación de contraseña
+            const passwordNuevo = document.getElementById('password_nuevo');
+            const passwordConfirmar = document.getElementById('password_confirmar');
+            if (passwordNuevo && passwordConfirmar) {
+                passwordNuevo.addEventListener('input', validatePassword);
+                passwordConfirmar.addEventListener('input', validatePassword);
+            }
+        });
+    </script>
+</body>
+</html>

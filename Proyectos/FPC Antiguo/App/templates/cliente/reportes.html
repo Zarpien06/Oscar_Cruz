@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reportes del Vehículo | Full Paint Cars</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2c3e50;
+            --accent-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #34495e;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            padding-top: 56px;
+        }
+        
+        .navbar {
+            background-color: rgba(0, 0, 0, 0.8) !important;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            color: white !important;
+        }
+        
+        .nav-link {
+            color: rgba(255, 255, 255, 0.8) !important;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        
+        .nav-link:hover {
+            color: white !important;
+            transform: translateY(-2px);
+        }
+        
+        .nav-link.active {
+            color: white !important;
+            border-bottom: 2px solid var(--primary-color);
+        }
+        
+        .dashboard-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card {
+            border-radius: 10px;
+            border: none;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .card-header {
+            background-color: var(--secondary-color);
+            color: white;
+            font-weight: 600;
+            padding: 0.8rem 1.2rem;
+        }
+        
+        .status-badge {
+            border-radius: 20px;
+            padding: 0.3rem 0.8rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .vehicle-card {
+            position: relative;
+            height: 100%;
+        }
+        
+        .vehicle-card img {
+            height: 140px;
+            object-fit: cover;
+        }
+        
+        .vehicle-status {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 10;
+        }
+        
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+        
+        .timeline-item {
+            position: relative;
+            padding-bottom: 20px;
+        }
+        
+        .timeline-item:before {
+            content: '';
+            position: absolute;
+            left: -30px;
+            top: 0;
+            width: 2px;
+            height: 100%;
+            background-color: var(--primary-color);
+        }
+        
+        .timeline-item:after {
+            content: '';
+            position: absolute;
+            left: -36px;
+            top: 0;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+        }
+        
+        .timeline-date {
+            color: #777;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .timeline-content {
+            padding: 1rem;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .process-card {
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .report-card {
+            border-left: 4px solid var(--accent-color);
+        }
+        
+        .image-gallery {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .gallery-item {
+            width: 100px;
+            height: 100px;
+            border-radius: 5px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+        
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+        
+        .vehicle-info {
+            background-color: var(--secondary-color);
+            color: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .vehicle-image {
+            width: 120px;
+            height: 120px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-right: 1.5rem;
+        }
+        
+        .vehicle-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .vehicle-details h2 {
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        
+        .vehicle-details p {
+            margin-bottom: 0.3rem;
+            opacity: 0.9;
+        }
+        
+        .tab-content {
+            padding: 20px;
+            background-color: white;
+            border-radius: 0 0 10px 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .nav-tabs {
+            border-bottom: none;
+        }
+        
+        .nav-tabs .nav-link {
+            border-radius: 10px 10px 0 0;
+            padding: 10px 20px;
+            font-weight: 600;
+            color: var(--dark-color) !important;
+            border: none;
+            background-color: rgba(236, 240, 241, 0.7);
+            margin-right: 5px;
+        }
+        
+        .nav-tabs .nav-link.active {
+            background-color: white;
+            color: var(--primary-color) !important;
+            border-bottom: none;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.05);
+        }
+        
+        .status-active {
+            background-color: #28a745;
+            color: white;
+        }
+        
+        .status-pending {
+            background-color: #ffc107;
+            color: black;
+        }
+        
+        .status-completed {
+            background-color: #6c757d;
+            color: white;
+        }
+        
+        .chat-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+        }
+        
+        .chat-btn i {
+            font-size: 24px;
+        }
+        
+        .chat-btn:hover {
+            transform: scale(1.1);
+            background-color: #2980b9;
+        }
+        
+        @media (max-width: 768px) {
+            .vehicle-info {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .vehicle-image {
+                margin-right: 0;
+                margin-bottom: 1rem;
+            }
+            
+            .gallery-item {
+                width: 80px;
+                height: 80px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-car-alt me-2"></i> Full Paint Cars
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('cliente_bp.dashboard') }}">
+                            <i class="fas fa-tachometer-alt me-1"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('cliente_bp.vehiculos') }}">
+                            <i class="fas fa-car me-1"></i> Mis Vehículos
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('cliente_bp.cotizar') }}">
+                            <i class="fas fa-paint-roller me-1"></i> Cotizar Servicios
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('cliente_bp.reservas') }}">
+                            <i class="fas fa-calendar-check me-1"></i> Mis Reservas
+                        </a>
+                    </li>
+                </ul>
+                <div class="dropdown">
+                    <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown">
+                        <img src="{{ session.get('user_avatar', '/static/img/default-avatar.png') }}" class="rounded-circle me-1" width="28" height="28" alt="Avatar">
+                        <span>{{ session.get('user_name', 'maria') }}</span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="{{ url_for('cliente_bp.perfil') }}"><i class="fas fa-user-circle me-2"></i> Perfil</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="{{ url_for('cliente_bp.logout') }}"><i class="fas fa-sign-out-alt me-2"></i> Cerrar Sesión</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mt-4 mb-5">
+        <!-- Vehículo Info Header -->
+        <div class="vehicle-info">
+            <div class="vehicle-image">
+                <img src="{{ vehiculo.imagen or '/static/img/car-placeholder.png' }}" alt="{{ vehiculo.marca }} {{ vehiculo.modelo }}">
+            </div>
+            <div class="vehicle-details">
+                <h2>{{ vehiculo.marca }} {{ vehiculo.modelo }} ({{ vehiculo.anio }})</h2>
+                <p><i class="fas fa-id-card me-2"></i> <strong>Placa:</strong> {{ vehiculo.placa }}</p>
+                <p>
+                    <i class="fas fa-palette me-2"></i> <strong>Color:</strong> {{ vehiculo.color }}
+                    <span class="ms-3"><i class="fas fa-car-side me-2"></i> <strong>Tipo:</strong> {{ vehiculo.tipo }}</span>
+                </p>
+            </div>
+        </div>
+
+        <!-- Tabs for different reports -->
+        <ul class="nav nav-tabs" id="reportTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="process-tab" data-bs-toggle="tab" data-bs-target="#process" type="button" role="tab" aria-controls="process" aria-selected="true">
+                    <i class="fas fa-cogs me-1"></i> Procesos Activos
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="reports-tab" data-bs-toggle="tab" data-bs-target="#reports" type="button" role="tab" aria-controls="reports" aria-selected="false">
+                    <i class="fas fa-clipboard-list me-1"></i> Reportes Técnicos
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="history-tab" data-bs-toggle="tab" data-bs-target="#history" type="button" role="tab" aria-controls="history" aria-selected="false">
+                    <i class="fas fa-history me-1"></i> Historial de Servicios
+                </button>
+            </li>
+        </ul>
+        
+        <div class="tab-content" id="reportTabsContent">
+            <!-- Tab 1: Procesos Activos -->
+            <div class="tab-pane fade show active" id="process" role="tabpanel" aria-labelledby="process-tab">
+                {% if procesos %}
+                <div class="timeline">
+                    {% for proceso in procesos %}
+                    <div class="timeline-item">
+                        <div class="timeline-date">
+                            <i class="far fa-calendar-alt me-1"></i> Iniciado: {{ proceso.fecha_inicio.strftime('%d/%m/%Y') }}
+                        </div>
+                        <div class="timeline-content process-card">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h5 class="mb-1">{{ proceso.nombre }}</h5>
+                                <span class="badge status-badge status-active">En Proceso</span>
+                            </div>
+                            <p class="text-muted mb-2">Técnico: {{ proceso.empleado_nombre }}</p>
+                            <p>{{ proceso.descripcion }}</p>
+                            
+                            {% if proceso.porcentaje_avance %}
+                            <div class="progress mt-2 mb-2" style="height: 8px;">
+                                <div class="progress-bar bg-success" role="progressbar" style="width: {{ proceso.porcentaje_avance }}%"></div>
+                            </div>
+                            <p class="text-end text-muted small mb-0">Avance: {{ proceso.porcentaje_avance }}%</p>
+                            {% endif %}
+                            
+                            <div class="mt-3">
+                                <a href="{{ url_for('cliente_bp.chat_vehiculo', vehiculo_id=vehiculo.vehiculo_id) }}" class="btn btn-sm btn-outline-primary">
+                                    <i class="fas fa-comments me-1"></i> Chat con el técnico
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="text-center py-5">
+                    <i class="fas fa-tools text-muted" style="font-size: 3rem;"></i>
+                    <h4 class="mt-3">No hay procesos activos</h4>
+                    <p class="text-muted">Actualmente no hay servicios en proceso para este vehículo.</p>
+                </div>
+                {% endif %}
+            </div>
+            
+            <!-- Tab 2: Reportes Técnicos -->
+            <div class="tab-pane fade" id="reports" role="tabpanel" aria-labelledby="reports-tab">
+                {% if reportes %}
+                <div class="accordion" id="reportesAccordion">
+                    {% for reporte in reportes %}
+                    <div class="accordion-item mb-3 border-0 shadow-sm">
+                        <h2 class="accordion-header" id="heading{{ reporte.reporte_id }}">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ reporte.reporte_id }}">
+                                <div class="d-flex justify-content-between align-items-center w-100 me-3">
+                                    <div>
+                                        <h6 class="mb-0">{{ reporte.titulo }}</h6>
+                                        <small class="text-muted">{{ reporte.fecha_reporte.strftime('%d/%m/%Y') }} - Por: {{ reporte.empleado_nombre }}</small>
+                                    </div>
+                                    <span class="badge bg-primary">{{ reporte.tipo }}</span>
+                                </div>
+                            </button>
+                        </h2>
+                        <div id="collapse{{ reporte.reporte_id }}" class="accordion-collapse collapse" aria-labelledby="heading{{ reporte.reporte_id }}" data-bs-parent="#reportesAccordion">
+                            <div class="accordion-body">
+                                <div class="report-card p-3">
+                                    <div class="mb-3">
+                                        <h6>Descripción:</h6>
+                                        <p>{{ reporte.contenido }}</p>
+                                    </div>
+                                    
+                                    {% if reporte.observaciones %}
+                                    <div class="mb-3">
+                                        <h6>Observaciones:</h6>
+                                        <p>{{ reporte.observaciones }}</p>
+                                    </div>
+                                    {% endif %}
+                                    
+                                    {% if reporte.archivos %}
+                                    <h6>Imágenes y archivos:</h6>
+                                    <div class="image-gallery">
+                                        {% for archivo in reporte.archivos %}
+                                        <a href="{{ archivo.url_archivo }}" class="gallery-item" target="_blank" data-bs-toggle="tooltip" title="{{ archivo.nombre_archivo }}">
+                                            {% if archivo.tipo_archivo in ['jpg', 'jpeg', 'png', 'gif'] %}
+                                            <img src="{{ archivo.url_archivo }}" alt="{{ archivo.nombre_archivo }}">
+                                            {% else %}
+                                            <div class="d-flex align-items-center justify-content-center h-100 bg-light">
+                                                <i class="fas fa-file-alt fa-2x text-primary"></i>
+                                            </div>
+                                            {% endif %}
+                                        </a>
+                                        {% endfor %}
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="text-center py-5">
+                    <i class="fas fa-clipboard text-muted" style="font-size: 3rem;"></i>
+                    <h4 class="mt-3">No hay reportes técnicos</h4>
+                    <p class="text-muted">Aún no se han generado reportes para este vehículo.</p>
+                </div>
+                {% endif %}
+            </div>
+            
+            <!-- Tab 3: Historial de Servicios -->
+            <div class="tab-pane fade" id="history" role="tabpanel" aria-labelledby="history-tab">
+                {% if historial %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Servicio</th>
+                                <th>Técnico</th>
+                                <th>Estado</th>
+                                <th>Detalles</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in historial %}
+                            <tr>
+                                <td>{{ item.fecha_inicio.strftime('%d/%m/%Y') }}</td>
+                                <td>{{ item.nombre_servicio }}</td>
+                                <td>{{ item.nombre_empleado }}</td>
+                                <td>
+                                    {% if item.fecha_finalizacion %}
+                                    <span class="badge bg-success">Completado</span>
+                                    {% else %}
+                                    <span class="badge bg-warning text-dark">{{ item.reserva_estado }}</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#historialModal{{ item.historial_id }}">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            
+                            <!-- Modal para detalles del historial -->
+                            <div class="modal fade" id="historialModal{{ item.historial_id }}" tabindex="-1" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header bg-primary text-white">
+                                            <h5 class="modal-title">Detalles del Servicio</h5>
+                                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="row mb-3">
+                                                <div class="col-md-6">
+                                                    <h6>Información General</h6>
+                                                    <p><strong>Servicio:</strong> {{ item.nombre_servicio }}</p>
+                                                    <p><strong>Técnico:</strong> {{ item.nombre_empleado }}</p>
+                                                    <p><strong>Inicio:</strong> {{ item.fecha_inicio.strftime('%d/%m/%Y') }}</p>
+                                                    {% if item.fecha_finalizacion %}
+                                                    <p><strong>Finalización:</strong> {{ item.fecha_finalizacion.strftime('%d/%m/%Y') }}</p>
+                                                    <p><strong>Duración:</strong> {{ (item.fecha_finalizacion - item.fecha_inicio).days }} días</p>
+                                                    {% endif %}
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <h6>Detalles Técnicos</h6>
+                                                    <p><strong>Observaciones:</strong></p>
+                                                    <p>{{ item.observaciones or 'No hay observaciones registradas' }}</p>
+                                                </div>
+                                            </div>
+                                            
+                                            <h6>Materiales y Repuestos Utilizados</h6>
+                                            {% if item.materiales %}
+                                            <ul class="list-group">
+                                                {% for material in item.materiales %}
+                                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                    {{ material.nombre }}
+                                                    <span class="badge bg-primary rounded-pill">{{ material.cantidad }} {{ material.unidad }}</span>
+                                                </li>
+                                                {% endfor %}
+                                            </ul>
+                                            {% else %}
+                                            <p class="text-muted">No hay materiales registrados para este servicio.</p>
+                                            {% endif %}
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="text-center py-5">
+                    <i class="fas fa-history text-muted" style="font-size: 3rem;"></i>
+                    <h4 class="mt-3">No hay historial</h4>
+                    <p class="text-muted">Este vehículo aún no tiene servicios completados en nuestro taller.</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Chat Button -->
+    <a href="{{ url_for('cliente_bp.chat_vehiculo', vehiculo_id=vehiculo.vehiculo_id) }}" class="chat-btn">
+        <i class="fas fa-comments"></i>
+    </a>
+
+    <!-- Flash Messages -->
+    <div class="alert-container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+            <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="3000">
+                <div class="toast-header{% if category == 'success' %} bg-success text-white{% elif category == 'error' %} bg-danger text-white{% else %} bg-primary text-white{% endif %}">
+                    <strong class="me-auto">
+                        {% if category == 'success' %}
+                        <i class="fas fa-check-circle me-1"></i> Éxito
+                        {% elif category == 'error' %}
+                        <i class="fas fa-exclamation-circle me-1"></i> Error
+                        {% else %}
+                        <i class="fas fa-info-circle me-1"></i> Información
+                        {% endif %}
+                    </strong>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body">
+                    {{ message }}
+                </div>
+            </div>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Inicializar tooltips
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        });
+        
+        // Auto-ocultar alertas después de 5 segundos
+        const toastElList = document.querySelectorAll('.toast');
+        toastElList.forEach(function(toastEl) {
+            setTimeout(function() {
+                const toast = bootstrap.Toast.getInstance(toastEl);
+                if (toast) {
+                    toast.hide();
+                }
+            }, 5000);
+        });
+    </script>
+</body>
+</html>

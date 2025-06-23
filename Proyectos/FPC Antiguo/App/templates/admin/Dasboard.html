@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Administrativo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin/dashboard.css') }}">
+
+
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="logo">
+                <h2>Admin</h2>
+            </div>
+            <ul class="menu">
+                <li class="active">
+                    <a href="{{ url_for('admin_bp.dashboard') }}"><i class="fas fa-home"></i> Dashboard</a>
+                </li>
+                <li>
+                    <a href="{{ url_for('admin_bp.Usuarios') }}"><i class="fas fa-users"></i> Usuarios</a>
+                </li>
+                <li>
+                    <a href="{{ url_for('admin_bp.Roles') }}"><i class="fas fa-user-tag"></i> Roles</a>
+                </li>
+                <li>
+                    <a href="{{ url_for('admin_bp.Automoviles') }}"><i class="fas fa-car"></i> Automoviles</a>
+                </li>
+                <li>
+                    <a href="{{ url_for('admin_bp.Chat') }}"><i class="fas fa-comments"></i> Chat</a>
+                </li>
+                <li>
+                    <a href="{{ url_for('admin_bp.Reportes') }}"><i class="fas fa-chart-bar"></i> Reportes</a>
+                </li>
+                <li>
+                    <a href="{{ url_for('admin_bp.Cotizaciones') }}"><i class="fas fa-file-invoice-dollar"></i> Cotizaciones</a>
+                </li>
+                <li>
+                    <a href="{{ url_for('admin_bp.Procesos') }}"><i class="fas fa-tasks"></i> Procesos</a>
+                </li>
+            </ul>
+            <div class="logout">
+                <a href="#"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="content">
+            <!-- Top Header -->
+            <header class="header">
+                <div class="toggle-menu">
+                    <i class="fas fa-bars"></i>
+                </div>
+                <div class="search-bar">
+                    <input type="text" placeholder="Buscar...">
+                    <button><i class="fas fa-search"></i></button>
+                </div>
+                <div class="user-info">
+                    <div class="notifications">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge">5</span>
+                    </div>
+                    <div class="messages">
+                        <i class="fas fa-envelope"></i>
+                        <span class="badge">3</span>
+                    </div>
+                    <div class="profile">
+                        <img src="/api/placeholder/40/40" alt="Usuario">
+                        <span>Admin</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dashboard Content -->
+            <div class="dashboard-content">
+                <div class="page-title">
+                    <h1>Dashboard</h1>
+                    <p>Bienvenido al panel de administración</p>
+                </div>
+                <!-- Stats Cards -->
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-value">
+                            <h3>1,254</h3>
+                            <p>Usuarios Totales</p>
+                        </div>
+                        <div class="stat-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">
+                            <h3>145</h3>
+                            <p>Nuevos Usuarios</p>
+                        </div>
+                        <div class="stat-icon">
+                            <i class="fas fa-user-plus"></i>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">
+                            <h3>50</h3>
+                            <p>Cotizaciones Pendientes</p>
+                        </div>
+                        <div class="stat-icon">
+                            <i class="fas fa-file-invoice"></i>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">
+                            <h3>24</h3>
+                            <p>Mensajes Nuevos</p>
+                        </div>
+                        <div class="stat-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Widgets Row -->
+                <div class="widgets-row">
+                    <!-- Recent Users -->
+                    <div class="widget">
+                        <div class="widget-header">
+                            <h3>Usuarios Recientes</h3>
+                            <a href="#" class="view-all">Ver Todos</a>
+                        </div>
+                        <div class="widget-content">
+                            <div class="user-list">
+                                <div class="user-item">
+                                    <img src="/api/placeholder/40/40" alt="Usuario">
+                                    <div class="user-info">
+                                        <h4>Juan Pérez</h4>
+                                        <p>juan@ejemplo.com</p>
+                                    </div>
+                                    <span class="user-role admin">Admin</span>
+                                </div>
+                                <div class="user-item">
+                                    <img src="/api/placeholder/40/40" alt="Usuario">
+                                    <div class="user-info">
+                                        <h4>María López</h4>
+                                        <p>maria@ejemplo.com</p>
+                                    </div>
+                                    <span class="user-role">Usuario</span>
+                                </div>
+                                <div class="user-item">
+                                    <img src="/api/placeholder/40/40" alt="Usuario">
+                                    <div class="user-info">
+                                        <h4>Carlos Rodríguez</h4>
+                                        <p>carlos@ejemplo.com</p>
+                                    </div>
+                                    <span class="user-role">Editor</span>
+                                </div>
+                                <div class="user-item">
+                                    <img src="/api/placeholder/40/40" alt="Usuario">
+                                    <div class="user-info">
+                                        <h4>Ana Martínez</h4>
+                                        <p>ana@ejemplo.com</p>
+                                    </div>
+                                    <span class="user-role">Usuario</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Chat Widget -->
+                    <div class="widget">
+                        <div class="widget-header">
+                            <h3>Mensajes Recientes</h3>
+                            <a href="#" class="view-all">Ver Todos</a>
+                        </div>
+                        <div class="widget-content">
+                            <div class="chat-container">
+                                <div class="chat-message received">
+                                    <img src="/api/placeholder/40/40" alt="Usuario">
+                                    <div class="message-content">
+                                        <div class="message-info">
+                                            <h4>María López</h4>
+                                            <span>Hace 10 min</span>
+                                        </div>
+                                        <p>Hola, necesito ayuda con mi cotización #1234</p>
+                                    </div>
+                                </div>
+                                <div class="chat-message sent">
+                                    <div class="message-content">
+                                        <div class="message-info">
+                                            <h4>Admin</h4>
+                                            <span>Hace 8 min</span>
+                                        </div>
+                                        <p>Claro, revisaré los detalles y te contactaré pronto.</p>
+                                    </div>
+                                    <img src="/api/placeholder/40/40" alt="Admin">
+                                </div>
+                                <div class="chat-message received">
+                                    <img src="/api/placeholder/40/40" alt="Usuario">
+                                    <div class="message-content">
+                                        <div class="message-info">
+                                            <h4>Carlos Rodríguez</h4>
+                                            <span>Hace 5 min</span>
+                                        </div>
+                                        <p>¿Cuándo estará listo el nuevo módulo?</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="chat-input">
+                                <input type="text" placeholder="Escribe un mensaje...">
+                                <button><i class="fas fa-paper-plane"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts and Reports Row -->
+                <div class="charts-row">
+                    <!-- Graph Widget -->
+                    <div class="widget">
+                        <div class="widget-header">
+                            <h3>Actividad de Usuarios</h3>
+                            <div class="widget-actions">
+                                <select>
+                                    <option>Últimos 7 días</option>
+                                    <option>Último mes</option>
+                                    <option>Último año</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="widget-content">
+                            <div class="chart-container">
+                                <canvas id="userActivityChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Reports Widget -->
+                    <div class="widget">
+                        <div class="widget-header">
+                            <h3>Reportes Recientes</h3>
+                            <a href="#" class="view-all">Ver Todos</a>
+                        </div>
+                        <div class="widget-content">
+                            <div class="reports-list">
+                                <div class="report-item">
+                                    <div class="report-icon">
+                                        <i class="fas fa-chart-line"></i>
+                                    </div>
+                                    <div class="report-info">
+                                        <h4>Reporte de Ventas Abril 2025</h4>
+                                        <p>Generado: 05/04/2025</p>
+                                    </div>
+                                    <div class="report-actions">
+                                        <button><i class="fas fa-download"></i></button>
+                                        <button><i class="fas fa-eye"></i></button>
+                                    </div>
+                                </div>
+                                <div class="report-item">
+                                    <div class="report-icon">
+                                        <i class="fas fa-users"></i>
+                                    </div>
+                                    <div class="report-info">
+                                        <h4>Actividad de Usuarios Q1 2025</h4>
+                                        <p>Generado: 01/04/2025</p>
+                                    </div>
+                                    <div class="report-actions">
+                                        <button><i class="fas fa-download"></i></button>
+                                        <button><i class="fas fa-eye"></i></button>
+                                    </div>
+                                </div>
+                                <div class="report-item">
+                                    <div class="report-icon">
+                                        <i class="fas fa-tasks"></i>
+                                    </div>
+                                    <div class="report-info">
+                                        <h4>Estado de Procesos Marzo 2025</h4>
+                                        <p>Generado: 31/03/2025</p>
+                                    </div>
+                                    <div class="report-actions">
+                                        <button><i class="fas fa-download"></i></button>
+                                        <button><i class="fas fa-eye"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cotizaciones Section -->
+                <div class="full-width-section">
+                    <div class="widget">
+                        <div class="widget-header">
+                            <h3>Cotizaciones Recientes</h3>
+                            <div class="widget-actions">
+                                <button class="btn-primary"><i class="fas fa-plus"></i> Nueva Cotización</button>
+                            </div>
+                        </div>
+                        <div class="widget-content">
+                            <div class="table-responsive">
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>#ID</th>
+                                            <th>Cliente</th>
+                                            <th>Fecha</th>
+                                            <th>Monto</th>
+                                            <th>Estado</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>#COT-001</td>
+                                            <td>Empresa ABC S.A.</td>
+                                            <td>05/04/2025</td>
+                                            <td>$1,500.00</td>
+                                            <td><span class="status pending">Pendiente</span></td>
+                                            <td>
+                                                <button class="btn-icon"><i class="fas fa-eye"></i></button>
+                                                <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                                                <button class="btn-icon"><i class="fas fa-trash"></i></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>#COT-002</td>
+                                            <td>Corporación XYZ</td>
+                                            <td>04/04/2025</td>
+                                            <td>$2,750.00</td>
+                                            <td><span class="status approved">Aprobada</span></td>
+                                            <td>
+                                                <button class="btn-icon"><i class="fas fa-eye"></i></button>
+                                                <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                                                <button class="btn-icon"><i class="fas fa-trash"></i></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>#COT-003</td>
+                                            <td>Industrias 123</td>
+                                            <td>03/04/2025</td>
+                                            <td>$950.00</td>
+                                            <td><span class="status rejected">Rechazada</span></td>
+                                            <td>
+                                                <button class="btn-icon"><i class="fas fa-eye"></i></button>
+                                                <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                                                <button class="btn-icon"><i class="fas fa-trash"></i></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>#COT-004</td>
+                                            <td>Servicios Omega</td>
+                                            <td>02/04/2025</td>
+                                            <td>$3,200.00</td>
+                                            <td><span class="status pending">Pendiente</span></td>
+                                            <td>
+                                                <button class="btn-icon"><i class="fas fa-eye"></i></button>
+                                                <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                                                <button class="btn-icon"><i class="fas fa-trash"></i></button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <script src="{{ url_for('static', filename='js/admin/dashboard.js') }}"></script>
+</body>
+</html>

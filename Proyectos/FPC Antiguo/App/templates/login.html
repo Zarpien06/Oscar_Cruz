@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Full Paint Cars - Acceso</title>
+    <link rel="icon" href="{{ url_for('static', filename='IMG/logos/logo.png') }}" type="image/x-icon">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/Login.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body>
+    
+    <div class="container" id="container">
+        <!-- Formulario de Registro -->
+        <div class="form-container register-container" id="register-section">
+            <form method="POST" action="{{ url_for('auth.register') }}">
+                <h1 class="form-title">Regístrate en Full Paint Cars</h1>
+                
+                <div class="form-control">
+                    <i class="fas fa-user icon"></i>
+                    <input type="text" name="username" id="username" placeholder="Nombre completo" required />
+                    <small id="username-error"></small>
+                </div>
+
+                <div class="form-control">
+                    <i class="fas fa-phone icon"></i>
+                    <input type="tel" name="phone" id="phone" placeholder="Teléfono" pattern="[0-9]{10}" required />
+                    <small id="phone-error"></small>
+                </div>
+
+                <div class="form-control">
+                    <i class="fas fa-envelope icon"></i>
+                    <input type="email" name="email" id="email" placeholder="Correo electrónico" required />
+                    <small id="email-error"></small>
+                </div>
+
+                <div class="form-control">
+                    <i class="fas fa-id-card icon"></i>
+                    <select name="id_type" id="id-type" onchange="updatePlaceholder()" required>
+                        <option value="" disabled selected>Tipo de Identificación</option>
+                        <option value="cc">Cédula de Ciudadanía (CC)</option>
+                        <option value="ti">Tarjeta de Identidad (TI)</option>
+                        <option value="ce">Cédula de Extranjería (CE)</option>
+                        <option value="pp">Pasaporte (PP)</option>
+                    </select>
+                    <small id="id-type-error"></small>
+                </div>
+
+                <div class="form-control">
+                    <i class="fas fa-fingerprint icon"></i>
+                    <input type="text" name="id_number" id="id-number" placeholder="Número de Identificación" required />
+                    <small id="id-number-error"></small>
+                </div>
+
+                <div class="form-control">
+                    <i class="fas fa-lock icon"></i>
+                    <input type="password" name="password" id="password" placeholder="Contraseña" required />
+                    <small id="password-error"></small>
+                </div>
+
+                <button type="submit" class="submit-btn">
+                    <span>Registrarse</span>
+                    <i class="fas fa-user-plus"></i>
+                </button>
+            </form>
+        </div>
+
+        <!-- Formulario de Login -->
+        <div class="form-container login-container">
+            <form method="POST" action="{{ url_for('auth.login') }}">
+                <h1 class="form-title">Inicia sesión</h1>
+                
+                <div class="form-control2">
+                    <i class="fas fa-envelope icon"></i>
+                    <input type="email" name="email" class="email-2" placeholder="Correo electrónico" required />
+                    <small class="email-error-2"></small>
+                </div>
+                
+                <div class="form-control2">
+                    <i class="fas fa-lock icon"></i>
+                    <input type="password" name="password" class="password-2" placeholder="Contraseña" required />
+                    <small class="password-error-2"></small>
+                </div>
+
+                <div class="content">
+                    <div class="checkbox">
+                        <input type="checkbox" name="remember" id="checkbox" />
+                        <label for="checkbox">Recuérdame</label>
+                    </div>
+                    <div class="pass-link">
+                        <a href="#">¿Olvidaste la contraseña?</a>
+                    </div>
+                </div>
+                
+                <button type="submit" class="submit-btn">
+                    <span>Iniciar sesión</span>
+                    <i class="fas fa-sign-in-alt"></i>
+                </button>
+                
+                <div class="social-container">
+                    <p>O inicia con</p>
+                    <a href="#" class="social"><i class="fab fa-google"></i></a>
+                </div>
+            </form>
+        </div>
+
+        <!-- Panel de Overlay -->
+        <div class="overlay-container">
+            <div class="overlay">
+                <div class="overlay-panel overlay-left">
+                    <h1 class="title">¡Bienvenido de vuelta!</h1>
+                    <p>Inicia sesión con tus datos para acceder a nuestros servicios de detallado automotriz premium</p>
+                    <button class="ghost" id="login">
+                        <i class="fas fa-arrow-left"></i>
+                        <span>Iniciar sesión</span>
+                    </button>
+                </div>
+
+                <div class="overlay-panel overlay-right">
+                    <h1 class="title">¡Únete a la familia Full Paint Cars!</h1>
+                    <p>Regístrate y descubre cómo podemos transformar la apariencia de tu vehículo con nuestros servicios profesionales</p>
+                    <button class="ghost" id="register">
+                        <span>Registrarse</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Loader -->
+    <div class="loader" id="loader">
+        <div class="loader-content">
+            <img src="{{ url_for('static', filename='IMG/logos/logo.png') }}" alt="Logo" class="logo-loader">
+            <div class="spinner"></div>
+            <p class="loading-text">Cargando...</p>
+        </div>
+    </div>
+
+    <div class="go-back-container">
+        <a href="{{ url_for('index_bp.home') }}" class="go-back-btn">
+            <i class="fas fa-home"></i> Volver al inicio
+        </a>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/Login.js') }}"></script>
+</body>
+</html>

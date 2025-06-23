@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Usuarios - Full Paint Cars</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        /* Estilos Generales */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+:root {
+    --primary-color: #0a2463; /* Azul oscuro como color principal */
+    --primary-light: #3e5c97;
+    --primary-dark: #051a4d;
+    --secondary-color: #1e3a8a;
+    --light-color: #f5f5f5;
+    --dark-color: #333;
+    --danger-color: #dc3545;
+    --success-color: #28a745;
+    --warning-color: #ffc107;
+    --gray-color: #6c757d;
+    --light-gray: #e9ecef;
+    --sidebar-width: 250px;
+    --header-height: 70px;
+    --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    --transition: all 0.3s ease;
+}
+
+body {
+    background-color: #f0f2f5;
+    color: var(--dark-color);
+}
+
+.container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+    width: var(--sidebar-width);
+    background-color: #fff;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    height: 100%;
+    z-index: 1000;
+    transition: var(--transition);
+}
+
+.logo {
+    padding: 20px;
+    text-align: center;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.logo h2 {
+    color: var(--primary-color);
+    font-weight: 700;
+}
+
+.menu {
+    list-style: none;
+    padding: 20px 0;
+}
+
+.menu li {
+    margin-bottom: 5px;
+}
+
+.menu li a {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    color: var(--text-color);
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.menu li a i {
+    margin-right: 10px;
+    font-size: 1.2rem;
+}
+
+.menu li.active a,
+.menu li a:hover {
+    background-color: rgba(67, 97, 238, 0.1);
+    color: var(--primary-color);
+    border-left: 4px solid var(--primary-color);
+}
+
+.logout {
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
+    padding: 0 20px;
+}
+
+.logout a {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    color: var(--danger-color);
+    text-decoration: none;
+    transition: var(--transition);
+    border-radius: 5px;
+}
+
+.logout a i {
+    margin-right: 10px;
+}
+
+.logout a:hover {
+    background-color: rgba(244, 67, 54, 0.1);
+}
+
+
+/* Content Styles */
+.content {
+    flex: 1;
+    margin-left: 250px;
+    padding: 20px;
+    transition: all 0.3s ease;
+}
+
+.content-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--light-gray);
+}
+
+.content-header h1 {
+    font-size: 24px;
+    color: var(--primary-color);
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.user-name {
+    font-weight: 500;
+}
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* Actions Bar */
+.actions-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.btn {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    transition: all 0.3s;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-dark);
+}
+
+.btn-secondary {
+    background-color: var(--gray-color);
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+}
+
+.btn-danger {
+    background-color: var(--danger-color);
+    color: white;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+}
+
+.search-container {
+    display: flex;
+    align-items: center;
+}
+
+#search-user {
+    padding: 8px 15px;
+    border: 1px solid var(--light-gray);
+    border-radius: 4px 0 0 4px;
+    width: 250px;
+}
+
+.btn-search {
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: 0 4px 4px 0;
+    height: 100%;
+    padding: 8px 12px;
+}
+
+.filter-container {
+    display: flex;
+    gap: 10px;
+}
+
+.filter-container select {
+    padding: 8px 12px;
+    border: 1px solid var(--light-gray);
+    border-radius: 4px;
+    background-color: white;
+    min-width: 150px;
+}
+
+/* Table Styles */
+.users-table-container {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    margin-top: 20px;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.data-table th,
+.data-table td {
+    padding: 15px;
+    text-align: left;
+}
+
+.data-table th {
+    background-color: var(--primary-color);
+    color: white;
+    font-weight: 500;
+}
+
+.data-table tbody tr {
+    border-bottom: 1px solid var(--light-gray);
+}
+
+.data-table tbody tr:hover {
+    background-color: rgba(0, 0, 0, 0.02);
+}
+
+.data-table tbody tr:last-child {
+    border-bottom: none;
+}
+
+.user-status {
+    padding: 4px 8px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    text-align: center;
+    display: inline-block;
+    min-width: 80px;
+}
+
+.status-active {
+    background-color: rgba(40, 167, 69, 0.1);
+    color: var(--success-color);
+}
+
+.status-inactive {
+    background-color: rgba(108, 117, 125, 0.1);
+    color: var(--gray-color);
+}
+
+.user-role {
+    font-weight: 500;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 5px;
+}
+
+.btn-edit, .btn-delete {
+    padding: 6px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.btn-edit {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.btn-delete {
+    background-color: var(--danger-color);
+    color: white;
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    align-items: center;
+    justify-content: center;
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-content {
+    background-color: white;
+    border-radius: 8px;
+    padding: 25px;
+    width: 100%;
+    max-width: 500px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+
+.close-modal {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--gray-color);
+}
+
+.close-modal:hover {
+    color: var(--dark-color);
+}
+
+.modal-content h2 {
+    margin-bottom: 20px;
+    color: var(--primary-color);
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--light-gray);
+    border-radius: 4px;
+}
+
+.password-info {
+    display: block;
+    margin-top: 5px;
+    color: var(--gray-color);
+    font-size: 12px;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 25px;
+}
+
+/* Responsive Styles */
+@media (max-width: 992px) {
+    .sidebar {
+        width: 70px;
+    }
+    
+    .sidebar .logo h2 {
+        display: none;
+    }
+    
+    .sidebar nav ul li a {
+        padding: 15px;
+        justify-content: center;
+    }
+    
+    .sidebar nav ul li a span {
+        display: none;
+    }
+    
+    .content {
+        margin-left: 70px;
+    }
+}
+
+@media (max-width: 768px) {
+    .actions-bar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .search-container, .filter-container {
+        width: 100%;
+    }
+    
+    #search-user {
+        width: calc(100% - 50px);
+    }
+    
+    .filter-container select {
+        flex: 1;
+    }
+    
+    .content-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .users-table-container {
+        overflow-x: auto;
+    }
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="logo">
+                <h2>Admin</h2>
+            </div>
+            <ul class="menu">
+                <li>
+                    <a href="Dasboard.html"><i class="fas fa-home"></i> Dashboard</a>
+                </li>
+                <li class="active">
+                    <a href="Gestion Usuarios.html"><i class="fas fa-users"></i> Usuarios</a>
+                </li>
+                <li>
+                    <a href="Gestion Rol.html"><i class="fas fa-user-tag"></i> Roles</a>
+                </li>
+                <li>
+                    <a href="Gestion Automovil.html"><i class="fas fa-car"></i> Automoviles</a>
+                </li>
+                <li>
+                    <a href="Gestion Chat.html"><i class="fas fa-comments"></i> Chat</a>
+                </li>
+                <li>
+                    <a href="Gestion Reportes.HTML"><i class="fas fa-chart-bar"></i> Reportes</a>
+                </li>
+                <li>
+                    <a href="Gestion Cotizaciones.html"><i class="fas fa-file-invoice-dollar"></i> Cotizaciones</a>
+                </li>
+                <li>
+                    <a href="Gestion Procesos.html"><i class="fas fa-tasks"></i> Procesos</a>
+                </li>
+                <li>
+                    <a href="#configuracion"><i class="fas fa-cog"></i> Configuración</a>
+                </li>
+            </ul>
+            <div class="logout">
+                <a href="#"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
+            </div>
+        </nav>
+
+        <main class="content">
+            <header class="content-header">
+                <h1>Gestión de Usuarios</h1>
+                <div class="user-info">
+                    <span class="user-name">Admin</span>
+                    <img src="/api/placeholder/40/40" alt="Usuario" class="user-avatar">
+                </div>
+            </header>
+
+            <div class="page-content">
+                <div class="actions-bar">
+                    <button id="btn-new-user" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Nuevo Usuario
+                    </button>
+                    <div class="search-container">
+                        <input type="text" id="search-user" placeholder="Buscar usuario...">
+                        <button class="btn btn-search"><i class="fas fa-search"></i></button>
+                    </div>
+                    <div class="filter-container">
+                        <select id="filter-role">
+                            <option value="">Todos los roles</option>
+                            <option value="Administrador">Administrador</option>
+                            <option value="Empleado">Empleado</option>
+                            <option value="Cliente">Cliente</option>
+                        </select>
+                        <select id="filter-status">
+                            <option value="">Todos los estados</option>
+                            <option value="activo">Activo</option>
+                            <option value="inactivo">Inactivo</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="users-table-container">
+                    <table id="users-table" class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Correo</th>
+                                <th>Rol</th>
+                                <th>Estado</th>
+                                <th>Fecha Creación</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Los datos de los usuarios se cargarán dinámicamente con JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Modal para crear/editar usuario -->
+                <div id="user-modal" class="modal">
+                    <div class="modal-content">
+                        <span class="close-modal">&times;</span>
+                        <h2 id="modal-title">Nuevo Usuario</h2>
+                        <form id="user-form">
+                            <input type="hidden" id="user-id">
+                            <div class="form-group">
+                                <label for="user-name">Nombre Completo</label>
+                                <input type="text" id="user-name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="user-email">Correo Electrónico</label>
+                                <input type="email" id="user-email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="user-password">Contraseña</label>
+                                <input type="password" id="user-password">
+                                <small class="password-info">Dejar en blanco para mantener la contraseña actual (en caso de edición)</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="user-role">Rol</label>
+                                <select id="user-role" required>
+                                    <option value="Administrador">Administrador</option>
+                                    <option value="Empleado">Empleado</option>
+                                    <option value="Cliente">Cliente</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="user-status">Estado</label>
+                                <select id="user-status" required>
+                                    <option value="activo">Activo</option>
+                                    <option value="inactivo">Inactivo</option>
+                                </select>
+                            </div>
+                            <div class="form-actions">
+                                <button type="button" id="btn-cancel" class="btn btn-secondary">Cancelar</button>
+                                <button type="submit" class="btn btn-primary">Guardar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Modal de confirmación para eliminar usuario -->
+                <div id="confirm-modal" class="modal">
+                    <div class="modal-content">
+                        <h2>Confirmar Eliminación</h2>
+                        <p>¿Está seguro que desea eliminar este usuario? Esta acción no se puede deshacer.</p>
+                        <div class="form-actions">
+                            <button id="btn-cancel-delete" class="btn btn-secondary">Cancelar</button>
+                            <button id="btn-confirm-delete" class="btn btn-danger">Eliminar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+
+        // Datos de ejemplo para simular la base de datos
+let users = [
+    {
+        id: 1,
+        nombre: "Admin Principal",
+        correo: "admin@fullpaintcars.com",
+        rol: "Administrador",
+        estado: "activo",
+        fecha_creacion: "2024-03-15"
+    },
+    {
+        id: 2,
+        nombre: "Juan Pérez",
+        correo: "juan.perez@fullpaintcars.com",
+        rol: "Empleado",
+        estado: "activo",
+        fecha_creacion: "2024-03-20"
+    },
+    {
+        id: 3,
+        nombre: "María López",
+        correo: "maria.lopez@gmail.com",
+        rol: "Cliente",
+        estado: "activo",
+        fecha_creacion: "2024-03-25"
+    },
+    {
+        id: 4,
+        nombre: "Carlos Rodríguez",
+        correo: "carlos.rodriguez@fullpaintcars.com",
+        rol: "Empleado",
+        estado: "inactivo",
+        fecha_creacion: "2024-02-10"
+    }
+];
+
+// Variables globales
+let currentUserId = null;
+let userToDeleteId = null;
+
+// Elementos del DOM
+const userTableBody = document.querySelector('#users-table tbody');
+const userModal = document.getElementById('user-modal');
+const confirmModal = document.getElementById('confirm-modal');
+const userForm = document.getElementById('user-form');
+const modalTitle = document.getElementById('modal-title');
+const searchInput = document.getElementById('search-user');
+const roleFilter = document.getElementById('filter-role');
+const statusFilter = document.getElementById('filter-status');
+
+// Botones
+const newUserBtn = document.getElementById('btn-new-user');
+const cancelBtn = document.getElementById('btn-cancel');
+const cancelDeleteBtn = document.getElementById('btn-cancel-delete');
+const confirmDeleteBtn = document.getElementById('btn-confirm-delete');
+const closeModalBtn = document.querySelector('.close-modal');
+
+// Inicialización
+document.addEventListener('DOMContentLoaded', () => {
+    loadUsers();
+    setupEventListeners();
+});
+
+// Cargar usuarios en la tabla
+function loadUsers(filteredUsers = null) {
+    const usersToDisplay = filteredUsers || users;
+    userTableBody.innerHTML = '';
+
+    if (usersToDisplay.length === 0) {
+        userTableBody.innerHTML = `
+            <tr>
+                <td colspan="7" class="text-center">No se encontraron usuarios que coincidan con los criterios de búsqueda.</td>
+            </tr>
+        `;
+        return;
+    }
+
+    usersToDisplay.forEach(user => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${user.id}</td>
+            <td>${user.nombre}</td>
+            <td>${user.correo}</td>
+            <td><span class="user-role">${user.rol}</span></td>
+            <td>
+                <span class="user-status ${user.estado === 'activo' ? 'status-active' : 'status-inactive'}">
+                    ${user.estado === 'activo' ? 'Activo' : 'Inactivo'}
+                </span>
+            </td>
+            <td>${formatDate(user.fecha_creacion)}</td>
+            <td class="action-buttons">
+                <button class="btn-edit" data-id="${user.id}"><i class="fas fa-edit"></i></button>
+                <button class="btn-delete" data-id="${user.id}"><i class="fas fa-trash"></i></button>
+            </td>
+        `;
+        userTableBody.appendChild(row);
+    });
+
+    // Agregar event listeners a los botones de acción
+    document.querySelectorAll('.btn-edit').forEach(btn => {
+        btn.addEventListener('click', () => openEditModal(parseInt(btn.dataset.id)));
+    });
+
+    document.querySelectorAll('.btn-delete').forEach(btn => {
+        btn.addEventListener('click', () => openDeleteModal(parseInt(btn.dataset.id)));
+    });
+}
+
+// Configurar event listeners
+function setupEventListeners() {
+    // Botón para crear nuevo usuario
+    newUserBtn.addEventListener('click', openNewUserModal);
+    
+    // Botones de formulario
+    cancelBtn.addEventListener('click', closeModal);
+    closeModalBtn.addEventListener('click', closeModal);
+    
+    // Form submit
+    userForm.addEventListener('submit', saveUser);
+    
+    // Modal de confirmación para eliminar
+    cancelDeleteBtn.addEventListener('click', () => {
+        confirmModal.classList.remove('active');
+    });
+    
+    confirmDeleteBtn.addEventListener('click', deleteUser);
+    
+    // Filtros y búsqueda
+    searchInput.addEventListener('input', filterUsers);
+    roleFilter.addEventListener('change', filterUsers);
+    statusFilter.addEventListener('change', filterUsers);
+    
+    // Cerrar modal al hacer clic fuera
+    window.addEventListener('click', (e) => {
+        if (e.target === userModal) {
+            closeModal();
+        }
+        if (e.target === confirmModal) {
+            confirmModal.classList.remove('active');
+        }
+    });
+}
+
+// Filtrar usuarios según criterios de búsqueda
+function filterUsers() {
+    const searchTerm = searchInput.value.toLowerCase();
+    const roleValue = roleFilter.value;
+    const statusValue = statusFilter.value;
+    
+    const filteredUsers = users.filter(user => {
+        // Filtro por término de búsqueda
+        const matchesSearch = user.nombre.toLowerCase().includes(searchTerm) || 
+                             user.correo.toLowerCase().includes(searchTerm);
+        
+        // Filtro por rol
+        const matchesRole = roleValue === '' || user.rol === roleValue;
+        
+        // Filtro por estado
+        const matchesStatus = statusValue === '' || user.estado === statusValue;
+        
+        return matchesSearch && matchesRole && matchesStatus;
+    });
+    
+    loadUsers(filteredUsers);
+}
+
+// Abrir modal para nuevo usuario
+function openNewUserModal() {
+    modalTitle.textContent = 'Nuevo Usuario';
+    userForm.reset();
+    document.getElementById('user-id').value = '';
+    currentUserId = null;
+    document.getElementById('user-password').required = true;
+    document.querySelector('.password-info').style.display = 'none';
+    userModal.classList.add('active');
+}
+
+// Abrir modal para editar usuario
+function openEditModal(userId) {
+    const user = users.find(u => u.id === userId);
+    if (!user) return;
+    
+    modalTitle.textContent = 'Editar Usuario';
+    
+    document.getElementById('user-id').value = user.id;
+    document.getElementById('user-name').value = user.nombre;
+    document.getElementById('user-email').value = user.correo;
+    document.getElementById('user-role').value = user.rol;
+    document.getElementById('user-status').value = user.estado;
+    
+    // No requerir contraseña en edición
+    document.getElementById('user-password').required = false;
+    document.querySelector('.password-info').style.display = 'block';
+    
+    currentUserId = userId;
+    userModal.classList.add('active');
+}
+
+// Abrir modal para confirmar eliminación
+function openDeleteModal(userId) {
+    userToDeleteId = userId;
+    confirmModal.classList.add('active');
+}
+
+// Cerrar modal
+function closeModal() {
+    userModal.classList.remove('active');
+    userForm.reset();
+    currentUserId = null;
+}
+
+// Guardar usuario (crear o actualizar)
+function saveUser(e) {
+    e.preventDefault();
+    
+    const userId = document.getElementById('user-id').value;
+    const name = document.getElementById('user-name').value;
+    const email = document.getElementById('user-email').value;
+    const password = document.getElementById('user-password').value;
+    const role = document.getElementById('user-role').value;
+    const status = document.getElementById('user-status').value;
+    
+    // Validar email único
+    const emailExists = users.some(u => u.correo === email && u.id !== parseInt(userId || 0));
+    if (emailExists) {
+        alert('El correo electrónico ya está en uso por otro usuario.');
+        return;
+    }
+    
+    if (currentUserId) {
+        // Actualizar usuario existente
+        const index = users.findIndex(u => u.id === currentUserId);
+        if (index !== -1) {
+            users[index] = {
+                ...users[index],
+                nombre: name,
+                correo: email,
+                rol: role,
+                estado: status
+            };
+            
+            // Solo actualizar contraseña si se proporciona una nueva
+            if (password) {
+                users[index].contraseña = password; // En un sistema real, esto se encriptaría
+            }
+        }
+    } else {
+        // Crear nuevo usuario
+        const newId = Math.max(...users.map(u => u.id), 0) + 1;
+        users.push({
+            id: newId,
+            nombre: name,
+            correo: email,
+            contraseña: password, // En un sistema real, esto se encriptaría
+            rol: role,
+            estado: status,
+            fecha_creacion: getCurrentDate()
+        });
+    }
+    
+    // Actualizar la tabla y cerrar el modal
+    loadUsers();
+    closeModal();
+    
+    // Mostrar mensaje de éxito
+    const action = currentUserId ? 'actualizado' : 'creado';
+    showNotification(`Usuario ${action} correctamente`, 'success');
+}
+
+// Eliminar usuario
+function deleteUser() {
+    if (!userToDeleteId) return;
+    
+    // En un sistema real, podría ser una eliminación lógica (cambiar estado) en lugar de física
+    users = users.filter(u => u.id !== userToDeleteId);
+    
+    // Actualizar la tabla
+    loadUsers();
+    confirmModal.classList.remove('active');
+    
+    // Mostrar mensaje de éxito
+    showNotification('Usuario eliminado correctamente', 'success');
+    userToDeleteId = null;
+}
+
+// Formato de fecha: YYYY-MM-DD a DD/MM/YYYY
+function formatDate(dateString) {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('es-ES');
+}
+
+// Obtener fecha actual en formato YYYY-MM-DD
+function getCurrentDate() {
+    const date = new Date();
+    return date.toISOString().split('T')[0];
+}
+
+// Mostrar notificación
+function showNotification(message, type = 'info') {
+    // Crear elemento de notificación
+    const notification = document.createElement('div');
+    notification.className = `notification ${type}`;
+    notification.innerHTML = `
+        <div class="notification-content">
+            <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-info-circle'}"></i>
+            <span>${message}</span>
+        </div>
+        <button class="notification-close"><i class="fas fa-times"></i></button>
+    `;
+    
+    // Agregar al DOM
+    document.body.appendChild(notification);
+    
+    // Mostrar con animación
+    setTimeout(() => {
+        notification.classList.add('show');
+    }, 10);
+    
+    // Configurar el cierre
+    const closeBtn = notification.querySelector('.notification-close');
+    closeBtn.addEventListener('click', () => {
+        notification.classList.remove('show');
+        setTimeout(() => {
+            document.body.removeChild(notification);
+        }, 300);
+    });
+    
+    // Auto cerrar después de 5 segundos
+    setTimeout(() => {
+        notification.classList.remove('show');
+        setTimeout(() => {
+            if (notification.parentNode) {
+                document.body.removeChild(notification);
+            }
+        }, 300);
+    }, 5000);
+}
+
+// Agregar estilos para notificaciones
+(function addNotificationStyles() {
+    const style = document.createElement('style');
+    style.textContent = `
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: -300px;
+            width: 300px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            padding: 15px;
+            transition: right 0.3s ease;
+            z-index: 1100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .notification.show {
+            right: 20px;
+        }
+        
+        .notification-content {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .notification.success .notification-content i {
+            color: #28a745;
+        }
+        
+        .notification.info .notification-content i {
+            color: #0a2463;
+        }
+        
+        .notification.error .notification-content i {
+            color: #dc3545;
+        }
+        
+        .notification-close {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #6c757d;
+        }
+        
+        .notification-close:hover {
+            color: #343a40;
+        }
+    `;
+    document.head.appendChild(style);
+})();
+
+    </script>
+</body>
+</html>

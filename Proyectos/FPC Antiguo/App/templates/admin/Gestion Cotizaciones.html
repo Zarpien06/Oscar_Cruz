@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Cotizaciones - Full Paint Cars</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin/gestion cotizaciones.css') }}">
+
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="logo">
+                <h2>Admin</h2>
+            </div>
+            <ul class="menu">
+                <li>
+                    <a href="Dasboard.html"><i class="fas fa-home"></i> Dashboard</a>
+                </li>
+                <li>
+                    <a href="Gestion Usuarios.html"><i class="fas fa-users"></i> Usuarios</a>
+                </li>
+                <li>
+                    <a href="Gestion Rol.html"><i class="fas fa-user-tag"></i> Roles</a>
+                </li>
+                <li>
+                    <a href="Gestion Automovil.html"><i class="fas fa-car"></i> Automoviles</a>
+                </li>
+                <li>
+                    <a href="Gestion Chat.html"><i class="fas fa-comments"></i> Chat</a>
+                </li>
+                <li>
+                    <a href="Gestion Reportes.HTML"><i class="fas fa-chart-bar"></i> Reportes</a>
+                </li>
+                <li>
+                    <a href="Gestion Cotizaciones.html"><i class="fas fa-file-invoice-dollar"></i> Cotizaciones</a>
+                </li>
+                <li class="active">
+                    <a href="Gestion Procesos.html"><i class="fas fa-tasks"></i> Procesos</a>
+                </li>
+                <li>
+                    <a href="#configuracion"><i class="fas fa-cog"></i> Configuración</a>
+                </li>
+            </ul>
+            <div class="logout">
+                <a href="#"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
+            </div>
+        </nav>
+
+        <main class="content">
+            <header>
+                <div class="header-content">
+                    <h1>Gestión de Cotizaciones</h1>
+                    <div class="user-info">
+                        <span>Admin</span>
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                </div>
+            </header>
+
+            <div class="cotizaciones-container">
+                <div class="actions-bar">
+                    <div class="search-bar">
+                        <input type="text" id="searchCotizacion" placeholder="Buscar cotizaciones...">
+                        <button type="button"><i class="fas fa-search"></i></button>
+                    </div>
+                    <div class="filter-options">
+                        <select id="filterStatus">
+                            <option value="all">Estado: Todos</option>
+                            <option value="pending">Pendiente</option>
+                            <option value="approved">Aprobada</option>
+                            <option value="rejected">Rechazada</option>
+                        </select>
+                        <select id="filterDate">
+                            <option value="all">Fecha: Todos</option>
+                            <option value="today">Hoy</option>
+                            <option value="week">Esta semana</option>
+                            <option value="month">Este mes</option>
+                        </select>
+                    </div>
+                    <button id="newCotizacion" class="btn-primary">
+                        <i class="fas fa-plus"></i> Nueva Cotización
+                    </button>
+                </div>
+
+                <div class="cotizaciones-list">
+                    <table id="cotizacionesTable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Cliente</th>
+                                <th>Vehículo</th>
+                                <th>Servicios</th>
+                                <th>Total</th>
+                                <th>Fecha</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Los datos se cargarán dinámicamente con JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="pagination">
+                    <button id="prevPage" disabled><i class="fas fa-chevron-left"></i></button>
+                    <span id="currentPage">Página 1 de 1</span>
+                    <button id="nextPage" disabled><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal para crear/editar cotización -->
+    <div id="cotizacionModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Nueva Cotización</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="cotizacionForm">
+                    <input type="hidden" id="cotizacionId">
+                    
+                    <div class="form-group">
+                        <label for="clientName">Cliente:</label>
+                        <input type="text" id="clientName" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="clientEmail">Email:</label>
+                        <input type="email" id="clientEmail" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="clientPhone">Teléfono:</label>
+                        <input type="tel" id="clientPhone" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="carModel">Modelo de vehículo:</label>
+                        <input type="text" id="carModel" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="carYear">Año:</label>
+                        <input type="number" id="carYear" min="1900" max="2099" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Servicios disponibles:</label>
+                        <div class="services-container">
+                            <div class="service-item">
+                                <input type="checkbox" id="service1" class="service-checkbox" data-price="350000">
+                                <label for="service1">Pintura general ($350,000)</label>
+                            </div>
+                            <div class="service-item">
+                                <input type="checkbox" id="service2" class="service-checkbox" data-price="180000">
+                                <label for="service2">Latonería ($180,000)</label>
+                            </div>
+                            <div class="service-item">
+                                <input type="checkbox" id="service3" class="service-checkbox" data-price="120000">
+                                <label for="service3">Pulido y brillado ($120,000)</label>
+                            </div>
+                            <div class="service-item">
+                                <input type="checkbox" id="service4" class="service-checkbox" data-price="250000">
+                                <label for="service4">Restauración de partes ($250,000)</label>
+                            </div>
+                            <div class="service-item">
+                                <input type="checkbox" id="service5" class="service-checkbox" data-price="80000">
+                                <label for="service5">Lavado detallado ($80,000)</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="observations">Observaciones:</label>
+                        <textarea id="observations" rows="3"></textarea>
+                    </div>
+                    
+                    <div class="form-summary">
+                        <div class="total-section">
+                            <h3>Total: <span id="totalAmount">$0</span></h3>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" id="cancelBtn" class="btn-secondary">Cancelar</button>
+                        <button type="submit" id="saveBtn" class="btn-primary">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para ver detalles de cotización -->
+    <div id="viewCotizacionModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Detalles de Cotización</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="cotizacion-details">
+                    <div class="detail-header">
+                        <div class="company-info">
+                            <h3>Full Paint Cars</h3>
+                            <p>Servicios Automotrices de Calidad</p>
+                        </div>
+                        <div class="cotizacion-info">
+                            <p><strong>Cotización #:</strong> <span id="viewCotizacionId"></span></p>
+                            <p><strong>Fecha:</strong> <span id="viewFecha"></span></p>
+                        </div>
+                    </div>
+                    
+                    <div class="client-details">
+                        <h4>Información del Cliente</h4>
+                        <p><strong>Nombre:</strong> <span id="viewClientName"></span></p>
+                        <p><strong>Email:</strong> <span id="viewClientEmail"></span></p>
+                        <p><strong>Teléfono:</strong> <span id="viewClientPhone"></span></p>
+                    </div>
+                    
+                    <div class="vehicle-details">
+                        <h4>Información del Vehículo</h4>
+                        <p><strong>Modelo:</strong> <span id="viewCarModel"></span></p>
+                        <p><strong>Año:</strong> <span id="viewCarYear"></span></p>
+                    </div>
+                    
+                    <div class="services-details">
+                        <h4>Servicios Seleccionados</h4>
+                        <table class="services-table">
+                            <thead>
+                                <tr>
+                                    <th>Servicio</th>
+                                    <th>Precio</th>
+                                </tr>
+                            </thead>
+                            <tbody id="viewServicesList">
+                                <!-- Se llenará dinámicamente -->
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="observations">
+                        <h4>Observaciones</h4>
+                        <p id="viewObservations"></p>
+                    </div>
+                    
+                    <div class="total-details">
+                        <h3>Total: <span id="viewTotalAmount"></span></h3>
+                    </div>
+                    
+                    <div class="status-details">
+                        <h4>Estado: <span id="viewStatus"></span></h4>
+                    </div>
+                </div>
+                
+                <div class="modal-actions">
+                    <button type="button" id="printBtn" class="btn-secondary">
+                        <i class="fas fa-print"></i> Imprimir
+                    </button>
+                    <button type="button" id="updateStatusBtn" class="btn-primary">
+                        Actualizar Estado
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmación para eliminar -->
+    <div id="deleteModal" class="modal">
+        <div class="modal-content modal-small">
+            <div class="modal-header">
+                <h2>Confirmar Eliminación</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p>¿Está seguro que desea eliminar esta cotización? Esta acción no se puede deshacer.</p>
+                <div class="modal-actions">
+                    <button type="button" id="cancelDeleteBtn" class="btn-secondary">Cancelar</button>
+                    <button type="button" id="confirmDeleteBtn" class="btn-danger">Eliminar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/admin/gestion_cotizaciones.js') }}"></script>
+</body>
+</html>

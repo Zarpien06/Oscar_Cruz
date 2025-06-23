@@ -1,0 +1,1637 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Cotizaciones - Full Paint Cars</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+     <style>  
+           /* Estilos generales */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+         /* Variables globales */
+         :root {
+    --primary-color: #0a2463; /* Azul oscuro como color principal */
+    --primary-light: #3e5c97;
+    --primary-dark: #051a4d;
+    --secondary-color: #1e3a8a;
+    --light-color: #f5f5f5;
+    --dark-color: #333;
+    --danger-color: #dc3545;
+    --success-color: #28a745;
+    --warning-color: #ffc107;
+    --gray-color: #6c757d;
+    --light-gray: #e9ecef;
+    --sidebar-width: 250px;
+    --header-height: 70px;
+    --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    --transition: all 0.3s ease;
+}       
+
+
+body {
+    background-color: #f5f5f5;
+    color: #333;
+    line-height: 1.6;
+}
+
+.container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+    width: var(--sidebar-width);
+    background-color: #fff;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    height: 100%;
+    z-index: 1000;
+    transition: var(--transition);
+}
+
+.logo {
+    padding: 20px;
+    text-align: center;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.logo h2 {
+    color: var(--primary-color);
+    font-weight: 700;
+}
+
+.menu {
+    list-style: none;
+    padding: 20px 0;
+}
+
+.menu li {
+    margin-bottom: 5px;
+}
+
+.menu li a {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    color: var(--text-color);
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.menu li a i {
+    margin-right: 10px;
+    font-size: 1.2rem;
+}
+
+.menu li.active a,
+.menu li a:hover {
+    background-color: rgba(67, 97, 238, 0.1);
+    color: var(--primary-color);
+    border-left: 4px solid var(--primary-color);
+}
+
+.logout {
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
+    padding: 0 20px;
+}
+
+.logout a {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    color: var(--danger-color);
+    text-decoration: none;
+    transition: var(--transition);
+    border-radius: 5px;
+}
+
+.logout a i {
+    margin-right: 10px;
+}
+
+.logout a:hover {
+    background-color: rgba(244, 67, 54, 0.1);
+}
+
+/* Contenido principal */
+.content {
+    flex: 1;
+    margin-left: 250px;
+    padding: 20px;
+}
+
+header {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 15px 20px;
+    margin-bottom: 20px;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-content h1 {
+    font-size: 24px;
+    color: #1a237e; /* Azul oscuro para títulos principales */
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+}
+
+.user-info span {
+    margin-right: 10px;
+    font-weight: 500;
+}
+
+.user-info i {
+    font-size: 24px;
+    color: #1a237e; /* Azul oscuro para icono de usuario */
+}
+
+/* Contenedor de cotizaciones */
+.cotizaciones-container {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+/* Barra de acciones */
+.actions-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.search-bar {
+    display: flex;
+    flex: 1;
+    max-width: 400px;
+}
+
+.search-bar input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px 0 0 4px;
+    font-size: 14px;
+    outline: none;
+}
+
+.search-bar button {
+    background-color: #1a237e; /* Azul oscuro para botón de búsqueda */
+    color: white;
+    border: none;
+    padding: 0 15px;
+    border-radius: 0 4px 4px 0;
+    cursor: pointer;
+}
+
+.filter-options {
+    display: flex;
+    gap: 10px;
+}
+
+.filter-options select {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #fff;
+    font-size: 14px;
+    outline: none;
+    cursor: pointer;
+}
+
+/* Botones */
+.btn-primary {
+    background-color: #1a237e; /* Azul oscuro para botón primario */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background-color 0.3s;
+}
+
+.btn-primary:hover {
+    background-color: #283593; /* Azul oscuro ligeramente más claro al hover */
+}
+
+.btn-secondary {
+    background-color: #e0e0e0;
+    color: #333;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background-color 0.3s;
+}
+
+.btn-secondary:hover {
+    background-color: #d1d1d1;
+}
+
+.btn-danger {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background-color 0.3s;
+}
+
+.btn-danger:hover {
+    background-color: #d32f2f;
+}
+
+/* Tabla de cotizaciones */
+.cotizaciones-list {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+th {
+    background-color: #e8eaf6; /* Fondo azul muy claro para encabezados */
+    color: #1a237e; /* Color azul oscuro para texto de encabezados */
+    font-weight: 600;
+}
+
+tbody tr:hover {
+    background-color: #f5f5f5;
+}
+
+.status-badge {
+    padding: 5px 10px;
+    border-radius: 50px;
+    font-size: 12px;
+    font-weight: 500;
+    display: inline-block;
+}
+
+.status-pending {
+    background-color: #e3f2fd; /* Azul muy claro */
+    color: #1565c0; /* Azul medio */
+}
+
+.status-approved {
+    background-color: #d5f5e3;
+    color: #27ae60;
+}
+
+.status-rejected {
+    background-color: #fadbd8;
+    color: #c0392b;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.action-buttons button {
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.view-btn {
+    color: #1976d2; /* Azul para botón de ver */
+}
+
+.view-btn:hover {
+    color: #1565c0; /* Azul más oscuro al hover */
+}
+
+.edit-btn {
+    color: #f39c12;
+}
+
+.edit-btn:hover {
+    color: #d68910;
+}
+
+.delete-btn {
+    color: #e74c3c;
+}
+
+.delete-btn:hover {
+    color: #c0392b;
+}
+
+/* Paginación */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.pagination button {
+    background: none;
+    border: none;
+    color: #1a237e; /* Azul oscuro para botones de paginación */
+    font-size: 16px;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.pagination button:disabled {
+    color: #ccc;
+    cursor: not-allowed;
+}
+
+/* Modales */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    overflow: auto;
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 50px auto;
+    max-width: 800px;
+    width: 90%;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.modal-small {
+    max-width: 500px;
+}
+
+.modal-header {
+    padding: 15px 20px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #e8eaf6; /* Fondo azul muy claro para encabezados modales */
+}
+
+.modal-header h2 {
+    font-size: 20px;
+    color: #1a237e; /* Azul oscuro para títulos de modales */
+}
+
+.close {
+    font-size: 24px;
+    font-weight: bold;
+    color: #aaa;
+    cursor: pointer;
+}
+
+.close:hover {
+    color: #333;
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+/* Formulario de cotización */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: #1a237e; /* Azul oscuro para etiquetas de formulario */
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: #1a237e; /* Azul oscuro para bordes en focus */
+    outline: none;
+    box-shadow: 0 0 5px rgba(26, 35, 126, 0.2); /* Sombra sutil azul */
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+/* Contenedor de servicios */
+.services-container {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 15px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.service-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.service-item:last-child {
+    margin-bottom: 0;
+}
+
+.service-checkbox {
+    margin-right: 10px;
+}
+
+/* Resumen del formulario */
+.form-summary {
+    background-color: #e8eaf6; /* Fondo azul muy claro para resumen */
+    padding: 15px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+}
+
+.total-section {
+    text-align: right;
+}
+
+.total-section h3 {
+    color: #1a237e; /* Azul oscuro para total */
+    font-size: 18px;
+}
+
+/* Acciones del formulario */
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+/* Detalles de cotización */
+.cotizacion-details {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+}
+
+.detail-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.company-info h3 {
+    color: #1a237e; /* Azul oscuro para nombre de compañía */
+    margin-bottom: 5px;
+}
+
+.cotizacion-info {
+    text-align: right;
+}
+
+.client-details,
+.vehicle-details,
+.services-details,
+.observations,
+.status-details {
+    margin-bottom: 20px;
+}
+
+.client-details h4,
+.vehicle-details h4,
+.services-details h4,
+.observations h4,
+.status-details h4 {
+    color: #1a237e; /* Azul oscuro para subtítulos */
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #ddd;
+}
+
+.services-table {
+    width: 100%;
+    margin-top: 10px;
+}
+
+.total-details {
+    text-align: right;
+    font-size: 18px;
+    padding-top: 10px;
+    border-top: 1px solid #ddd;
+}
+
+.total-details h3 {
+    color: #1a237e; /* Azul oscuro para total */
+}
+
+/* Modal acciones */
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .sidebar {
+        width: 220px;
+    }
+    
+    .content {
+        margin-left: 220px;
+    }
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        width: 70px;
+        padding: 15px 0;
+    }
+    
+    .logo {
+        justify-content: center;
+        padding: 0 5px;
+    }
+    
+    .logo h2 {
+        display: none;
+    }
+    
+    nav ul li a span {
+        display: none;
+    }
+    
+    nav ul li a i {
+        margin-right: 0;
+        font-size: 18px;
+    }
+    
+    nav ul li a {
+        padding: 12px 0;
+        text-align: center;
+    }
+    
+    .content {
+        margin-left: 70px;
+    }
+    
+    .actions-bar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .search-bar {
+        max-width: 100%;
+        width: 100%;
+    }
+    
+    .filter-options {
+        width: 100%;
+    }
+    
+    .filter-options select {
+        flex: 1;
+    }
+    
+    .btn-primary {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 576px) {
+    .content {
+        padding: 10px;
+    }
+    
+    header {
+        padding: 10px;
+    }
+    
+    .header-content h1 {
+        font-size: 20px;
+    }
+    
+    .cotizaciones-container {
+        padding: 10px;
+    }
+    
+    th, td {
+        padding: 8px 10px;
+    }
+    
+    .modal-content {
+        margin: 20px auto;
+        width: 95%;
+    }
+}
+
+     </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="logo">
+                <h2>Admin</h2>
+            </div>
+            <ul class="menu">
+                <li>
+                    <a href="Dasboard.html"><i class="fas fa-home"></i> Dashboard</a>
+                </li>
+                <li>
+                    <a href="Gestion Usuarios.html"><i class="fas fa-users"></i> Usuarios</a>
+                </li>
+                <li>
+                    <a href="Gestion Rol.html"><i class="fas fa-user-tag"></i> Roles</a>
+                </li>
+                <li>
+                    <a href="Gestion Automovil.html"><i class="fas fa-car"></i> Automoviles</a>
+                </li>
+                <li>
+                    <a href="Gestion Chat.html"><i class="fas fa-comments"></i> Chat</a>
+                </li>
+                <li>
+                    <a href="Gestion Reportes.HTML"><i class="fas fa-chart-bar"></i> Reportes</a>
+                </li>
+                <li>
+                    <a href="Gestion Cotizaciones.html"><i class="fas fa-file-invoice-dollar"></i> Cotizaciones</a>
+                </li>
+                <li class="active">
+                    <a href="Gestion Procesos.html"><i class="fas fa-tasks"></i> Procesos</a>
+                </li>
+                <li>
+                    <a href="#configuracion"><i class="fas fa-cog"></i> Configuración</a>
+                </li>
+            </ul>
+            <div class="logout">
+                <a href="#"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
+            </div>
+        </nav>
+
+        <main class="content">
+            <header>
+                <div class="header-content">
+                    <h1>Gestión de Cotizaciones</h1>
+                    <div class="user-info">
+                        <span>Admin</span>
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                </div>
+            </header>
+
+            <div class="cotizaciones-container">
+                <div class="actions-bar">
+                    <div class="search-bar">
+                        <input type="text" id="searchCotizacion" placeholder="Buscar cotizaciones...">
+                        <button type="button"><i class="fas fa-search"></i></button>
+                    </div>
+                    <div class="filter-options">
+                        <select id="filterStatus">
+                            <option value="all">Estado: Todos</option>
+                            <option value="pending">Pendiente</option>
+                            <option value="approved">Aprobada</option>
+                            <option value="rejected">Rechazada</option>
+                        </select>
+                        <select id="filterDate">
+                            <option value="all">Fecha: Todos</option>
+                            <option value="today">Hoy</option>
+                            <option value="week">Esta semana</option>
+                            <option value="month">Este mes</option>
+                        </select>
+                    </div>
+                    <button id="newCotizacion" class="btn-primary">
+                        <i class="fas fa-plus"></i> Nueva Cotización
+                    </button>
+                </div>
+
+                <div class="cotizaciones-list">
+                    <table id="cotizacionesTable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Cliente</th>
+                                <th>Vehículo</th>
+                                <th>Servicios</th>
+                                <th>Total</th>
+                                <th>Fecha</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Los datos se cargarán dinámicamente con JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="pagination">
+                    <button id="prevPage" disabled><i class="fas fa-chevron-left"></i></button>
+                    <span id="currentPage">Página 1 de 1</span>
+                    <button id="nextPage" disabled><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal para crear/editar cotización -->
+    <div id="cotizacionModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Nueva Cotización</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="cotizacionForm">
+                    <input type="hidden" id="cotizacionId">
+                    
+                    <div class="form-group">
+                        <label for="clientName">Cliente:</label>
+                        <input type="text" id="clientName" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="clientEmail">Email:</label>
+                        <input type="email" id="clientEmail" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="clientPhone">Teléfono:</label>
+                        <input type="tel" id="clientPhone" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="carModel">Modelo de vehículo:</label>
+                        <input type="text" id="carModel" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="carYear">Año:</label>
+                        <input type="number" id="carYear" min="1900" max="2099" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Servicios disponibles:</label>
+                        <div class="services-container">
+                            <div class="service-item">
+                                <input type="checkbox" id="service1" class="service-checkbox" data-price="350000">
+                                <label for="service1">Pintura general ($350,000)</label>
+                            </div>
+                            <div class="service-item">
+                                <input type="checkbox" id="service2" class="service-checkbox" data-price="180000">
+                                <label for="service2">Latonería ($180,000)</label>
+                            </div>
+                            <div class="service-item">
+                                <input type="checkbox" id="service3" class="service-checkbox" data-price="120000">
+                                <label for="service3">Pulido y brillado ($120,000)</label>
+                            </div>
+                            <div class="service-item">
+                                <input type="checkbox" id="service4" class="service-checkbox" data-price="250000">
+                                <label for="service4">Restauración de partes ($250,000)</label>
+                            </div>
+                            <div class="service-item">
+                                <input type="checkbox" id="service5" class="service-checkbox" data-price="80000">
+                                <label for="service5">Lavado detallado ($80,000)</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="observations">Observaciones:</label>
+                        <textarea id="observations" rows="3"></textarea>
+                    </div>
+                    
+                    <div class="form-summary">
+                        <div class="total-section">
+                            <h3>Total: <span id="totalAmount">$0</span></h3>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" id="cancelBtn" class="btn-secondary">Cancelar</button>
+                        <button type="submit" id="saveBtn" class="btn-primary">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para ver detalles de cotización -->
+    <div id="viewCotizacionModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Detalles de Cotización</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="cotizacion-details">
+                    <div class="detail-header">
+                        <div class="company-info">
+                            <h3>Full Paint Cars</h3>
+                            <p>Servicios Automotrices de Calidad</p>
+                        </div>
+                        <div class="cotizacion-info">
+                            <p><strong>Cotización #:</strong> <span id="viewCotizacionId"></span></p>
+                            <p><strong>Fecha:</strong> <span id="viewFecha"></span></p>
+                        </div>
+                    </div>
+                    
+                    <div class="client-details">
+                        <h4>Información del Cliente</h4>
+                        <p><strong>Nombre:</strong> <span id="viewClientName"></span></p>
+                        <p><strong>Email:</strong> <span id="viewClientEmail"></span></p>
+                        <p><strong>Teléfono:</strong> <span id="viewClientPhone"></span></p>
+                    </div>
+                    
+                    <div class="vehicle-details">
+                        <h4>Información del Vehículo</h4>
+                        <p><strong>Modelo:</strong> <span id="viewCarModel"></span></p>
+                        <p><strong>Año:</strong> <span id="viewCarYear"></span></p>
+                    </div>
+                    
+                    <div class="services-details">
+                        <h4>Servicios Seleccionados</h4>
+                        <table class="services-table">
+                            <thead>
+                                <tr>
+                                    <th>Servicio</th>
+                                    <th>Precio</th>
+                                </tr>
+                            </thead>
+                            <tbody id="viewServicesList">
+                                <!-- Se llenará dinámicamente -->
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="observations">
+                        <h4>Observaciones</h4>
+                        <p id="viewObservations"></p>
+                    </div>
+                    
+                    <div class="total-details">
+                        <h3>Total: <span id="viewTotalAmount"></span></h3>
+                    </div>
+                    
+                    <div class="status-details">
+                        <h4>Estado: <span id="viewStatus"></span></h4>
+                    </div>
+                </div>
+                
+                <div class="modal-actions">
+                    <button type="button" id="printBtn" class="btn-secondary">
+                        <i class="fas fa-print"></i> Imprimir
+                    </button>
+                    <button type="button" id="updateStatusBtn" class="btn-primary">
+                        Actualizar Estado
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmación para eliminar -->
+    <div id="deleteModal" class="modal">
+        <div class="modal-content modal-small">
+            <div class="modal-header">
+                <h2>Confirmar Eliminación</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p>¿Está seguro que desea eliminar esta cotización? Esta acción no se puede deshacer.</p>
+                <div class="modal-actions">
+                    <button type="button" id="cancelDeleteBtn" class="btn-secondary">Cancelar</button>
+                    <button type="button" id="confirmDeleteBtn" class="btn-danger">Eliminar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+     <script>
+          // Variables globales
+let cotizaciones = [];
+let currentPage = 1;
+const itemsPerPage = 10;
+let currentCotizacionId = null;
+
+// Elementos DOM
+const searchInput = document.getElementById('searchCotizacion');
+const filterStatus = document.getElementById('filterStatus');
+const filterDate = document.getElementById('filterDate');
+const cotizacionesTable = document.getElementById('cotizacionesTable');
+const prevPageBtn = document.getElementById('prevPage');
+const nextPageBtn = document.getElementById('nextPage');
+const currentPageSpan = document.getElementById('currentPage');
+const newCotizacionBtn = document.getElementById('newCotizacion');
+
+// Modales
+const cotizacionModal = document.getElementById('cotizacionModal');
+const viewCotizacionModal = document.getElementById('viewCotizacionModal');
+const deleteModal = document.getElementById('deleteModal');
+const closeButtons = document.querySelectorAll('.close');
+
+// Botones
+const saveBtn = document.getElementById('saveBtn');
+const cancelBtn = document.getElementById('cancelBtn');
+const printBtn = document.getElementById('printBtn');
+const updateStatusBtn = document.getElementById('updateStatusBtn');
+const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
+
+// Elementos del formulario
+const cotizacionForm = document.getElementById('cotizacionForm');
+const serviceCheckboxes = document.querySelectorAll('.service-checkbox');
+const totalAmountSpan = document.getElementById('totalAmount');
+
+// Inicialización
+document.addEventListener('DOMContentLoaded', () => {
+    loadCotizacionesFromStorage();
+    setupEventListeners();
+    renderCotizaciones();
+});
+
+// Cargar datos desde localStorage
+function loadCotizacionesFromStorage() {
+    const storedCotizaciones = localStorage.getItem('cotizaciones');
+    if (storedCotizaciones) {
+        cotizaciones = JSON.parse(storedCotizaciones);
+    } else {
+        // Datos de ejemplo para desarrollo
+        cotizaciones = [
+            {
+                id: 1,
+                cliente: 'Juan Pérez',
+                email: 'juan@example.com',
+                telefono: '3001234567',
+                vehiculo: 'Toyota Corolla',
+                año: 2019,
+                servicios: [
+                    { nombre: 'Pintura general', precio: 350000 },
+                    { nombre: 'Pulido y brillado', precio: 120000 }
+                ],
+                total: 470000,
+                fecha: '2023-10-15',
+                estado: 'Pendiente',
+                observaciones: 'Cliente solicita atención prioritaria'
+            },
+            {
+                id: 2,
+                cliente: 'María López',
+                email: 'maria@example.com',
+                telefono: '3109876543',
+                vehiculo: 'Mazda 3',
+                año: 2020,
+                servicios: [
+                    { nombre: 'Latonería', precio: 180000 }
+                ],
+                total: 180000,
+                fecha: '2023-10-10',
+                estado: 'Aprobada',
+                observaciones: 'Golpe en guardafango delantero derecho'
+            }
+        ];
+        saveCotizacionesToStorage();
+    }
+}
+
+// Guardar datos en localStorage
+function saveCotizacionesToStorage() {
+    localStorage.setItem('cotizaciones', JSON.stringify(cotizaciones));
+}
+
+// Configurar los event listeners
+function setupEventListeners() {
+    // Filtros y búsqueda
+    searchInput.addEventListener('input', renderCotizaciones);
+    filterStatus.addEventListener('change', renderCotizaciones);
+    filterDate.addEventListener('change', renderCotizaciones);
+    
+    // Paginación
+    prevPageBtn.addEventListener('click', () => {
+        if (currentPage > 1) {
+            currentPage--;
+            renderCotizaciones();
+        }
+    });
+    
+    nextPageBtn.addEventListener('click', () => {
+        const totalPages = Math.ceil(getFilteredCotizaciones().length / itemsPerPage);
+        if (currentPage < totalPages) {
+            currentPage++;
+            renderCotizaciones();
+        }
+    });
+    
+    // Nueva cotización
+    newCotizacionBtn.addEventListener('click', openNewCotizacionModal);
+    
+    // Cerrar modales
+    closeButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            cotizacionModal.style.display = 'none';
+            viewCotizacionModal.style.display = 'none';
+            deleteModal.style.display = 'none';
+        });
+    });
+    
+    // Click fuera del modal para cerrar
+    window.addEventListener('click', (event) => {
+        if (event.target === cotizacionModal) {
+            cotizacionModal.style.display = 'none';
+        } else if (event.target === viewCotizacionModal) {
+            viewCotizacionModal.style.display = 'none';
+        } else if (event.target === deleteModal) {
+            deleteModal.style.display = 'none';
+        }
+    });
+    
+    // Formulario de cotización
+    cotizacionForm.addEventListener('submit', handleFormSubmit);
+    cancelBtn.addEventListener('click', () => {
+        cotizacionModal.style.display = 'none';
+    });
+    
+    // Actualizar total al seleccionar servicios
+    serviceCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', updateTotal);
+    });
+    
+    // Acciones de modales
+    printBtn.addEventListener('click', printCotizacion);
+    updateStatusBtn.addEventListener('click', openUpdateStatusOptions);
+    confirmDeleteBtn.addEventListener('click', deleteCotizacion);
+    cancelDeleteBtn.addEventListener('click', () => {
+        deleteModal.style.display = 'none';
+    });
+}
+
+// Filtrar cotizaciones según criterios de búsqueda
+function getFilteredCotizaciones() {
+    let filtered = [...cotizaciones];
+    
+    // Filtrar por búsqueda
+    const searchTerm = searchInput.value.toLowerCase();
+    if (searchTerm) {
+        filtered = filtered.filter(cotizacion => 
+            cotizacion.cliente.toLowerCase().includes(searchTerm) ||
+            cotizacion.vehiculo.toLowerCase().includes(searchTerm) ||
+            cotizacion.id.toString().includes(searchTerm)
+        );
+    }
+    
+    // Filtrar por estado
+    const statusFilter = filterStatus.value;
+    if (statusFilter !== 'all') {
+        const statusMapping = {
+            'pending': 'Pendiente',
+            'approved': 'Aprobada',
+            'rejected': 'Rechazada'
+        };
+        filtered = filtered.filter(cotizacion => cotizacion.estado === statusMapping[statusFilter]);
+    }
+    
+    // Filtrar por fecha
+    const dateFilter = filterDate.value;
+    if (dateFilter !== 'all') {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        
+        filtered = filtered.filter(cotizacion => {
+            const cotizacionDate = new Date(cotizacion.fecha);
+            
+            if (dateFilter === 'today') {
+                return cotizacionDate.toDateString() === today.toDateString();
+            } else if (dateFilter === 'week') {
+                const weekStart = new Date(today);
+                weekStart.setDate(today.getDate() - today.getDay());
+                return cotizacionDate >= weekStart;
+            } else if (dateFilter === 'month') {
+                return cotizacionDate.getMonth() === today.getMonth() && 
+                       cotizacionDate.getFullYear() === today.getFullYear();
+            }
+            return true;
+        });
+    }
+    
+    return filtered;
+}
+
+// Renderizar la lista de cotizaciones
+function renderCotizaciones() {
+    const filteredCotizaciones = getFilteredCotizaciones();
+    const totalItems = filteredCotizaciones.length;
+    const totalPages = Math.ceil(totalItems / itemsPerPage);
+    
+    // Actualizar paginación
+    currentPageSpan.textContent = Página ${currentPage} de ${totalPages || 1};
+    prevPageBtn.disabled = currentPage <= 1;
+    nextPageBtn.disabled = currentPage >= totalPages;
+    
+    // Calcular qué items mostrar
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const cotizacionesToShow = filteredCotizaciones.slice(startIndex, endIndex);
+    
+    // Limpiar la tabla
+    const tbody = cotizacionesTable.querySelector('tbody');
+    tbody.innerHTML = '';
+    
+    // Agregar cotizaciones a la tabla
+    if (cotizacionesToShow.length === 0) {
+        const tr = document.createElement('tr');
+        tr.innerHTML = '<td colspan="8" class="no-data">No se encontraron cotizaciones</td>';
+        tbody.appendChild(tr);
+    } else {
+        cotizacionesToShow.forEach(cotizacion => {
+            const tr = document.createElement('tr');
+            
+            // Servicios en formato lista
+            const serviciosText = cotizacion.servicios.map(s => s.nombre).join(', ');
+            
+            // Formatear precio
+            const formattedTotal = formatCurrency(cotizacion.total);
+            
+            // Formatear fecha
+            const fechaFormateada = formatDate(cotizacion.fecha);
+            
+            // Estado con clase para estilo
+            const estadoClass = getStatusClass(cotizacion.estado);
+            
+            tr.innerHTML = `
+                <td>${cotizacion.id}</td>
+                <td>${cotizacion.cliente}</td>
+                <td>${cotizacion.vehiculo} (${cotizacion.año})</td>
+                <td>${serviciosText}</td>
+                <td>${formattedTotal}</td>
+                <td>${fechaFormateada}</td>
+                <td><span class="status ${estadoClass}">${cotizacion.estado}</span></td>
+                <td class="actions">
+                    <button class="btn-icon view-btn" data-id="${cotizacion.id}">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                    <button class="btn-icon edit-btn" data-id="${cotizacion.id}">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="btn-icon delete-btn" data-id="${cotizacion.id}">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </td>
+            `;
+            
+            tbody.appendChild(tr);
+        });
+        
+        // Agregar event listeners a los botones
+        document.querySelectorAll('.view-btn').forEach(btn => {
+            btn.addEventListener('click', () => openViewCotizacionModal(parseInt(btn.dataset.id)));
+        });
+        
+        document.querySelectorAll('.edit-btn').forEach(btn => {
+            btn.addEventListener('click', () => openEditCotizacionModal(parseInt(btn.dataset.id)));
+        });
+        
+        document.querySelectorAll('.delete-btn').forEach(btn => {
+            btn.addEventListener('click', () => openDeleteConfirmModal(parseInt(btn.dataset.id)));
+        });
+    }
+}
+
+// Funciones auxiliares
+function formatCurrency(amount) {
+    return new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(amount);
+}
+
+function formatDate(dateString) {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('es-CO');
+}
+
+function getStatusClass(status) {
+    switch(status) {
+        case 'Pendiente': return 'status-pending';
+        case 'Aprobada': return 'status-approved';
+        case 'Rechazada': return 'status-rejected';
+        default: return '';
+    }
+}
+
+// Modal para nueva cotización
+function openNewCotizacionModal() {
+    // Limpiar formulario
+    cotizacionForm.reset();
+    document.getElementById('cotizacionId').value = '';
+    document.getElementById('modalTitle').textContent = 'Nueva Cotización';
+    updateTotal();
+    currentCotizacionId = null;
+    
+    // Mostrar modal
+    cotizacionModal.style.display = 'block';
+}
+
+// Modal para editar cotización
+function openEditCotizacionModal(id) {
+    const cotizacion = cotizaciones.find(c => c.id === id);
+    if (!cotizacion) return;
+    
+    currentCotizacionId = id;
+    document.getElementById('modalTitle').textContent = 'Editar Cotización';
+    
+    // Llenar formulario
+    document.getElementById('cotizacionId').value = cotizacion.id;
+    document.getElementById('clientName').value = cotizacion.cliente;
+    document.getElementById('clientEmail').value = cotizacion.email;
+    document.getElementById('clientPhone').value = cotizacion.telefono;
+    document.getElementById('carModel').value = cotizacion.vehiculo;
+    document.getElementById('carYear').value = cotizacion.año;
+    document.getElementById('observations').value = cotizacion.observaciones || '';
+    
+    // Marcar servicios
+    serviceCheckboxes.forEach(checkbox => {
+        const serviceName = checkbox.nextElementSibling.textContent.split('(')[0].trim();
+        checkbox.checked = cotizacion.servicios.some(s => s.nombre === serviceName);
+    });
+    
+    updateTotal();
+    cotizacionModal.style.display = 'block';
+}
+
+// Modal para ver detalles de cotización
+function openViewCotizacionModal(id) {
+    const cotizacion = cotizaciones.find(c => c.id === id);
+    if (!cotizacion) return;
+    
+    currentCotizacionId = id;
+    
+    // Llenar datos en el modal
+    document.getElementById('viewCotizacionId').textContent = cotizacion.id;
+    document.getElementById('viewFecha').textContent = formatDate(cotizacion.fecha);
+    document.getElementById('viewClientName').textContent = cotizacion.cliente;
+    document.getElementById('viewClientEmail').textContent = cotizacion.email;
+    document.getElementById('viewClientPhone').textContent = cotizacion.telefono;
+    document.getElementById('viewCarModel').textContent = cotizacion.vehiculo;
+    document.getElementById('viewCarYear').textContent = cotizacion.año;
+    document.getElementById('viewObservations').textContent = cotizacion.observaciones || 'Ninguna';
+    document.getElementById('viewTotalAmount').textContent = formatCurrency(cotizacion.total);
+    
+    const statusElement = document.getElementById('viewStatus');
+    statusElement.textContent = cotizacion.estado;
+    statusElement.className = getStatusClass(cotizacion.estado);
+    
+    // Llenar tabla de servicios
+    const servicesList = document.getElementById('viewServicesList');
+    servicesList.innerHTML = '';
+    
+    cotizacion.servicios.forEach(servicio => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td>${servicio.nombre}</td>
+            <td>${formatCurrency(servicio.precio)}</td>
+        `;
+        servicesList.appendChild(tr);
+    });
+    
+    viewCotizacionModal.style.display = 'block';
+}
+
+// Modal para confirmar eliminación
+function openDeleteConfirmModal(id) {
+    currentCotizacionId = id;
+    deleteModal.style.display = 'block';
+}
+
+// Actualizar total al seleccionar servicios
+function updateTotal() {
+    let total = 0;
+    serviceCheckboxes.forEach(checkbox => {
+        if (checkbox.checked) {
+            total += parseInt(checkbox.dataset.price);
+        }
+    });
+    totalAmountSpan.textContent = formatCurrency(total);
+}
+
+// Manejar envío del formulario
+function handleFormSubmit(e) {
+    e.preventDefault();
+    
+    // Obtener valores del formulario
+    const cliente = document.getElementById('clientName').value;
+    const email = document.getElementById('clientEmail').value;
+    const telefono = document.getElementById('clientPhone').value;
+    const vehiculo = document.getElementById('carModel').value;
+    const año = parseInt(document.getElementById('carYear').value);
+    const observaciones = document.getElementById('observations').value;
+    
+    // Obtener servicios seleccionados
+    const servicios = [];
+    let total = 0;
+    serviceCheckboxes.forEach(checkbox => {
+        if (checkbox.checked) {
+            const precio = parseInt(checkbox.dataset.price);
+            const nombre = checkbox.nextElementSibling.textContent.split('(')[0].trim();
+            servicios.push({ nombre, precio });
+            total += precio;
+        }
+    });
+    
+    // Validación básica
+    if (servicios.length === 0) {
+        alert('Debe seleccionar al menos un servicio');
+        return;
+    }
+    
+    // Fecha actual
+    const fecha = new Date().toISOString().split('T')[0];
+    
+    // Crear o actualizar cotización
+    if (currentCotizacionId) {
+        // Actualizar existente
+        const index = cotizaciones.findIndex(c => c.id === currentCotizacionId);
+        if (index !== -1) {
+            cotizaciones[index] = {
+                ...cotizaciones[index],
+                cliente,
+                email,
+                telefono,
+                vehiculo,
+                año,
+                servicios,
+                total,
+                observaciones,
+                // Mantener fecha y estado originales
+                fecha: cotizaciones[index].fecha,
+                estado: cotizaciones[index].estado
+            };
+        }
+    } else {
+        // Crear nueva
+        const newId = cotizaciones.length > 0 ? Math.max(...cotizaciones.map(c => c.id)) + 1 : 1;
+        cotizaciones.push({
+            id: newId,
+            cliente,
+            email,
+            telefono,
+            vehiculo,
+            año,
+            servicios,
+            total,
+            fecha,
+            estado: 'Pendiente',
+            observaciones
+        });
+    }
+    
+    // Guardar y actualizar vista
+    saveCotizacionesToStorage();
+    renderCotizaciones();
+    cotizacionModal.style.display = 'none';
+}
+
+// Eliminar cotización
+function deleteCotizacion() {
+    if (currentCotizacionId) {
+        cotizaciones = cotizaciones.filter(c => c.id !== currentCotizacionId);
+        saveCotizacionesToStorage();
+        renderCotizaciones();
+        deleteModal.style.display = 'none';
+        currentCotizacionId = null;
+    }
+}
+
+// Imprimir cotización
+function printCotizacion() {
+    const cotizacion = cotizaciones.find(c => c.id === currentCotizacionId);
+    if (!cotizacion) return;
+    
+    // Crear contenido para imprimir
+    const printContent = `
+        <html>
+        <head>
+            <title>Cotización #${cotizacion.id} - Full Paint Cars</title>
+            <style>
+                body { font-family: Arial, sans-serif; line-height: 1.6; margin: 0; padding: 20px; }
+                .header { display: flex; justify-content: space-between; border-bottom: 1px solid #ddd; padding-bottom: 20px; margin-bottom: 20px; }
+                .company-info h1 { margin: 0; color: #333; }
+                .company-info p { margin: 5px 0; color: #666; }
+                .cotizacion-info { text-align: right; }
+                h2 { color: #333; border-bottom: 1px solid #ddd; padding-bottom: 10px; }
+                .section { margin-bottom: 20px; }
+                table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+                th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #ddd; }
+                th { background-color: #f8f8f8; }
+                .total { font-size: 1.2em; font-weight: bold; text-align: right; margin-top: 20px; }
+                .footer { margin-top: 50px; text-align: center; font-size: 0.9em; color: #666; }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <div class="company-info">
+                    <h1>Full Paint Cars</h1>
+                    <p>Servicios Automotrices de Calidad</p>
+                    <p>NIT: 900.123.456-7</p>
+                    <p>Dirección: Calle 123 #45-67, Bogotá</p>
+                    <p>Teléfono: (601) 123-4567</p>
+                </div>
+                <div class="cotizacion-info">
+                    <h2>COTIZACIÓN</h2>
+                    <p><strong>Nº:</strong> ${cotizacion.id}</p>
+                    <p><strong>Fecha:</strong> ${formatDate(cotizacion.fecha)}</p>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2>Información del Cliente</h2>
+                <p><strong>Nombre:</strong> ${cotizacion.cliente}</p>
+                <p><strong>Email:</strong> ${cotizacion.email}</p>
+                <p><strong>Teléfono:</strong> ${cotizacion.telefono}</p>
+            </div>
+            
+            <div class="section">
+                <h2>Información del Vehículo</h2>
+                <p><strong>Modelo:</strong> ${cotizacion.vehiculo}</p>
+                <p><strong>Año:</strong> ${cotizacion.año}</p>
+            </div>
+            
+            <div class="section">
+                <h2>Servicios Cotizados</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Descripción</th>
+                            <th style="text-align: right;">Precio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${cotizacion.servicios.map(servicio => `
+                            <tr>
+                                <td>${servicio.nombre}</td>
+                                <td style="text-align: right;">${formatCurrency(servicio.precio)}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+                <div class="total">
+                    Total: ${formatCurrency(cotizacion.total)}
+                </div>
+            </div>
+            
+            ${cotizacion.observaciones ? `
+                <div class="section">
+                    <h2>Observaciones</h2>
+                    <p>${cotizacion.observaciones}</p>
+                </div>
+            ` : ''}
+            
+            <div class="section">
+                <p><strong>Estado:</strong> ${cotizacion.estado}</p>
+                <p>Esta cotización tiene validez de 15 días a partir de la fecha de emisión.</p>
+            </div>
+            
+            <div class="footer">
+                <p>Full Paint Cars - Todos los derechos reservados © ${new Date().getFullYear()}</p>
+            </div>
+        </body>
+        </html>
+    `;
+    
+    // Abrir ventana de impresión
+    const printWindow = window.open('', '_blank');
+    printWindow.document.write(printContent);
+    printWindow.document.close();
+    printWindow.focus();
+    // Esperar a que se cargue el contenido
+    setTimeout(() => {
+        printWindow.print();
+        printWindow.close();
+    }, 500);
+}
+
+// Actualizar estado de cotización
+function openUpdateStatusOptions() {
+    const cotizacion = cotizaciones.find(c => c.id === currentCotizacionId);
+    if (!cotizacion) return;
+    
+    // Crear elementos para selección de estado
+    const statusContainer = document.createElement('div');
+    statusContainer.className = 'status-options';
+    statusContainer.innerHTML = `
+        <h3>Actualizar Estado</h3>
+        <div class="status-btns">
+            <button class="status-btn ${cotizacion.estado === 'Pendiente' ? 'active' : ''}" data-status="Pendiente">Pendiente</button>
+            <button class="status-btn ${cotizacion.estado === 'Aprobada' ? 'active' : ''}" data-status="Aprobada">Aprobada</button>
+            <button class="status-btn ${cotizacion.estado === 'Rechazada' ? 'active' : ''}" data-status="Rechazada">Rechazada</button>
+        </div>
+    `;
+    
+    // Reemplazar botón con opciones
+    const modalActions = document.querySelector('.modal-actions');
+    modalActions.innerHTML = '';
+    modalActions.appendChild(statusContainer);
+    
+    // Agregar botón para volver
+    const backBtn = document.createElement('button');
+    backBtn.className = 'btn-secondary';
+    backBtn.innerHTML = 'Volver';
+    backBtn.addEventListener('click', () => {
+        modalActions.innerHTML = `
+            <button type="button" id="printBtn" class="btn-secondary">
+                <i class="fas fa-print"></i> Imprimir
+            </button>
+            <button type="button" id="updateStatusBtn" class="btn-primary">
+                Actualizar Estado
+            </button>
+        `;
+        // Restaurar event listeners
+        document.getElementById('printBtn').addEventListener('click', printCotizacion);
+        document.getElementById('updateStatusBtn').addEventListener('click', openUpdateStatusOptions);
+    });
+    modalActions.appendChild(backBtn);
+    
+    // Agregar eventos a los botones de estado
+    document.querySelectorAll('.status-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const newStatus = btn.dataset.status;
+            updateCotizacionStatus(newStatus);
+            
+            // Actualizar vista
+            document.getElementById('viewStatus').textContent = newStatus;
+            document.getElementById('viewStatus').className = getStatusClass(newStatus);
+            
+            // Restaurar botones originales
+            backBtn.click();
+        });
+    });
+}
+
+// Actualizar estado de cotización
+function updateCotizacionStatus(newStatus) {
+    const index = cotizaciones.findIndex(c => c.id === currentCotizacionId);
+    if (index !== -1) {
+        cotizaciones[index].estado = newStatus;
+        saveCotizacionesToStorage();
+        renderCotizaciones();
+    }
+}
+
+    </script>
+</body>
+</html>

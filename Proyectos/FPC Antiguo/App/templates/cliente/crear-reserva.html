@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+
+{% block title %}Crear Reserva{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Crear Reserva desde Cotización</h4>
+                </div>
+                <div class="card-body">
+                    {% if cotizacion %}
+                    <div class="mb-4">
+                        <h5>Detalles de la Cotización</h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p><strong>Vehículo:</strong> {{ cotizacion.marca }} {{ cotizacion.modelo }} ({{ cotizacion.placa }})</p>
+                                <p><strong>Total:</strong> ${{ cotizacion.total }}</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p><strong>Fecha de cotización:</strong> {{ cotizacion.fecha_creacion }}</p>
+                                <p><strong>Estado:</strong> <span class="status-badge status-{{ cotizacion.estado }}">{{ cotizacion.estado }}</span></p>
+                            </div>
+                        </div>
+
+                        <div class="mt-3">
+                            <h6>Servicios incluidos:</h6>
+                            <div class="service-list">
+                                {% for servicio in servicios %}
+                                <div class="service-item d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <span class="service-pill">{{ servicio.nombre }}</span>
+                                        <small class="text-muted">{{ servicio.cantidad }} x ${{ servicio.precio }}</small>
+                                    </div>
+                                    <div class="text-end">
+                                        <strong>${{ servicio.subtotal }}</strong>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            <div class="d-flex justify-content-between mt-3">
+                                <h6>Total:</h6>
+                                <h6>${{ cotizacion.total }}</h6>
+                            </div>
+                        </div>
+                    </div>
+
+                    <form action="{{ url_for('cliente_bp.crear_reserva', cotizacion_id=cotizacion.cotizacion_id) }}" method="POST">
+                        <h5 class="mb-3">Programar Reserva</h5>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="fecha" class="form-label">Fecha</label>
+                                <input type="date" class="form-control" id="fecha" name="fecha" required min="{{ tomorrow }}">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="hora" class="form-label">Hora</label>
+                                <input type="time" class="form-control" id="hora" name="hora" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="comentario" class="form-label">Comentarios adicionales</label>
+                            <textarea class="form-control" id="comentario" name="comentario" rows="3" placeholder="Instrucciones especiales o detalles adicionales que deberíamos conocer"></textarea>
+                        </div>
+                        
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle me-2"></i>
+                            <small>Al crear la reserva, aceptas los términos y condiciones del servicio</small>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between mt-4">
+                            <a href="{{ url_for('cliente_bp.reservas') }}" class="btn btn-outline-secondary">
+                                <i class="fas fa-arrow-left me-1"></i> Volver
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-calendar-check me-1"></i> Confirmar Reserva
+                            </button>
+                        </div>
+                    </form>
+                    {% else %}
+                    <div class="alert alert-warning">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        Cotización no encontrada o no disponible
+                    </div>
+                    <div class="text-center mt-3">
+                        <a href="{{ url_for('cliente_bp.reservas') }}" class="btn btn-outline-primary">
+                            <i class="fas fa-arrow-left me-1"></i> Volver a Reservas
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Configurar fecha mínima como mañana
+    document.addEventListener('DOMContentLoaded', function() {
+        const today = new Date();
+        const tomorrow = new Date(today);
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        
+        // Formatear fecha para input date (YYYY-MM-DD)
+        const tomorrowFormatted = tomorrow.toISOString().split('T')[0];
+        document.getElementById('fecha').min = tomorrowFormatted;
+        
+        // Configurar horarios disponibles (8:00 AM - 5:00 PM)
+        const horaInput = document.getElementById('hora');
+        horaInput.min = "08:00";
+        horaInput.max = "17:00";
+    });
+</script>
+{% endblock %}

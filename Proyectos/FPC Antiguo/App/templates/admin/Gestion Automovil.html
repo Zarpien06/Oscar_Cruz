@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Automóvil - Full Paint Cars</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin/gestion automoviles.css') }}">
+  
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="logo">
+                <h2>Admin</h2>
+            </div>
+            <ul class="menu">
+                <li >
+                    <a href="Dasboard.html"><i class="fas fa-home"></i> Dashboard</a>
+                </li>
+                <li>
+                    <a href="Gestion Usuarios.html"><i class="fas fa-users"></i> Usuarios</a>
+                </li>
+                <li>
+                    <a href="Gestion Rol.html"><i class="fas fa-user-tag"></i> Roles</a>
+                </li>
+                <li class="active">
+                    <a href="Gestion Automovil.html"><i class="fas fa-car"></i> Automoviles</a>
+                </li>
+                <li>
+                    <a href="Gestion Chat.html"><i class="fas fa-comments"></i> Chat</a>
+                </li>
+                <li>
+                    <a href="Gestion Reportes.HTML"><i class="fas fa-chart-bar"></i> Reportes</a>
+                </li>
+                <li>
+                    <a href="Gestion Cotizaciones.html"><i class="fas fa-file-invoice-dollar"></i> Cotizaciones</a>
+                </li>
+                <li>
+                    <a href="Gestion Procesos.html"><i class="fas fa-tasks"></i> Procesos</a>
+                </li>
+                <li>
+                    <a href="#configuracion"><i class="fas fa-cog"></i> Configuración</a>
+                </li>
+            </ul>
+            <div class="logout">
+                <a href="#"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
+            </div>
+        </nav>
+
+
+        <main class="content">
+            <header>
+                <h1>Gestión de Automóvil</h1>
+                <div class="user-info">
+                    <span>Admin</span>
+                    <i class="fas fa-user-circle"></i>
+                </div>
+            </header>
+
+            <div class="vehicle-management">
+                <div class="section-header">
+                    <h2>Automóviles Registrados</h2>
+                    <button id="add-vehicle-btn" class="primary-btn">
+                        <i class="fas fa-plus"></i> Nuevo Automóvil
+                    </button>
+                </div>
+
+                <div class="search-filter">
+                    <div class="search-bar">
+                        <input type="text" id="search-vehicle" placeholder="Buscar por placa, modelo o propietario...">
+                        <button><i class="fas fa-search"></i></button>
+                    </div>
+                    <div class="filters">
+                        <select id="filter-status">
+                            <option value="">Estado</option>
+                            <option value="active">Activo</option>
+                            <option value="maintenance">En Mantenimiento</option>
+                            <option value="complete">Completado</option>
+                        </select>
+                        <select id="filter-year">
+                            <option value="">Año</option>
+                            <option value="2024">2024</option>
+                            <option value="2023">2023</option>
+                            <option value="2022">2022</option>
+                            <option value="older">Anteriores</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="vehicles-list">
+                    <table id="vehicles-table">
+                        <thead>
+                            <tr>
+                                <th>Placa</th>
+                                <th>Marca</th>
+                                <th>Modelo</th>
+                                <th>Año</th>
+                                <th>Propietario</th>
+                                <th>Estado</th>
+                                <th>Último Servicio</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Los datos se cargarán dinámicamente con JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="pagination">
+                    <button id="prev-page"><i class="fas fa-chevron-left"></i></button>
+                    <span id="page-info">Página 1 de 1</span>
+                    <button id="next-page"><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal para agregar/editar automóvil -->
+<!-- vehicle_modal.html (o dentro de tu plantilla principal) -->
+<div id="vehicle-modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 id="modal-title">Agregar Nuevo Automóvil</h3>
+            <button class="close-btn">&times;</button>
+        </div>
+        <div class="modal-body">
+            <form id="vehicle-form" action="{{ url_for('guardar_vehiculo') }}" method="POST">
+                <div class="form-group">
+                    <label for="plate">Placa*</label>
+                    <input type="text" id="plate" name="placa" required placeholder="Ej: ABC123">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="brand">Marca*</label>
+                        <select id="brand" name="marca_id" required>
+                            {% for marca in marcas %}
+                                <option value="{{ marca.id }}">{{ marca.nombre }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="model">Modelo*</label>
+                        <input type="text" id="model" name="modelo" required placeholder="Ej: Corolla">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="year">Año*</label>
+                        <input type="number" id="year" name="anio" required placeholder="Ej: 2023">
+                    </div>
+                    <div class="form-group">
+                        <label for="color">Color*</label>
+                        <select id="color" name="color_id" required>
+                            {% for color in colores %}
+                                <option value="{{ color.id }}">{{ color.nombre }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="owner">Propietario*</label>
+                    <input type="text" id="owner" name="propietario" required placeholder="Nombre completo">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="phone">Teléfono</label>
+                        <input type="tel" id="phone" name="telefono" placeholder="Ej: 3001234567">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="correo" placeholder="ejemplo@correo.com">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="status">Estado*</label>
+                    <select id="status" name="estado" required>
+                        {% for estado in estados %}
+                            <option value="{{ estado.valor }}">{{ estado.nombre }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="notes">Notas Adicionales</label>
+                    <textarea id="notes" name="notas" rows="3" placeholder="Información adicional sobre el vehículo..."></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="secondary-btn" id="cancel-btn">Cancelar</button>
+                    <button type="submit" class="primary-btn">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+    <!-- Modal para ver detalles del automóvil -->
+    <div id="details-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Detalles del Automóvil</h3>
+                <button class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="vehicle-details">
+                    <div class="details-header">
+                        <div class="vehicle-title">
+                            <h4 id="detail-brand-model">Toyota Corolla</h4>
+                            <span id="detail-plate" class="plate-badge">ABC123</span>
+                        </div>
+                        <span id="detail-status" class="status-badge active">Activo</span>
+                    </div>
+                    
+                    <div class="details-info">
+                        <div class="info-section">
+                            <h5>Información del Vehículo</h5>
+                            <div class="info-grid">
+                                <div class="info-item">
+                                    <span class="label">Año:</span>
+                                    <span id="detail-year" class="value">2023</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="label">Color:</span>
+                                    <span id="detail-color" class="value">Negro</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="label">Propietario:</span>
+                                    <span id="detail-owner" class="value">Juan Pérez</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="label">Teléfono:</span>
+                                    <span id="detail-phone" class="value">3001234567</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="label">Email:</span>
+                                    <span id="detail-email" class="value">ejemplo@correo.com</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="info-section">
+                            <h5>Historial de Servicios</h5>
+                            <table class="services-table">
+                                <thead>
+                                    <tr>
+                                        <th>Fecha</th>
+                                        <th>Servicio</th>
+                                        <th>Descripción</th>
+                                        <th>Estado</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="services-history">
+                                    <!-- Los datos se cargarán dinámicamente con JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="info-section">
+                            <h5>Notas</h5>
+                            <p id="detail-notes">Información adicional sobre el vehículo...</p>
+                        </div>
+                    </div>
+
+                    <div class="details-actions">
+                        <button class="secondary-btn" id="back-btn">
+                            <i class="fas fa-arrow-left"></i> Volver
+                        </button>
+                        <button class="action-btn" id="history-btn">
+                            <i class="fas fa-history"></i> Ver Historial Completo
+                        </button>
+                        <button class="action-btn" id="report-btn">
+                            <i class="fas fa-file-pdf"></i> Generar Reporte
+                        </button>
+                        <button class="primary-btn" id="edit-btn">
+                            <i class="fas fa-edit"></i> Editar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de confirmación para eliminar -->
+    <div id="delete-modal" class="modal">
+        <div class="modal-content modal-sm">
+            <div class="modal-header">
+                <h3>Confirmar Eliminación</h3>
+                <button class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>¿Está seguro que desea eliminar este automóvil? Esta acción no se puede deshacer.</p>
+                <div class="form-actions center">
+                    <button class="secondary-btn" id="cancel-delete-btn">Cancelar</button>
+                    <button class="danger-btn" id="confirm-delete-btn">Eliminar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/admin/gestion automoviles.js') }}"></script>
+</body>
+</html>

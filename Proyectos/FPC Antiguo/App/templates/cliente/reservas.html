@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Reservas - Full Paint Cars</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+       :root {
+    --primary-color: #3498db;
+    --primary-hover: #2980b9;
+    --secondary-color: #2c3e50;
+    --accent-color: #e74c3c;
+    --light-color: #ecf0f1;
+    --dark-color: #34495e;
+    --success-color: #27ae60;
+    --warning-color: #f39c12;
+    --danger-color: #c0392b;
+    --info-color: #3498db;
+    --border-radius: 10px;
+    --box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    --hover-transform: translateY(-5px);
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #ffffff;
+    padding-top: 76px;
+    color: #000000bd;
+    line-height: 1.6;
+}
+
+/* Navbar Improvements */
+.navbar {
+    background-color: rgba(0, 0, 0, 0.85) !important;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 0.7rem 1rem;
+}
+
+.navbar-brand {
+    font-weight: 700;
+    color: white !important;
+    display: flex;
+    align-items: center;
+}
+
+.navbar-brand i {
+    color: var(--primary-color);
+    margin-right: 8px;
+    font-size: 1.2rem;
+}
+
+.nav-link {
+    color: rgba(0, 0, 0, 0.648) !important;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    margin: 0 2px;
+}
+
+.nav-link:hover {
+    color: white !important;
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+}
+
+.nav-link.active {
+    color: rgb(0, 0, 0) !important;
+    border-bottom: 2px solid var(--primary-color);
+    background-color: rgba(52, 152, 219, 0.2);
+}
+
+/* Card Improvements */
+.card {
+    border-radius: var(--border-radius);
+    border: none;
+    box-shadow: var(--box-shadow);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+    background-color: #fff;
+}
+
+.card:hover {
+    transform: var(--hover-transform);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.card-header {
+    background-color: var(--secondary-color);
+    color: white;
+    font-weight: 600;
+    padding: 0.8rem 1.2rem;
+    border-bottom: none;
+}
+
+/* Status Badge Refinements */
+.status-badge {
+    border-radius: 20px;
+    padding: 0.4rem 0.9rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: inline-flex;
+    align-items: center;
+}
+
+.status-badge i {
+    margin-right: 4px;
+}
+
+/* Status Colors */
+.status-Pendiente {
+    background-color: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeeba;
+}
+
+.status-Confirmada {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.status-En.proceso {
+    background-color: #cce5ff;
+    color: #004085;
+    border: 1px solid #b8daff;
+}
+
+.status-Completada {
+    background-color: #d1ecf1;
+    color: #0c5460;
+    border: 1px solid #bee5eb;
+}
+
+.status-Cancelada {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+/* Button Improvements */
+.btn {
+    font-weight: 500;
+    border-radius: 5px;
+    padding: 0.5rem 1rem;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-hover);
+    border-color: var(--primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
+}
+
+.btn-outline-primary {
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--primary-color);
+    color: white;
+    transform: translateY(-2px);
+}
+
+.btn-outline-secondary:hover, 
+.btn-outline-danger:hover {
+    transform: translateY(-2px);
+}
+
+/* Service List Improvements */
+.service-list {
+    max-height: 300px;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+.service-item {
+    border-bottom: 1px solid #eee;
+    padding: 0.7rem 0;
+    transition: background-color 0.2s ease;
+}
+
+.service-item:hover {
+    background-color: #f9f9f9;
+}
+
+.service-item:last-child {
+    border-bottom: none;
+}
+
+/* Reservation Card Specific */
+.reservation-card {
+    border-left: 4px solid var(--primary-color);
+}
+
+.quotation-card {
+    border-left: 4px solid var(--accent-color);
+}
+
+/* Tab Navigation Improvements */
+.nav-tabs {
+    border-bottom: 1px solid #dee2e6;
+    margin-bottom: 2rem;
+}
+
+.nav-tabs .nav-link {
+    border: none;
+    color: #495057;
+    font-weight: 500;
+    padding: 0.8rem 1.5rem;
+    border-radius: 0;
+    margin-right: 5px;
+    transition: all 0.3s ease;
+}
+
+.nav-tabs .nav-link:hover {
+    border-color: transparent;
+    background-color: rgba(52, 152, 219, 0.1);
+    transform: none;
+}
+
+.nav-tabs .nav-link.active {
+    color: var(--primary-color);
+    background-color: transparent;
+    border-bottom: 3px solid var(--primary-color);
+    font-weight: 600;
+}
+
+/* Modal Improvements */
+.modal-header {
+    border-radius: calc(var(--border-radius) - 1px) calc(var(--border-radius) - 1px) 0 0;
+    padding: 1rem 1.5rem;
+}
+
+.modal-content {
+    border: none;
+    border-radius: var(--border-radius);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.modal-body {
+    padding: 1.5rem;
+}
+
+.modal-footer {
+    padding: 1rem 1.5rem;
+    border-top-color: #eee;
+}
+
+/* Form Control Improvements */
+.form-control, .form-select {
+    border-radius: 5px;
+    padding: 0.6rem 0.8rem;
+    border-color: #ddd;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+}
+
+.form-label {
+    font-weight: 500;
+    color: #495057;
+}
+
+/* Rating Stars */
+.rating-stars {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: center;
+}
+
+.rating-stars input {
+    display: none;
+}
+
+.rating-stars label {
+    cursor: pointer;
+    color: #ddd;
+    font-size: 1.5rem;
+    padding: 0 0.2rem;
+    transition: all 0.3s ease;
+}
+
+.rating-stars label:hover,
+.rating-stars label:hover ~ label,
+.rating-stars input:checked ~ label {
+    color: #ffc107;
+}
+
+/* Alert Improvements */
+.alert {
+    border-radius: var(--border-radius);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-width: 0;
+    border-left-width: 4px;
+}
+
+.alert-info {
+    background-color: #e8f4fd;
+    border-color: var(--info-color);
+    color: #0c5460;
+}
+
+.alert-warning {
+    background-color: #fff9e6;
+    border-color: var(--warning-color);
+    color: #856404;
+}
+
+/* Empty state illustrations */
+.text-center img {
+    max-width: 200px;
+    opacity: 0.6;
+    transition: all 0.3s ease;
+}
+
+.text-center img:hover {
+    opacity: 0.8;
+    transform: scale(1.05);
+}
+
+/* Table improvements */
+.table {
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+}
+
+.table thead {
+    background-color: #f8f9fa;
+}
+
+.table-hover tbody tr:hover {
+    background-color: #f1f7fb;
+}
+
+.table th {
+    font-weight: 600;
+    border-top: none;
+    padding: 1rem 0.75rem;
+}
+
+/* Responsive improvements */
+@media (max-width: 768px) {
+    body {
+        padding-top: 62px;
+    }
+    
+    .card-body {
+        padding: 1rem;
+    }
+    
+    .nav-tabs .nav-link {
+        padding: 0.6rem 1rem;
+        font-size: 0.9rem;
+    }
+    
+    .status-badge {
+        padding: 0.3rem 0.7rem;
+        font-size: 0.75rem;
+    }
+    
+    .service-list {
+        max-height: 250px;
+    }
+}
+
+/* Animation for alerts */
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.alert-container .alert {
+    animation: slideInRight 0.3s forwards;
+}
+
+/* Fix the broken link issue */
+a.btn-sm {
+    text-decoration: none;
+}
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('cliente_bp.dashboard') }}">
+                <i class="fas fa-car-side me-2"></i> Full Paint Cars
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('cliente_bp.dashboard') }}">
+                            <i class="fas fa-tachometer-alt me-1"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('cliente_bp.vehiculos') }}">
+                            <i class="fas fa-car me-1"></i> Mis Vehículos
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('cliente_bp.cotizar') }}">
+                            <i class="fas fa-clipboard-list me-1"></i> Cotizar Servicios
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{{ url_for('cliente_bp.reservas') }}">
+                            <i class="fas fa-calendar-check me-1"></i> Mis Reservas
+                        </a>
+                    </li>
+                </ul>
+                <div class="dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-user-circle me-1"></i> {{ session.get('user_name', 'Usuario') }}
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                        <li><a class="dropdown-item" href="{{ url_for('cliente_bp.perfil') }}"><i class="fas fa-user-cog me-2"></i> Mi Perfil</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="/cliente/logout"><i class="fas fa-sign-out-alt me-2"></i> Cerrar Sesión</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenido principal -->
+    <div class="container mt-4">
+        <!-- Mensajes flash -->
+        <div id="flashMessages">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+
+        <!-- Pestañas de navegación -->
+        <ul class="nav nav-tabs mb-4" id="reservasTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="activas-tab" data-bs-toggle="tab" data-bs-target="#activas" type="button" role="tab" aria-controls="activas" aria-selected="true">
+                    <i class="fas fa-calendar-check me-1"></i> Reservas Activas
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="historial-tab" data-bs-toggle="tab" data-bs-target="#historial" type="button" role="tab" aria-controls="historial" aria-selected="false">
+                    <i class="fas fa-history me-1"></i> Historial
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="cotizaciones-tab" data-bs-toggle="tab" data-bs-target="#cotizaciones" type="button" role="tab" aria-controls="cotizaciones" aria-selected="false">
+                    <i class="fas fa-file-invoice-dollar me-1"></i> Cotizaciones Pendientes 
+                    {% if cotizaciones|length > 0 %}
+                    <span class="badge bg-danger rounded-pill ms-1">{{ cotizaciones|length }}</span>
+                    {% endif %}
+                </button>
+            </li>
+        </ul>
+
+        <!-- Contenido de las pestañas -->
+        <div class="tab-content" id="reservasTabContent">
+            <!-- Reservas Activas -->
+            <div class="tab-pane fade show active" id="activas" role="tabpanel" aria-labelledby="activas-tab">
+                <div class="row">
+                    {% set activas_count = 0 %}
+                    {% for reserva in reservas %}
+                        {% if reserva.estado in ['Pendiente', 'Confirmada', 'En proceso'] %}
+                            {% set activas_count = activas_count + 1 %}
+                            <div class="col-md-6 mb-4">
+                                <div class="card h-100 reservation-card">
+                                    <div class="card-header d-flex justify-content-between align-items-center">
+                                        <h5 class="mb-0">{{ reserva.marca }} {{ reserva.modelo }}</h5>
+                                        <span class="status-badge status-{{ reserva.estado }}">{{ reserva.estado }}</span>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row g-3">
+                                            <div class="col-md-5">
+                                                {% if reserva.imagen %}
+                                                <img src="{{ reserva.imagen }}" class="img-fluid rounded" alt="{{ reserva.marca }} {{ reserva.modelo }}">
+                                                {% else %}
+                                                <img src="/static/img/default-car.jpg" class="img-fluid rounded" alt="Vehículo">
+                                                {% endif %}
+                                                <div class="mt-3">
+                                                    <p class="mb-1"><i class="fas fa-calendar me-2"></i> <strong>Fecha:</strong> {{ reserva.fecha }}</p>
+                                                    <p class="mb-1"><i class="fas fa-clock me-2"></i> <strong>Hora:</strong> {{ reserva.hora }}</p>
+                                                    <p class="mb-1"><i class="fas fa-tag me-2"></i> <strong>Total:</strong> ${{ '{:,.0f}'.format(reserva.total) }}</p>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-7">
+                                                <h6>Servicios incluidos:</h6>
+                                                {% if reserva.servicios %}
+                                                <div class="service-list">
+                                                    {% for servicio in reserva.servicios %}
+                                                    <div class="service-item">
+                                                        <p class="mb-1"><strong>{{ servicio.nombre }}</strong> x {{ servicio.cantidad }}</p>
+                                                        <small class="text-muted">{{ servicio.descripcion|truncate(60) }}</small>
+                                                        <p class="mb-0 text-end"><strong>${{ '{:,.0f}'.format(servicio.subtotal) }}</strong></p>
+                                                    </div>
+                                                    {% endfor %}
+                                                </div>
+                                                {% else %}
+                                                <p class="text-muted">No hay servicios detallados.</p>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="mt-3">
+                                            {% if reserva.comentario %}
+                                            <p class="mb-2"><strong>Comentario:</strong> {{ reserva.comentario }}</p>
+                                            {% endif %}
+                                            
+                                            <div class="mt-3 d-flex justify-content-between">
+                                                <a href="{{ url_for('cliente_bp.chat_vehiculo', vehiculo_id=reserva.vehiculo_id) }}" class="btn btn-sm btn-outline-primary">
+                                                    <i class="fas fa-comments me-1"></i> Chat
+                                                </a>
+                                                <a href="{{ url_for('cliente_bp.reportes_vehiculo', vehiculo_id=reserva.vehiculo_id) }}" class="btn btn-sm btn-outline-secondary">
+                                                    <i class="fas fa-clipboard-list me-1"></i> Ver Progreso
+                                                </a>
+                                                {% if reserva.estado == 'Pendiente' %}
+                                                <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#cancelarReservaModal" data-reserva-id="{{ reserva.reserva_id }}">
+                                                    <i class="fas fa-times me-1"></i> Cancelar
+                                                </button>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                    
+                    {% if activas_count == 0 %}
+                        <div class="col-12 text-center py-5">
+                            <img src="/static/img/no-reservations.svg" alt="Sin reservas activas" style="max-width: 200px; opacity: 0.5;" class="mb-3">
+                            <h3 class="text-muted">No tienes reservas activas</h3>
+                            <p class="text-muted mb-4">¿Necesitas servicios para tu vehículo? Crea una nueva cotización.</p>
+                            <a href="{{ url_for('cliente_bp.cotizar') }}" class="btn btn-primary">
+                                <i class="fas fa-plus me-1"></i> Cotizar Servicios
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <!-- Historial de reservas -->
+            <div class="tab-pane fade" id="historial" role="tabpanel" aria-labelledby="historial-tab">
+                <div class="row">
+                    {% set historial_count = 0 %}
+                    {% for reserva in reservas %}
+                        {% if reserva.estado in ['Completada', 'Cancelada'] %}
+                            {% set historial_count = historial_count + 1 %}
+                            <div class="col-md-6 mb-4">
+                                <div class="card h-100">
+                                    <div class="card-header d-flex justify-content-between align-items-center">
+                                        <h5 class="mb-0">{{ reserva.marca }} {{ reserva.modelo }}</h5>
+                                        <span class="status-badge status-{{ reserva.estado }}">{{ reserva.estado }}</span>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row g-3">
+                                            <div class="col-md-5">
+                                                {% if reserva.imagen %}
+                                                <img src="{{ reserva.imagen }}" class="img-fluid rounded" alt="{{ reserva.marca }} {{ reserva.modelo }}">
+                                                {% else %}
+                                                <img src="/static/img/default-car.jpg" class="img-fluid rounded" alt="Vehículo">
+                                                {% endif %}
+                                                <div class="mt-3">
+                                                    <p class="mb-1"><i class="fas fa-calendar me-2"></i> <strong>Fecha:</strong> {{ reserva.fecha }}</p>
+                                                    <p class="mb-1"><i class="fas fa-clock me-2"></i> <strong>Hora:</strong> {{ reserva.hora }}</p>
+                                                    <p class="mb-1"><i class="fas fa-tag me-2"></i> <strong>Total:</strong> ${{ '{:,.0f}'.format(reserva.total) }}</p>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-7">
+                                                <h6>Servicios incluidos:</h6>
+                                                {% if reserva.servicios %}
+                                                <div class="service-list">
+                                                    {% for servicio in reserva.servicios %}
+                                                    <div class="service-item">
+                                                        <p class="mb-1"><strong>{{ servicio.nombre }}</strong> x {{ servicio.cantidad }}</p>
+                                                        <small class="text-muted">{{ servicio.descripcion|truncate(60) }}</small>
+                                                        <p class="mb-0 text-end"><strong>${{ '{:,.0f}'.format(servicio.subtotal) }}</strong></p>
+                                                    </div>
+                                                    {% endfor %}
+                                                </div>
+                                                {% else %}
+                                                <p class="text-muted">No hay servicios detallados.</p>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="mt-3">
+                                            {% if reserva.comentario %}
+                                            <p class="mb-3"><strong>Comentario:</strong> {{ reserva.comentario }}</p>
+                                            {% endif %}
+                                            
+                                            <div class="mt-3 d-flex justify-content-between">
+                                                {% if reserva.estado == 'Completada' %}
+                                                <a href="{{ url_for('cliente_bp.reportes_vehiculo', vehiculo_id=reserva.vehiculo_id) }}"> class="btn btn-sm btn-outline-secondary">
+                                                    <i class="fas fa-clipboard-check me-1"></i> Ver Reporte
+                                                </a>
+                                                <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#calificarServicioModal" data-reserva-id="{{ reserva.reserva_id }}">
+                                                    <i class="fas fa-star me-1"></i> Calificar
+                                                </button>
+                                                {% else %}
+                                                <a href="{{ url_for('cliente_bp.reportes_vehiculo', vehiculo_id=reserva.vehiculo_id) }}"> class="btn btn-sm btn-outline-secondary">
+                                                    <i class="fas fa-history me-1"></i> Ver Historial
+                                                </a>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                    
+                    {% if historial_count == 0 %}
+                        <div class="col-12 text-center py-5">
+                            <img src="/static/img/no-history.svg" alt="Sin historial" style="max-width: 200px; opacity: 0.5;" class="mb-3">
+                            <h3 class="text-muted">No tienes reservas en el historial</h3>
+                            <p class="text-muted">Aquí aparecerán tus servicios completados o cancelados.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <!-- Cotizaciones pendientes -->
+            <div class="tab-pane fade" id="cotizaciones" role="tabpanel" aria-labelledby="cotizaciones-tab">
+                <div class="row">
+                    {% if cotizaciones|length > 0 %}
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Fecha</th>
+                                        <th>Vehículo</th>
+                                        <th>Total</th>
+                                        <th>Estado</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for cotizacion in cotizaciones %}
+                                    <tr>
+                                        <td>{{ cotizacion.fecha_creacion.strftime('%d/%m/%Y') }}</td>
+                                        <td>{{ cotizacion.marca }} {{ cotizacion.modelo }} ({{ cotizacion.placa }})</td>
+                                        <td class="fw-bold">${{ '{:,.0f}'.format(cotizacion.total) }}</td>
+                                        <td><span class="badge bg-warning text-dark">{{ cotizacion.estado }}</span></td>
+                                        <td>
+                                            <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#agendarReservaModal" data-cotizacion-id="{{ cotizacion.cotizacion_id }}" data-vehiculo="{{ cotizacion.marca }} {{ cotizacion.modelo }}" data-total="{{ cotizacion.total }}">
+                                                <i class="fas fa-calendar-plus me-1"></i> Agendar
+                                            </button>
+                                            <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#detallesCotizacionModal" data-cotizacion-id="{{ cotizacion.cotizacion_id }}">
+                                                <i class="fas fa-eye me-1"></i> Detalles
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="col-12 text-center py-5">
+                            <img src="/static/img/no-quotes.svg" alt="Sin cotizaciones" style="max-width: 200px; opacity: 0.5;" class="mb-3">
+                            <h3 class="text-muted">No tienes cotizaciones pendientes</h3>
+                            <p class="text-muted mb-4">¿Necesitas servicios para tu vehículo? Crea una nueva cotización.</p>
+                            <a href="{{ url_for('cliente_bp.cotizar') }}" class="btn btn-primary">
+                                <i class="fas fa-plus me-1"></i> Cotizar Servicios
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Agendar Reserva -->
+    <div class="modal fade" id="agendarReservaModal" tabindex="-1" aria-labelledby="agendarReservaModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="agendar-title">Agendar Reserva</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="reservaForm" action="{{ url_for('cliente_bp.crear_reserva', cotizacion_id=0) }}" method="POST">
+                        <input type="hidden" name="cotizacion_id" id="cotizacion_id" value="">
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Vehículo</label>
+                            <input type="text" class="form-control" id="vehiculo-info" readonly>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Total a pagar</label>
+                            <input type="text" class="form-control" id="total-info" readonly>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="fecha" class="form-label">Fecha de reserva</label>
+                            <input type="date" class="form-control" id="fecha" name="fecha" required min="{{ today }}">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="hora" class="form-label">Hora de reserva</label>
+                            <select class="form-select" id="hora" name="hora" required>
+                                <option value="" disabled selected>Selecciona una hora</option>
+                                <option value="08:00">08:00 AM</option>
+                                <option value="09:00">09:00 AM</option>
+                                <option value="10:00">10:00 AM</option>
+                                <option value="11:00">11:00 AM</option>
+                                <option value="12:00">12:00 PM</option>
+                                <option value="13:00">01:00 PM</option>
+                                <option value="14:00">02:00 PM</option>
+                                <option value="15:00">03:00 PM</option>
+                                <option value="16:00">04:00 PM</option>
+                                <option value="17:00">05:00 PM</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="comentario" class="form-label">Comentarios adicionales</label>
+                            <textarea class="form-control" id="comentario" name="comentario" rows="3" placeholder="Ingresa cualquier detalle adicional o requerimiento especial..."></textarea>
+                        </div>
+                        
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle me-2"></i> Una vez agendada la reserva, recibirás una confirmación por parte del taller.
+                        </div>
+                        
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-calendar-check me-1"></i> Confirmar Reserva
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Detalles de Cotización -->
+    <div class="modal fade" id="detallesCotizacionModal" tabindex="-1" aria-labelledby="detallesCotizacionModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-secondary text-white">
+                    <h5 class="modal-title" id="detallesCotizacionModalLabel">Detalles de Cotización</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="detallesCotizacionBody">
+                    <div class="text-center">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Cargando...</span>
+                        </div>
+                        <p class="mt-2">Cargando detalles...</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" id="agendar-desde-detalles">
+                        <i class="fas fa-calendar-plus me-1"></i> Agendar Reserva
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Calificar Servicio -->
+    <div class="modal fade" id="calificarServicioModal" tabindex="-1" aria-labelledby="calificarServicioModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="calificarServicioModalLabel">Calificar Servicio</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="calificarForm" action="/cliente/calificar-servicio" method="POST">
+                        <input type="hidden" name="reserva_id" id="calificar_reserva_id" value="">
+                        
+                        <div class="mb-3">
+                            <label for="calificacion" class="form-label">¿Cómo calificarías nuestro servicio?</label>
+                            <div class="rating">
+                                <div class="stars">
+                                    <div class="d-flex justify-content-center">
+                                        <div class="rating-stars">
+                                            <input type="radio" name="calificacion" id="rating-5" value="5">
+                                            <label for="rating-5"><i class="fas fa-star fa-2x"></i></label>
+                                            <input type="radio" name="calificacion" id="rating-4" value="4">
+                                            <label for="rating-4"><i class="fas fa-star fa-2x"></i></label>
+                                            <input type="radio" name="calificacion" id="rating-3" value="3">
+                                            <label for="rating-3"><i class="fas fa-star fa-2x"></i></label>
+                                            <input type="radio" name="calificacion" id="rating-2" value="2">
+                                            <label for="rating-2"><i class="fas fa-star fa-2x"></i></label>
+                                            <input type="radio" name="calificacion" id="rating-1" value="1">
+                                            <label for="rating-1"><i class="fas fa-star fa-2x"></i></label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="comentario_calificacion" class="form-label">Comentarios sobre el servicio</label>
+                            <textarea class="form-control" id="comentario_calificacion" name="comentario" rows="3" placeholder="¿Qué te pareció nuestro servicio? Tu opinión nos ayuda a mejorar..."></textarea>
+                        </div>
+                        
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-paper-plane me-1"></i> Enviar Calificación
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Cancelar Reserva -->
+    <div class="modal fade" id="cancelarReservaModal" tabindex="-1" aria-labelledby="cancelarReservaModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="cancelarReservaModalLabel">Cancelar Reserva</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="cancelarForm" action="/cliente/cancelar-reserva" method="POST">
+                        <input type="hidden" name="reserva_id" id="cancelar_reserva_id" value="">
+                        
+                        <div class="alert alert-warning">
+                            <i class="fas fa-exclamation-triangle me-2"></i> ¿Estás seguro que deseas cancelar esta reserva? Esta acción no se puede deshacer.
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="motivo_cancelacion" class="form-label">Motivo de cancelación</label>
+                            <select class="form-select" id="motivo_cancelacion" name="motivo" required>
+                                <option value="" disabled selected>Selecciona un motivo</option>
+                                <option value="Cambio de planes">Cambio de planes</option>
+                                <option value="Problemas de horario">Problemas de horario</option>
+                                <option value="Servicio no necesario">Servicio no necesario</option>
+                                <option value="Encontré mejor oferta">Encontré mejor oferta</option>
+                                <option value="Otro">Otro motivo</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="comentario_cancelacion" class="form-label">Comentarios adicionales</label>
+                            <textarea class="form-control" id="comentario_cancelacion" name="comentario" rows="3" placeholder="Detalles adicionales sobre la cancelación..."></textarea>
+                        </div>
+                        
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-danger">
+                                <i class="fas fa-times-circle me-1"></i> Confirmar Cancelación
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Alerta de notificaciones -->
+    <div class="alert-container">
+        <!-- Las notificaciones dinámicas aparecerán aquí -->
+    </div>
+
+    <!-- Bootstrap JS y Popper -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.10.2/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+    
+    <script>
+        // Inicializar todos los tooltips
+        const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+
+        // Preparar modal de agendar reserva
+        const agendarReservaModal = document.getElementById('agendarReservaModal');
+        if (agendarReservaModal) {
+            agendarReservaModal.addEventListener('show.bs.modal', function (event) {
+                const button = event.relatedTarget;
+                const cotizacionId = button.getAttribute('data-cotizacion-id');
+                const vehiculo = button.getAttribute('data-vehiculo');
+                const total = button.getAttribute('data-total');
+                
+                document.getElementById('cotizacion_id').value = cotizacionId;
+                document.getElementById('vehiculo-info').value = vehiculo;
+                document.getElementById('total-info').value = '$ ' + parseFloat(total).toLocaleString('es-CL');
+                
+                // Actualizar acción del formulario
+                // Asumiendo que estás usando Flask con Jinja2
+                const baseUrl = "{{ url_for('cliente_bp.crear_reserva', cotizacion_id=0) }}".replace('/0', '');
+                document.getElementById('reservaForm').action = baseUrl + '/' + cotizacionId;
+                
+                // Establecer fecha mínima como hoy
+                const today = new Date().toISOString().split('T')[0];
+                document.getElementById('fecha').min = today;
+            });
+        }
+
+        // Preparar modal de cancelar reserva
+        const cancelarReservaModal = document.getElementById('cancelarReservaModal');
+        if (cancelarReservaModal) {
+            cancelarReservaModal.addEventListener('show.bs.modal', function (event) {
+                const button = event.relatedTarget;
+                const reservaId = button.getAttribute('data-reserva-id');
+                document.getElementById('cancelar_reserva_id').value = reservaId;
+            });
+        }
+
+        // Preparar modal de calificar servicio
+        const calificarServicioModal = document.getElementById('calificarServicioModal');
+        if (calificarServicioModal) {
+            calificarServicioModal.addEventListener('show.bs.modal', function (event) {
+                const button = event.relatedTarget;
+                const reservaId = button.getAttribute('data-reserva-id');
+                document.getElementById('calificar_reserva_id').value = reservaId;
+            });
+        }
+
+        // Preparar modal de detalles cotización
+        const detallesCotizacionModal = document.getElementById('detallesCotizacionModal');
+        if (detallesCotizacionModal) {
+            detallesCotizacionModal.addEventListener('show.bs.modal', async function (event) {
+                const button = event.relatedTarget;
+                const cotizacionId = button.getAttribute('data-cotizacion-id');
+                
+                // Mostrar spinner de carga
+                document.getElementById('detallesCotizacionBody').innerHTML = `
+                    <div class="text-center">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Cargando...</span>
+                        </div>
+                        <p class="mt-2">Cargando detalles de la cotización...</p>
+                    </div>
+                `;
+                
+                try {
+                    // Realizar solicitud para obtener detalles de la cotización
+                    const response = await fetch(`/cliente/cotizacion/${cotizacionId}`);
+                    const data = await response.json();
+                    
+                    if (data.error) {
+                        document.getElementById('detallesCotizacionBody').innerHTML = `
+                            <div class="alert alert-danger">
+                                <i class="fas fa-exclamation-circle me-2"></i> ${data.error}
+                            </div>
+                        `;
+                        return;
+                    }
+                    
+                    // Crear HTML con los detalles
+                    let html = `
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h5 class="mb-3">Información general</h5>
+                                <p><strong>Fecha de cotización:</strong> ${data.fecha_creacion}</p>
+                                <p><strong>Vehículo:</strong> ${data.marca} ${data.modelo}</p>
+                                <p><strong>Placa:</strong> ${data.placa}</p>
+                                <p><strong>Estado:</strong> <span class="badge bg-warning text-dark">${data.estado}</span></p>
+                            </div>
+                            <div class="col-md-6 text-md-end">
+                                <h5 class="mb-3">Resumen de costos</h5>
+                                <h3 class="text-primary">Total: $${parseFloat(data.total).toLocaleString('es-CL')}</h3>
+                            </div>
+                        </div>
+                        <hr>
+                        <h5 class="mb-3">Servicios incluidos</h5>
+                    `;
+                    
+                    if (data.servicios && data.servicios.length > 0) {
+                        html += `<div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Servicio</th>
+                                        <th>Descripción</th>
+                                        <th class="text-center">Cantidad</th>
+                                        <th class="text-end">Precio</th>
+                                        <th class="text-end">Subtotal</th>
+                                    </tr>
+                                </thead>
+                                <tbody>`;
+                        
+                        data.servicios.forEach(servicio => {
+                            html += `
+                                <tr>
+                                    <td>${servicio.nombre}</td>
+                                    <td>${servicio.descripcion}</td>
+                                    <td class="text-center">${servicio.cantidad}</td>
+                                    <td class="text-end">$${parseFloat(servicio.precio).toLocaleString('es-CL')}</td>
+                                    <td class="text-end">$${parseFloat(servicio.subtotal).toLocaleString('es-CL')}</td>
+                                </tr>
+                            `;
+                        });
+                        
+                        html += `
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="4" class="text-end"><strong>Total:</strong></td>
+                                        <td class="text-end"><strong>$${parseFloat(data.total).toLocaleString('es-CL')}</strong></td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>`;
+                    } else {
+                        html += `<div class="alert alert-info">No hay servicios detallados disponibles.</div>`;
+                    }
+                    
+                    document.getElementById('detallesCotizacionBody').innerHTML = html;
+                    
+                    // Configurar botón para agendar desde detalles
+                    document.getElementById('agendar-desde-detalles').setAttribute('data-cotizacion-id', cotizacionId);
+                    document.getElementById('agendar-desde-detalles').setAttribute('data-vehiculo', `${data.marca} ${data.modelo}`);
+                    document.getElementById('agendar-desde-detalles').setAttribute('data-total', data.total);
+                    document.getElementById('agendar-desde-detalles').setAttribute('data-bs-toggle', 'modal');
+                    document.getElementById('agendar-desde-detalles').setAttribute('data-bs-target', '#agendarReservaModal');
+                    
+                } catch (error) {
+                    document.getElementById('detallesCotizacionBody').innerHTML = `
+                        <div class="alert alert-danger">
+                            <i class="fas fa-exclamation-circle me-2"></i> Error al cargar los detalles de la cotización.
+                        </div>
+                    `;
+                    console.error('Error:', error);
+                }
+            });
+        }
+
+        // Función para mostrar notificaciones
+        function mostrarNotificacion(mensaje, tipo = 'info') {
+            const toast = document.createElement('div');
+            toast.className = `toast show bg-${tipo} text-white`;
+            toast.setAttribute('role', 'alert');
+            toast.setAttribute('aria-live', 'assertive');
+            toast.setAttribute('aria-atomic', 'true');
+            
+            toast.innerHTML = `
+                <div class="toast-header bg-${tipo} text-white">
+                    <strong class="me-auto">Notificación</strong>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body">
+                    ${mensaje}
+                </div>
+            `;
+            
+            document.querySelector('.alert-container').appendChild(toast);
+            
+            // Auto-cerrar después de 5 segundos
+            setTimeout(() => {
+                toast.remove();
+            }, 5000);
+        }
+
+        // Configurar estrellas para calificación
+        const ratingInputs = document.querySelectorAll('.rating-stars input');
+        const ratingLabels = document.querySelectorAll('.rating-stars label');
+        
+        ratingInputs.forEach((input, index) => {
+            input.addEventListener('change', () => {
+                // Restablecer todas las estrellas
+                ratingLabels.forEach(label => {
+                    label.classList.remove('active');
+                });
+                
+                // Activar estrellas seleccionadas
+                for (let i = 0; i <= index; i++) {
+                    ratingLabels[i].classList.add('active');
+                }
+            });
+        });
+
+        // Validación del formulario de reserva
+        if (document.getElementById('reservaForm')) {
+            document.getElementById('reservaForm').addEventListener('submit', function(event) {
+                const fecha = document.getElementById('fecha').value;
+                const hora = document.getElementById('hora').value;
+                
+                if (!fecha || !hora) {
+                    event.preventDefault();
+                    mostrarNotificacion('Por favor completa todos los campos requeridos.', 'danger');
+                }
+            });
+        }
+    </script>
+    
+    <style>
+        /* Estilos adicionales para calificación con estrellas */
+        .rating-stars {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: center;
+        }
+        
+        .rating-stars input {
+            display: none;
+        }
+        
+        .rating-stars label {
+            cursor: pointer;
+            width: 40px;
+            color: #ccc;
+            transition: color 0.2s;
+        }
+        
+        .rating-stars label:hover,
+        .rating-stars label:hover ~ label,
+        .rating-stars input:checked ~ label {
+            color: #ffb700;
+        }
+        
+        .rating-stars label.active {
+            color: #ffb700;
+        }
+    </style>
+</body>
+</html>   

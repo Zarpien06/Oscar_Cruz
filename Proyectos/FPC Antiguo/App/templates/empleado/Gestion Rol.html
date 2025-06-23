@@ -1,0 +1,1251 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Roles - Full Paint Cars</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Variables globales */
+:root {
+    --primary-color: #0a2463;
+    --primary-hover: #2980b9;
+    --secondary-color: #f2f2f2;
+    --danger-color: #e74c3c;
+    --success-color: #2ecc71;
+    --warning-color: #f39c12;
+    --text-color: #333;
+    --text-light: #666;
+    --border-color: #ddd;
+    
+    --sidebar-width: 250px;
+    --header-height: 70px;
+    --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    --transition: all 0.3s ease;
+}
+
+/* Reset y estilos base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #f8f9fa;
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+.container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+    width: var(--sidebar-width);
+    background-color: #fff;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    height: 100%;
+    z-index: 1000;
+    transition: var(--transition);
+}
+
+.logo {
+    padding: 20px;
+    text-align: center;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.logo h2 {
+    color: var(--primary-color);
+    font-weight: 700;
+}
+
+.menu {
+    list-style: none;
+    padding: 20px 0;
+}
+
+.menu li {
+    margin-bottom: 5px;
+}
+
+.menu li a {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    color: var(--text-color);
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.menu li a i {
+    margin-right: 10px;
+    font-size: 1.2rem;
+}
+
+.menu li.active a,
+.menu li a:hover {
+    background-color: rgba(67, 97, 238, 0.1);
+    color: var(--primary-color);
+    border-left: 4px solid var(--primary-color);
+}
+
+.logout {
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
+    padding: 0 20px;
+}
+
+.logout a {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    color: var(--danger-color);
+    text-decoration: none;
+    transition: var(--transition);
+    border-radius: 5px;
+}
+
+.logout a i {
+    margin-right: 10px;
+}
+
+.logout a:hover {
+    background-color: rgba(244, 67, 54, 0.1);
+}
+/* Contenido principal */
+.content {
+    flex: 1;
+    margin-left: var(--sidebar-width);
+    padding: 0;
+}
+
+/* Barra superior */
+.top-bar {
+    height: var(--header-height);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    background-color: white;
+    box-shadow: var(--box-shadow);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    background-color: var(--secondary-color);
+    border-radius: 20px;
+    padding: 5px 15px;
+    width: 300px;
+}
+
+.search-bar i {
+    color: var(--text-light);
+    margin-right: 10px;
+}
+
+.search-bar input {
+    border: none;
+    background: transparent;
+    outline: none;
+    width: 100%;
+    padding: 5px 0;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+}
+
+.notifications {
+    position: relative;
+    margin-right: 20px;
+    cursor: pointer;
+}
+
+.notifications i {
+    font-size: 1.2rem;
+    color: var(--text-light);
+}
+
+.badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: var(--danger-color);
+    color: white;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+}
+
+.user {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.user img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+/* Sección de gestión de roles */
+.role-management {
+    padding: 20px;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.section-header h1 {
+    font-size: 1.8rem;
+    color: var(--text-color);
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: var(--transition);
+}
+
+.btn-primary i {
+    margin-right: 8px;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-hover);
+}
+
+/* Filtros */
+.filter-section {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.search-filter {
+    position: relative;
+    width: 300px;
+}
+
+.search-filter input {
+    width: 100%;
+    padding: 10px 15px;
+    padding-right: 35px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    outline: none;
+}
+
+.search-filter i {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-light);
+}
+
+.filter-options {
+    display: flex;
+    gap: 10px;
+}
+
+.filter-options select {
+    padding: 8px 15px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    background-color: white;
+    outline: none;
+}
+
+.btn-icon {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.btn-icon:hover {
+    background-color: var(--secondary-color);
+}
+
+/* Tabla de roles */
+.table-container {
+    background-color: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+thead th {
+    background-color: #f9f9f9;
+    padding: 12px 15px;
+    text-align: left;
+    font-weight: 600;
+    color: var(--text-color);
+    border-bottom: 2px solid var(--border-color);
+}
+
+tbody td {
+    padding: 12px 15px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+tbody tr:last-child td {
+    border-bottom: none;
+}
+
+tbody tr:hover {
+    background-color: rgba(0, 0, 0, 0.02);
+}
+
+.permission-badge {
+    display: inline-block;
+    padding: 3px 8px;
+    background-color: #e3f2fd;
+    color: #0d47a1;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    margin-right: 5px;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.status-badge.active {
+    background-color: #e8f5e9;
+    color: #1b5e20;
+}
+
+.status-badge.inactive {
+    background-color: #ffebee;
+    color: #b71c1c;
+}
+
+.actions {
+    display: flex;
+    gap: 5px;
+}
+
+.actions button {
+    border: none;
+    background: transparent;
+}
+
+.edit-role i {
+    color: var(--primary-color);
+}
+
+.delete-role i {
+    color: var(--danger-color);
+}
+
+/* Paginación */
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+}
+
+.btn-page {
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.btn-page.active {
+    background-color: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+.btn-page:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.btn-page:not(.active):not(:disabled):hover {
+    background-color: var(--secondary-color);
+}
+
+/* Modales */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-content {
+    background-color: white;
+    border-radius: var(--border-radius);
+    width: 500px;
+    max-width: 95%;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    animation: modalFadeIn 0.3s;
+}
+
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.modal-header h2 {
+    font-size: 1.2rem;
+    color: var(--text-color);
+}
+
+.close-modal {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--text-light);
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+/* Formulario */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    outline: none;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.permissions-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.permission-item {
+    display: flex;
+    align-items: center;
+}
+
+.permission-item input[type="checkbox"] {
+    width: auto;
+    margin-right: 8px;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.btn-secondary {
+    background-color: var(--secondary-color);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    padding: 10px 15px;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.btn-secondary:hover {
+    background-color: #e5e5e5;
+}
+
+.btn-danger {
+    background-color: var(--danger-color);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.btn-danger:hover {
+    background-color: #c0392b;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .sidebar {
+        width: 60px;
+        overflow: hidden;
+    }
+    
+    .sidebar .logo h2,
+    .sidebar nav ul li a span {
+        display: none;
+    }
+    
+    .sidebar nav ul li a {
+        justify-content: center;
+        padding: 15px;
+    }
+    
+    .sidebar nav ul li a i {
+        margin-right: 0;
+    }
+    
+    .content {
+        margin-left: 60px;
+    }
+    
+    .search-bar,
+    .search-filter {
+        width: 200px;
+    }
+}
+
+@media (max-width: 768px) {
+    .filter-section {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .search-filter {
+        width: 100%;
+    }
+    
+    .filter-options {
+        width: 100%;
+        justify-content: flex-start;
+    }
+    
+    .table-container {
+        overflow-x: auto;
+    }
+    
+    .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+}
+
+@media (max-width: 576px) {
+    .user span {
+        display: none;
+    }
+    
+    .permissions-grid {
+        grid-template-columns: 1fr;
+    }
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="logo">
+                <h2>Admin</h2>
+            </div>
+            <ul class="menu">
+                <li >
+                    <a href="Dasboard.html"><i class="fas fa-home"></i> Dashboard</a>
+                </li>
+                <li>
+                    <a href="Gestion Usuarios.html"><i class="fas fa-users"></i> Usuarios</a>
+                </li>
+                <li class="active">
+                    <a href="Gestion Rol.html"><i class="fas fa-user-tag"></i> Roles</a>
+                </li>
+                <li>
+                    <a href="Gestion Automovil.html"><i class="fas fa-car"></i> Automoviles</a>
+                </li>
+                <li>
+                    <a href="Gestion Chat.html"><i class="fas fa-comments"></i> Chat</a>
+                </li>
+                <li>
+                    <a href="Gestion Reportes.HTML"><i class="fas fa-chart-bar"></i> Reportes</a>
+                </li>
+                <li>
+                    <a href="Gestion Cotizaciones.html"><i class="fas fa-file-invoice-dollar"></i> Cotizaciones</a>
+                </li>
+                <li>
+                    <a href="Gestion Procesos.html"><i class="fas fa-tasks"></i> Procesos</a>
+                </li>
+                <li>
+                    <a href="#configuracion"><i class="fas fa-cog"></i> Configuración</a>
+                </li>
+            </ul>
+            <div class="logout">
+                <a href="#"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
+            </div>
+        </nav>
+
+        <main class="content">
+            <header class="top-bar">
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Buscar...">
+                </div>
+                <div class="user-info">
+                    <div class="notifications">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge">3</span>
+                    </div>
+                    <div class="user">
+                        <img src="https://via.placeholder.com/40" alt="Usuario">
+                        <span>Administrador</span>
+                    </div>
+                </div>
+            </header>
+
+            <div class="role-management">
+                <div class="section-header">
+                    <h1>Gestión de Roles</h1>
+                    <button id="btnAddRole" class="btn-primary">
+                        <i class="fas fa-plus"></i> Nuevo Rol
+                    </button>
+                </div>
+
+                <div class="filter-section">
+                    <div class="search-filter">
+                        <input type="text" id="searchRoles" placeholder="Buscar roles...">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <div class="filter-options">
+                        <select id="filterStatus">
+                            <option value="all">Todos los estados</option>
+                            <option value="active">Activos</option>
+                            <option value="inactive">Inactivos</option>
+                        </select>
+                        <button id="btnRefresh" class="btn-icon">
+                            <i class="fas fa-sync-alt"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table id="rolesTable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre del Rol</th>
+                                <th>Descripción</th>
+                                <th>Permisos</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>Administrador</td>
+                                <td>Acceso completo al sistema</td>
+                                <td>
+                                    <span class="permission-badge">Crear</span>
+                                    <span class="permission-badge">Editar</span>
+                                    <span class="permission-badge">Eliminar</span>
+                                    <span class="permission-badge">Ver</span>
+                                </td>
+                                <td><span class="status-badge active">Activo</span></td>
+                                <td class="actions">
+                                    <button class="btn-icon edit-role" data-id="1"><i class="fas fa-edit"></i></button>
+                                    <button class="btn-icon delete-role" data-id="1"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Supervisor</td>
+                                <td>Gestión de procesos y reportes</td>
+                                <td>
+                                    <span class="permission-badge">Editar</span>
+                                    <span class="permission-badge">Ver</span>
+                                </td>
+                                <td><span class="status-badge active">Activo</span></td>
+                                <td class="actions">
+                                    <button class="btn-icon edit-role" data-id="2"><i class="fas fa-edit"></i></button>
+                                    <button class="btn-icon delete-role" data-id="2"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>Operador</td>
+                                <td>Solo vista de procesos asignados</td>
+                                <td>
+                                    <span class="permission-badge">Ver</span>
+                                </td>
+                                <td><span class="status-badge inactive">Inactivo</span></td>
+                                <td class="actions">
+                                    <button class="btn-icon edit-role" data-id="3"><i class="fas fa-edit"></i></button>
+                                    <button class="btn-icon delete-role" data-id="3"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="pagination">
+                    <button class="btn-page" disabled><i class="fas fa-chevron-left"></i></button>
+                    <button class="btn-page active">1</button>
+                    <button class="btn-page">2</button>
+                    <button class="btn-page">3</button>
+                    <button class="btn-page"><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+
+            <!-- Modal para Añadir/Editar Rol -->
+            <div id="roleModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2 id="modalTitle">Nuevo Rol</h2>
+                        <button class="close-modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="roleForm">
+                            <input type="hidden" id="roleId">
+                            <div class="form-group">
+                                <label for="roleName">Nombre del Rol</label>
+                                <input type="text" id="roleName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="roleDescription">Descripción</label>
+                                <textarea id="roleDescription" rows="3"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Permisos</label>
+                                <div class="permissions-grid">
+                                    <div class="permission-item">
+                                        <input type="checkbox" id="permCreate">
+                                        <label for="permCreate">Crear</label>
+                                    </div>
+                                    <div class="permission-item">
+                                        <input type="checkbox" id="permEdit">
+                                        <label for="permEdit">Editar</label>
+                                    </div>
+                                    <div class="permission-item">
+                                        <input type="checkbox" id="permDelete">
+                                        <label for="permDelete">Eliminar</label>
+                                    </div>
+                                    <div class="permission-item">
+                                        <input type="checkbox" id="permView">
+                                        <label for="permView">Ver</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="roleStatus">Estado</label>
+                                <select id="roleStatus">
+                                    <option value="active">Activo</option>
+                                    <option value="inactive">Inactivo</option>
+                                </select>
+                            </div>
+                            <div class="form-actions">
+                                <button type="button" class="btn-secondary" id="btnCancel">Cancelar</button>
+                                <button type="submit" class="btn-primary" id="btnSaveRole">Guardar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal de Confirmación para Eliminar -->
+            <div id="confirmDeleteModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2>Confirmar Eliminación</h2>
+                        <button class="close-modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <p>¿Está seguro de que desea eliminar este rol? Esta acción no se puede deshacer.</p>
+                        <div class="form-actions">
+                            <button type="button" class="btn-secondary" id="btnCancelDelete">Cancelar</button>
+                            <button type="button" class="btn-danger" id="btnConfirmDelete">Eliminar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script>
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Referencias a elementos del DOM
+    const rolesTable = document.getElementById('rolesTable');
+    const btnAddRole = document.getElementById('btnAddRole');
+    const roleModal = document.getElementById('roleModal');
+    const confirmDeleteModal = document.getElementById('confirmDeleteModal');
+    const roleForm = document.getElementById('roleForm');
+    const modalTitle = document.getElementById('modalTitle');
+    const btnSaveRole = document.getElementById('btnSaveRole');
+    const btnCancel = document.getElementById('btnCancel');
+    const btnCancelDelete = document.getElementById('btnCancelDelete');
+    const btnConfirmDelete = document.getElementById('btnConfirmDelete');
+    const searchRoles = document.getElementById('searchRoles');
+    const filterStatus = document.getElementById('filterStatus');
+    const btnRefresh = document.getElementById('btnRefresh');
+    
+    // Estado de la aplicación
+    let roles = [
+        {
+            id: 1,
+            name: 'Administrador',
+            description: 'Acceso completo al sistema',
+            permissions: ['Crear', 'Editar', 'Eliminar', 'Ver'],
+            status: 'active'
+        },
+        {
+            id: 2,
+            name: 'Supervisor',
+            description: 'Gestión de procesos y reportes',
+            permissions: ['Editar', 'Ver'],
+            status: 'active'
+        },
+        {
+            id: 3,
+            name: 'Operador',
+            description: 'Solo vista de procesos asignados',
+            permissions: ['Ver'],
+            status: 'inactive'
+        }
+    ];
+    let currentRoleId = null;
+    let deletingRoleId = null;
+    
+    // Renderizar tabla de roles
+    function renderRolesTable(rolesArray = roles) {
+        const tbody = rolesTable.querySelector('tbody');
+        tbody.innerHTML = '';
+        
+        if (rolesArray.length === 0) {
+            const emptyRow = document.createElement('tr');
+            emptyRow.innerHTML = `
+                <td colspan="6" style="text-align: center;">No se encontraron roles</td>
+            `;
+            tbody.appendChild(emptyRow);
+            return;
+        }
+        
+        rolesArray.forEach(role => {
+            const tr = document.createElement('tr');
+            
+            // Crear badges para permisos
+            const permissionBadges = role.permissions.map(perm => 
+                `<span class="permission-badge">${perm}</span>`
+            ).join('');
+            
+            // Determinar clase para el estado
+            const statusClass = role.status === 'active' ? 'active' : 'inactive';
+            const statusText = role.status === 'active' ? 'Activo' : 'Inactivo';
+            
+            tr.innerHTML = `
+                <td>${role.id}</td>
+                <td>${role.name}</td>
+                <td>${role.description}</td>
+                <td>${permissionBadges}</td>
+                <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                <td class="actions">
+                    <button class="btn-icon edit-role" data-id="${role.id}"><i class="fas fa-edit"></i></button>
+                    <button class="btn-icon delete-role" data-id="${role.id}"><i class="fas fa-trash"></i></button>
+                </td>
+            `;
+            
+            tbody.appendChild(tr);
+        });
+        
+        // Asignar eventos a los botones de editar y eliminar
+        assignActionButtonEvents();
+    }
+    
+    // Asignar eventos a los botones de acción en la tabla
+    function assignActionButtonEvents() {
+        // Botones de editar
+        document.querySelectorAll('.edit-role').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const roleId = parseInt(this.getAttribute('data-id'));
+                openEditRoleModal(roleId);
+            });
+        });
+        
+        // Botones de eliminar
+        document.querySelectorAll('.delete-role').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const roleId = parseInt(this.getAttribute('data-id'));
+                openDeleteConfirmModal(roleId);
+            });
+        });
+    }
+    
+    // Abrir modal para nuevo rol
+    function openNewRoleModal() {
+        modalTitle.textContent = 'Nuevo Rol';
+        roleForm.reset();
+        document.getElementById('roleId').value = '';
+        currentRoleId = null;
+        
+        // Deseleccionar todos los checkboxes de permisos
+        document.getElementById('permCreate').checked = false;
+        document.getElementById('permEdit').checked = false;
+        document.getElementById('permDelete').checked = false;
+        document.getElementById('permView').checked = false;
+        
+        // Seleccionar estado activo por defecto
+        document.getElementById('roleStatus').value = 'active';
+        
+        roleModal.classList.add('active');
+    }
+    
+    // Abrir modal para editar rol
+    function openEditRoleModal(roleId) {
+        const role = roles.find(r => r.id === roleId);
+        if (!role) return;
+        
+        modalTitle.textContent = 'Editar Rol';
+        document.getElementById('roleId').value = role.id;
+        document.getElementById('roleName').value = role.name;
+        document.getElementById('roleDescription').value = role.description;
+        
+        // Establecer permisos
+        document.getElementById('permCreate').checked = role.permissions.includes('Crear');
+        document.getElementById('permEdit').checked = role.permissions.includes('Editar');
+        document.getElementById('permDelete').checked = role.permissions.includes('Eliminar');
+        document.getElementById('permView').checked = role.permissions.includes('Ver');
+        
+        // Establecer estado
+        document.getElementById('roleStatus').value = role.status;
+        
+        currentRoleId = roleId;
+        roleModal.classList.add('active');
+    }
+    
+    // Abrir modal de confirmación para eliminar
+    function openDeleteConfirmModal(roleId) {
+        const role = roles.find(r => r.id === roleId);
+        if (!role) return;
+        
+        deletingRoleId = roleId;
+        
+        // Mostrar nombre del rol en el mensaje de confirmación
+        const confirmMessage = document.querySelector('#confirmDeleteModal .modal-body p');
+        confirmMessage.textContent = `¿Está seguro de que desea eliminar el rol "${role.name}"? Esta acción no se puede deshacer.`;
+        
+        confirmDeleteModal.classList.add('active');
+    }
+    
+    // Cerrar modales
+    function closeModals() {
+        roleModal.classList.remove('active');
+        confirmDeleteModal.classList.remove('active');
+    }
+    
+    // Guardar rol (crear o actualizar)
+    function saveRole(e) {
+        e.preventDefault();
+        
+        // Obtener datos del formulario
+        const name = document.getElementById('roleName').value.trim();
+        const description = document.getElementById('roleDescription').value.trim();
+        const status = document.getElementById('roleStatus').value;
+        
+        // Recopilar permisos seleccionados
+        const permissions = [];
+        if (document.getElementById('permCreate').checked) permissions.push('Crear');
+        if (document.getElementById('permEdit').checked) permissions.push('Editar');
+        if (document.getElementById('permDelete').checked) permissions.push('Eliminar');
+        if (document.getElementById('permView').checked) permissions.push('Ver');
+        
+        // Validación básica
+        if (name === '') {
+            alert('El nombre del rol es obligatorio');
+            return;
+        }
+        
+        if (permissions.length === 0) {
+            alert('Debe seleccionar al menos un permiso');
+            return;
+        }
+        
+        // Crear objeto del rol
+        const roleData = {
+            name,
+            description,
+            permissions,
+            status
+        };
+        
+        if (currentRoleId === null) {
+            // Crear nuevo rol
+            roleData.id = getNextId();
+            roles.push(roleData);
+            showNotification('Rol creado exitosamente');
+        } else {
+            // Actualizar rol existente
+            roleData.id = currentRoleId;
+            const index = roles.findIndex(r => r.id === currentRoleId);
+            if (index !== -1) {
+                roles[index] = roleData;
+                showNotification('Rol actualizado exitosamente');
+            }
+        }
+        
+        // Cerrar modal y actualizar tabla
+        closeModals();
+        renderRolesTable();
+    }
+    
+    // Eliminar rol
+    function deleteRole() {
+        if (deletingRoleId === null) return;
+        
+        const index = roles.findIndex(r => r.id === deletingRoleId);
+        if (index !== -1) {
+            roles.splice(index, 1);
+            showNotification('Rol eliminado exitosamente');
+        }
+        
+        closeModals();
+        renderRolesTable();
+        deletingRoleId = null;
+    }
+    
+    // Obtener siguiente ID disponible
+    function getNextId() {
+        return roles.length > 0 ? Math.max(...roles.map(r => r.id)) + 1 : 1;
+    }
+    
+    // Buscar roles
+    function searchRolesByKeyword(keyword) {
+        keyword = keyword.toLowerCase();
+        
+        return roles.filter(role => 
+            role.name.toLowerCase().includes(keyword) ||
+            role.description.toLowerCase().includes(keyword)
+        );
+    }
+    
+    // Filtrar roles por estado
+    function filterRolesByStatus(status) {
+        if (status === 'all') return roles;
+        
+        return roles.filter(role => role.status === status);
+    }
+    
+    // Aplicar filtros combinados
+    function applyFilters() {
+        const keyword = searchRoles.value.trim();
+        const status = filterStatus.value;
+        
+        let filteredRoles = roles;
+        
+        // Primero filtramos por palabra clave
+        if (keyword !== '') {
+            filteredRoles = searchRolesByKeyword(keyword);
+        }
+        
+        // Luego filtramos por estado (si no es 'all')
+        if (status !== 'all') {
+            filteredRoles = filteredRoles.filter(role => role.status === status);
+        }
+        
+        renderRolesTable(filteredRoles);
+    }
+    
+    // Mostrar notificación
+    function showNotification(message) {
+        // Crear elemento de notificación
+        const notification = document.createElement('div');
+        notification.className = 'notification';
+        notification.textContent = message;
+        
+        // Estilos para la notificación
+        notification.style.position = 'fixed';
+        notification.style.bottom = '20px';
+        notification.style.right = '20px';
+        notification.style.backgroundColor = '#2ecc71';
+        notification.style.color = 'white';
+        notification.style.padding = '10px 20px';
+        notification.style.borderRadius = '4px';
+        notification.style.boxShadow = '0 2px 5px rgba(0,0,0,0.2)';
+        notification.style.zIndex = '9999';
+        notification.style.opacity = '0';
+        notification.style.transform = 'translateY(20px)';
+        notification.style.transition = 'opacity 0.3s, transform 0.3s';
+        
+        // Añadir al DOM
+        document.body.appendChild(notification);
+        
+        // Mostrar notificación con animación
+        setTimeout(() => {
+            notification.style.opacity = '1';
+            notification.style.transform = 'translateY(0)';
+        }, 10);
+        
+        // Ocultar y eliminar después de 3 segundos
+        setTimeout(() => {
+            notification.style.opacity = '0';
+            notification.style.transform = 'translateY(20px)';
+            
+            setTimeout(() => {
+                document.body.removeChild(notification);
+            }, 300);
+        }, 3000);
+    }
+    
+    // Inicializar paginación (dummy, sin funcionalidad real)
+    function initPagination() {
+        const paginationButtons = document.querySelectorAll('.pagination .btn-page');
+        
+        paginationButtons.forEach(btn => {
+            btn.addEventListener('click', function() {
+                // Solo para demostración
+                if (this.disabled || this.classList.contains('active')) return;
+                
+                // Quitar active de todos los botones
+                paginationButtons.forEach(b => b.classList.remove('active'));
+                
+                // Marcar este botón como activo
+                this.classList.add('active');
+            });
+        });
+    }
+    
+    // === Event Listeners ===
+    
+    // Botón para añadir nuevo rol
+    btnAddRole.addEventListener('click', openNewRoleModal);
+    
+    // Botones para cerrar modales
+    document.querySelectorAll('.close-modal').forEach(btn => {
+        btn.addEventListener('click', closeModals);
+    });
+    
+    // Botón cancelar en modal de rol
+    btnCancel.addEventListener('click', closeModals);
+    
+    // Botón cancelar en modal de confirmación
+    btnCancelDelete.addEventListener('click', closeModals);
+    
+    // Envío del formulario de rol
+    roleForm.addEventListener('submit', saveRole);
+    
+    // Botón confirmar eliminación
+    btnConfirmDelete.addEventListener('click', deleteRole);
+    
+    // Búsqueda de roles
+    searchRoles.addEventListener('input', applyFilters);
+    
+    // Filtro por estado
+    filterStatus.addEventListener('change', applyFilters);
+    
+    // Botón de refrescar
+    btnRefresh.addEventListener('click', function() {
+        searchRoles.value = '';
+        filterStatus.value = 'all';
+        renderRolesTable();
+    });
+    
+    // Inicializar la tabla y funcionalidades
+    renderRolesTable();
+    initPagination();
+    
+    // Cerrar modales al hacer clic fuera
+    window.addEventListener('click', function(e) {
+        if (e.target === roleModal) {
+            closeModals();
+        }
+        if (e.target === confirmDeleteModal) {
+            closeModals();
+        }
+    });
+});
+
+    </script>
+</body>
+</html>

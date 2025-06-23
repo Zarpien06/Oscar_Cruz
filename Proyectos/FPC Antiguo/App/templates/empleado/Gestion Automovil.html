@@ -1,0 +1,1535 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Automóvil - Full Paint Cars</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+
+           /* Variables globales */
+:root {
+    --primary-color: #002b5b; /* Azul oscuro como color principal */
+    --secondary-color: #1a5f7a;
+    --accent-color: #57c5b6;
+    --light-accent: #159895;
+    --text-color: #333;
+    --light-text: #666;
+    --lighter-text: #999;
+    --background-color: #f5f5f5;
+    --white: #ffffff;
+    --border-color: #ddd;
+    --success-color: #28a745;
+    --warning-color: #ffc107;
+    --danger-color: #dc3545;
+    --box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    --sidebar-width: 250px;
+    --header-height: 70px;
+    --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    --transition: all 0.3s ease;
+}
+
+/* Estilos generales */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+.container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+    width: var(--sidebar-width);
+    background-color: #fff;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    height: 100%;
+    z-index: 1000;
+    transition: var(--transition);
+}
+
+.logo {
+    padding: 20px;
+    text-align: center;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.logo h2 {
+    color: var(--primary-color);
+    font-weight: 700;
+}
+
+.menu {
+    list-style: none;
+    padding: 20px 0;
+}
+
+.menu li {
+    margin-bottom: 5px;
+}
+
+.menu li a {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    color: var(--text-color);
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.menu li a i {
+    margin-right: 10px;
+    font-size: 1.2rem;
+}
+
+.menu li.active a,
+.menu li a:hover {
+    background-color: rgba(67, 97, 238, 0.1);
+    color: var(--primary-color);
+    border-left: 4px solid var(--primary-color);
+}
+
+.logout {
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
+    padding: 0 20px;
+}
+
+.logout a {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    color: var(--danger-color);
+    text-decoration: none;
+    transition: var(--transition);
+    border-radius: 5px;
+}
+
+.logout a i {
+    margin-right: 10px;
+}
+
+.logout a:hover {
+    background-color: rgba(244, 67, 54, 0.1);
+}
+
+/* Contenido principal */
+.content {
+    flex: 1;
+    margin-left: 250px;
+    padding: 1.5rem;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+header h1 {
+    color: var(--primary-color);
+    font-size: 1.8rem;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--light-text);
+}
+
+.user-info i {
+    font-size: 1.8rem;
+    color: var(--primary-color);
+}
+
+/* Sección de gestión de vehículos */
+.vehicle-management {
+    background-color: var(--white);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    padding: 1.5rem;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.section-header h2 {
+    color: var(--primary-color);
+    font-size: 1.4rem;
+}
+
+/* Botones */
+.primary-btn, .secondary-btn, .action-btn, .danger-btn {
+    padding: 0.6rem 1.2rem;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: var(--transition);
+}
+
+.primary-btn {
+    background-color: var(--primary-color);
+    color: var(--white);
+}
+
+.primary-btn:hover {
+    background-color: var(--secondary-color);
+}
+
+.secondary-btn {
+    background-color: var(--white);
+    color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+}
+
+.secondary-btn:hover {
+    background-color: var(--background-color);
+}
+
+.action-btn {
+    background-color: var(--light-accent);
+    color: var(--white);
+}
+
+.action-btn:hover {
+    background-color: var(--accent-color);
+}
+
+.danger-btn {
+    background-color: var(--danger-color);
+    color: var(--white);
+}
+
+.danger-btn:hover {
+    background-color: #c82333;
+}
+
+/* Búsqueda y filtros */
+.search-filter {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.search-bar {
+    display: flex;
+    flex: 1;
+    max-width: 500px;
+}
+
+.search-bar input {
+    flex: 1;
+    padding: 0.6rem 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 4px 0 0 4px;
+    outline: none;
+}
+
+.search-bar button {
+    background-color: var(--primary-color);
+    color: var(--white);
+    border: none;
+    padding: 0 1rem;
+    border-radius: 0 4px 4px 0;
+    cursor: pointer;
+}
+
+.filters {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.filters select {
+    padding: 0.6rem;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    background-color: var(--white);
+    outline: none;
+}
+
+/* Tabla de vehículos */
+.vehicles-list {
+    overflow-x: auto;
+    margin-bottom: 1.5rem;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+thead {
+    background-color: var(--primary-color);
+    color: var(--white);
+}
+
+th, td {
+    padding: 0.8rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+}
+
+tbody tr:hover {
+    background-color: #f9f9f9;
+}
+
+.badge {
+    padding: 0.3rem 0.6rem;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 0.3rem 0.6rem;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.status-badge.active {
+    background-color: #d1e7dd;
+    color: #0f5132;
+}
+
+.status-badge.maintenance {
+    background-color: #fff3cd;
+    color: #664d03;
+}
+
+.status-badge.complete {
+    background-color: #cff4fc;
+    color: #055160;
+}
+
+.plate-badge {
+    display: inline-block;
+    padding: 0.3rem 0.6rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    background-color: var(--primary-color);
+    color: var(--white);
+}
+
+/* Acciones en tabla */
+.action-column {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.action-icon {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.view-btn {
+    background-color: #e6f7ff;
+    color: #0066cc;
+}
+
+.view-btn:hover {
+    background-color: #cce5ff;
+}
+
+.edit-btn {
+    background-color: #fff1d6;
+    color: #cc8800;
+}
+
+.edit-btn:hover {
+    background-color: #ffe8b3;
+}
+
+.delete-btn {
+    background-color: #ffe6e6;
+    color: #cc0000;
+}
+
+.delete-btn:hover {
+    background-color: #ffcccc;
+}
+
+/* Paginación */
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.pagination button {
+    width: 32px;
+    height: 32px;
+    border-radius: 4px;
+    border: 1px solid var(--border-color);
+    background-color: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.pagination button:hover {
+    background-color: var(--background-color);
+}
+
+#page-info {
+    color: var(--light-text);
+}
+
+/* Modales */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    overflow-y: auto;
+    padding: 2rem 1rem;
+}
+
+.modal-content {
+    background-color: var(--white);
+    border-radius: var(--border-radius);
+    max-width: 800px;
+    margin: 0 auto;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    animation: modalFadeIn 0.3s;
+}
+
+.modal-sm {
+    max-width: 500px;
+}
+
+@keyframes modalFadeIn {
+    from {opacity: 0; transform: scale(0.9);}
+    to {opacity: 1; transform: scale(1);}
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.modal-header h3 {
+    color: var(--primary-color);
+    font-size: 1.4rem;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 1.8rem;
+    cursor: pointer;
+    color: var(--light-text);
+    transition: var(--transition);
+}
+
+.close-btn:hover {
+    color: var(--text-color);
+}
+
+.modal-body {
+    padding: 1.5rem;
+}
+
+/* Formulario */
+.form-group {
+    margin-bottom: 1.2rem;
+}
+
+.form-row {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.2rem;
+}
+
+.form-row .form-group {
+    flex: 1;
+    margin-bottom: 0;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: var(--light-text);
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    font-size: 1rem;
+    transition: var(--transition);
+}
+
+input:focus, select:focus, textarea:focus {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(87, 197, 182, 0.2);
+    outline: none;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.form-actions.center {
+    justify-content: center;
+}
+
+/* Detalles del vehículo */
+.vehicle-details {
+    padding: 1rem 0;
+}
+
+.details-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.vehicle-title {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.vehicle-title h4 {
+    font-size: 1.4rem;
+    color: var(--primary-color);
+}
+
+.info-section {
+    margin-bottom: 2rem;
+}
+
+.info-section h5 {
+    font-size: 1.1rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
+}
+
+.info-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.info-item .label {
+    font-size: 0.9rem;
+    color: var(--lighter-text);
+}
+
+.info-item .value {
+    font-weight: 500;
+}
+
+.services-table {
+    margin-top: 0.5rem;
+}
+
+.details-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-color);
+}
+
+/* Media queries para responsividad */
+@media (max-width: 1024px) {
+    .sidebar {
+        width: 200px;
+    }
+    .content {
+        margin-left: 200px;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        padding: 1rem;
+    }
+    .content {
+        margin-left: 0;
+    }
+    .form-row {
+        flex-direction: column;
+        gap: 0;
+    }
+    .search-filter {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .search-bar {
+        max-width: none;
+    }
+    .filters {
+        justify-content: space-between;
+    }
+}
+    </style>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="logo">
+                <h2>Admin</h2>
+            </div>
+            <ul class="menu">
+                <li >
+                    <a href="Dasboard.html"><i class="fas fa-home"></i> Dashboard</a>
+                </li>
+                <li>
+                    <a href="Gestion Usuarios.html"><i class="fas fa-users"></i> Usuarios</a>
+                </li>
+                <li>
+                    <a href="Gestion Rol.html"><i class="fas fa-user-tag"></i> Roles</a>
+                </li>
+                <li class="active">
+                    <a href="Gestion Automovil.html"><i class="fas fa-car"></i> Automoviles</a>
+                </li>
+                <li>
+                    <a href="Gestion Chat.html"><i class="fas fa-comments"></i> Chat</a>
+                </li>
+                <li>
+                    <a href="Gestion Reportes.HTML"><i class="fas fa-chart-bar"></i> Reportes</a>
+                </li>
+                <li>
+                    <a href="Gestion Cotizaciones.html"><i class="fas fa-file-invoice-dollar"></i> Cotizaciones</a>
+                </li>
+                <li>
+                    <a href="Gestion Procesos.html"><i class="fas fa-tasks"></i> Procesos</a>
+                </li>
+                <li>
+                    <a href="#configuracion"><i class="fas fa-cog"></i> Configuración</a>
+                </li>
+            </ul>
+            <div class="logout">
+                <a href="#"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
+            </div>
+        </nav>
+
+
+        <main class="content">
+            <header>
+                <h1>Gestión de Automóvil</h1>
+                <div class="user-info">
+                    <span>Admin</span>
+                    <i class="fas fa-user-circle"></i>
+                </div>
+            </header>
+
+            <div class="vehicle-management">
+                <div class="section-header">
+                    <h2>Automóviles Registrados</h2>
+                    <button id="add-vehicle-btn" class="primary-btn">
+                        <i class="fas fa-plus"></i> Nuevo Automóvil
+                    </button>
+                </div>
+
+                <div class="search-filter">
+                    <div class="search-bar">
+                        <input type="text" id="search-vehicle" placeholder="Buscar por placa, modelo o propietario...">
+                        <button><i class="fas fa-search"></i></button>
+                    </div>
+                    <div class="filters">
+                        <select id="filter-status">
+                            <option value="">Estado</option>
+                            <option value="active">Activo</option>
+                            <option value="maintenance">En Mantenimiento</option>
+                            <option value="complete">Completado</option>
+                        </select>
+                        <select id="filter-year">
+                            <option value="">Año</option>
+                            <option value="2024">2024</option>
+                            <option value="2023">2023</option>
+                            <option value="2022">2022</option>
+                            <option value="older">Anteriores</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="vehicles-list">
+                    <table id="vehicles-table">
+                        <thead>
+                            <tr>
+                                <th>Placa</th>
+                                <th>Marca</th>
+                                <th>Modelo</th>
+                                <th>Año</th>
+                                <th>Propietario</th>
+                                <th>Estado</th>
+                                <th>Último Servicio</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Los datos se cargarán dinámicamente con JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="pagination">
+                    <button id="prev-page"><i class="fas fa-chevron-left"></i></button>
+                    <span id="page-info">Página 1 de 1</span>
+                    <button id="next-page"><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal para agregar/editar automóvil -->
+    <div id="vehicle-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title">Agregar Nuevo Automóvil</h3>
+                <button class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="vehicle-form">
+                    <div class="form-group">
+                        <label for="plate">Placa*</label>
+                        <input type="text" id="plate" name="plate" required placeholder="Ej: ABC123">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="brand">Marca*</label>
+                            <input type="text" id="brand" name="brand" required placeholder="Ej: Toyota">
+                        </div>
+                        <div class="form-group">
+                            <label for="model">Modelo*</label>
+                            <input type="text" id="model" name="model" required placeholder="Ej: Corolla">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="year">Año*</label>
+                            <input type="number" id="year" name="year" required placeholder="Ej: 2023">
+                        </div>
+                        <div class="form-group">
+                            <label for="color">Color*</label>
+                            <input type="text" id="color" name="color" required placeholder="Ej: Negro">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="owner">Propietario*</label>
+                        <input type="text" id="owner" name="owner" required placeholder="Nombre completo">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="phone">Teléfono</label>
+                            <input type="tel" id="phone" name="phone" placeholder="Ej: 3001234567">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" placeholder="ejemplo@correo.com">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="status">Estado*</label>
+                        <select id="status" name="status" required>
+                            <option value="active">Activo</option>
+                            <option value="maintenance">En Mantenimiento</option>
+                            <option value="complete">Completado</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="notes">Notas Adicionales</label>
+                        <textarea id="notes" name="notes" rows="3" placeholder="Información adicional sobre el vehículo..."></textarea>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="secondary-btn" id="cancel-btn">Cancelar</button>
+                        <button type="submit" class="primary-btn">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para ver detalles del automóvil -->
+    <div id="details-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Detalles del Automóvil</h3>
+                <button class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="vehicle-details">
+                    <div class="details-header">
+                        <div class="vehicle-title">
+                            <h4 id="detail-brand-model">Toyota Corolla</h4>
+                            <span id="detail-plate" class="plate-badge">ABC123</span>
+                        </div>
+                        <span id="detail-status" class="status-badge active">Activo</span>
+                    </div>
+                    
+                    <div class="details-info">
+                        <div class="info-section">
+                            <h5>Información del Vehículo</h5>
+                            <div class="info-grid">
+                                <div class="info-item">
+                                    <span class="label">Año:</span>
+                                    <span id="detail-year" class="value">2023</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="label">Color:</span>
+                                    <span id="detail-color" class="value">Negro</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="label">Propietario:</span>
+                                    <span id="detail-owner" class="value">Juan Pérez</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="label">Teléfono:</span>
+                                    <span id="detail-phone" class="value">3001234567</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="label">Email:</span>
+                                    <span id="detail-email" class="value">ejemplo@correo.com</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="info-section">
+                            <h5>Historial de Servicios</h5>
+                            <table class="services-table">
+                                <thead>
+                                    <tr>
+                                        <th>Fecha</th>
+                                        <th>Servicio</th>
+                                        <th>Descripción</th>
+                                        <th>Estado</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="services-history">
+                                    <!-- Los datos se cargarán dinámicamente con JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="info-section">
+                            <h5>Notas</h5>
+                            <p id="detail-notes">Información adicional sobre el vehículo...</p>
+                        </div>
+                    </div>
+
+                    <div class="details-actions">
+                        <button class="secondary-btn" id="back-btn">
+                            <i class="fas fa-arrow-left"></i> Volver
+                        </button>
+                        <button class="action-btn" id="history-btn">
+                            <i class="fas fa-history"></i> Ver Historial Completo
+                        </button>
+                        <button class="action-btn" id="report-btn">
+                            <i class="fas fa-file-pdf"></i> Generar Reporte
+                        </button>
+                        <button class="primary-btn" id="edit-btn">
+                            <i class="fas fa-edit"></i> Editar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de confirmación para eliminar -->
+    <div id="delete-modal" class="modal">
+        <div class="modal-content modal-sm">
+            <div class="modal-header">
+                <h3>Confirmar Eliminación</h3>
+                <button class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>¿Está seguro que desea eliminar este automóvil? Esta acción no se puede deshacer.</p>
+                <div class="form-actions center">
+                    <button class="secondary-btn" id="cancel-delete-btn">Cancelar</button>
+                    <button class="danger-btn" id="confirm-delete-btn">Eliminar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        // Datos de muestra para automóviles
+let vehiclesData = [
+    {
+        id: 1,
+        plate: "ABC123",
+        brand: "Toyota",
+        model: "Corolla",
+        year: 2023,
+        color: "Negro",
+        owner: "Juan Pérez",
+        phone: "3001234567",
+        email: "juan.perez@ejemplo.com",
+        status: "active",
+        lastService: "2023-12-15",
+        notes: "Vehículo en excelentes condiciones."
+    },
+    {
+        id: 2,
+        plate: "XYZ789",
+        brand: "Honda",
+        model: "Civic",
+        year: 2022,
+        color: "Rojo",
+        owner: "María López",
+        phone: "3109876543",
+        email: "maria.lopez@ejemplo.com",
+        status: "maintenance",
+        lastService: "2024-01-20",
+        notes: "Requiere cambio de aceite y filtros."
+    },
+    {
+        id: 3,
+        plate: "DEF456",
+        brand: "Mazda",
+        model: "CX-5",
+        year: 2021,
+        color: "Azul",
+        owner: "Carlos Ramírez",
+        phone: "3202345678",
+        email: "carlos.ramirez@ejemplo.com",
+        status: "complete",
+        lastService: "2024-02-05",
+        notes: "Se realizó revisión completa."
+    },
+    {
+        id: 4,
+        plate: "GHI789",
+        brand: "Chevrolet",
+        model: "Spark",
+        year: 2020,
+        color: "Blanco",
+        owner: "Ana Martínez",
+        phone: "3153456789",
+        email: "ana.martinez@ejemplo.com",
+        status: "active",
+        lastService: "2023-11-10",
+        notes: "Próximo mantenimiento en mayo 2024."
+    },
+    {
+        id: 5,
+        plate: "JKL012",
+        brand: "Renault",
+        model: "Sandero",
+        year: 2023,
+        color: "Gris",
+        owner: "Pedro González",
+        phone: "3004567890",
+        email: "pedro.gonzalez@ejemplo.com",
+        status: "active",
+        lastService: "2024-01-05",
+        notes: "Vehículo nuevo, primer revisión."
+    }
+];
+
+// Datos de muestra para historial de servicios
+let servicesData = [
+    {
+        id: 1,
+        vehicleId: 1,
+        date: "2023-12-15",
+        type: "Mantenimiento preventivo",
+        description: "Cambio de aceite, filtros y revisión general",
+        status: "complete"
+    },
+    {
+        id: 2,
+        vehicleId: 1,
+        date: "2023-10-20",
+        type: "Reparación",
+        description: "Cambio de pastillas de freno",
+        status: "complete"
+    },
+    {
+        id: 3,
+        vehicleId: 2,
+        date: "2024-01-20",
+        type: "Diagnóstico",
+        description: "Revisión del sistema eléctrico",
+        status: "in-progress"
+    },
+    {
+        id: 4,
+        vehicleId: 3,
+        date: "2024-02-05",
+        type: "Mantenimiento completo",
+        description: "Revisión general, cambio de aceite y ajustes",
+        status: "complete"
+    },
+    {
+        id: 5,
+        vehicleId: 4,
+        date: "2023-11-10",
+        type: "Mantenimiento preventivo",
+        description: "Cambio de aceite y filtros",
+        status: "complete"
+    },
+    {
+        id: 6,
+        vehicleId: 5,
+        date: "2024-01-05",
+        type: "Revisión inicial",
+        description: "Verificación de sistemas y fluidos",
+        status: "complete"
+    }
+];
+
+// Variables globales
+let currentPage = 1;
+const itemsPerPage = 5;
+let currentVehicleId = null;
+let isEditing = false;
+
+// DOM Elements
+document.addEventListener('DOMContentLoaded', () => {
+    // Inicializar la aplicación
+    loadVehiclesTable();
+    setupEventListeners();
+});
+
+// Función para configurar los event listeners
+function setupEventListeners() {
+    // Botón para agregar vehículo
+    document.getElementById('add-vehicle-btn').addEventListener('click', () => {
+        openAddVehicleModal();
+    });
+
+    // Cerrar modales
+    document.querySelectorAll('.close-btn').forEach(btn => {
+        btn.addEventListener('click', closeAllModals);
+    });
+
+    // Botón cancelar en formulario
+    document.getElementById('cancel-btn').addEventListener('click', closeAllModals);
+
+    // Formulario de vehículo
+    document.getElementById('vehicle-form').addEventListener('submit', handleVehicleFormSubmit);
+
+    // Paginación
+    document.getElementById('prev-page').addEventListener('click', () => {
+        if (currentPage > 1) {
+            currentPage--;
+            loadVehiclesTable();
+        }
+    });
+
+    document.getElementById('next-page').addEventListener('click', () => {
+        const totalPages = Math.ceil(vehiclesData.length / itemsPerPage);
+        if (currentPage < totalPages) {
+            currentPage++;
+            loadVehiclesTable();
+        }
+    });
+
+    // Búsqueda
+    document.getElementById('search-vehicle').addEventListener('input', debounce(handleSearch, 300));
+
+    // Filtros
+    document.getElementById('filter-status').addEventListener('change', loadVehiclesTable);
+    document.getElementById('filter-year').addEventListener('change', loadVehiclesTable);
+
+    // Botones de detalles
+    document.getElementById('back-btn').addEventListener('click', closeAllModals);
+    document.getElementById('edit-btn').addEventListener('click', () => {
+        closeModal('details-modal');
+        openEditVehicleModal(currentVehicleId);
+    });
+
+    // Botones de eliminar
+    document.getElementById('cancel-delete-btn').addEventListener('click', closeAllModals);
+    document.getElementById('confirm-delete-btn').addEventListener('click', deleteVehicle);
+}
+
+// Función para cargar la tabla de vehículos
+function loadVehiclesTable() {
+    const tableBody = document.querySelector('#vehicles-table tbody');
+    tableBody.innerHTML = '';
+
+    // Aplicar filtros
+    let filteredVehicles = filterVehicles();
+    
+    // Calcular paginación
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const paginatedVehicles = filteredVehicles.slice(startIndex, endIndex);
+    
+    // Actualizar información de página
+    const totalPages = Math.ceil(filteredVehicles.length / itemsPerPage);
+    document.getElementById('page-info').textContent = `Página ${currentPage} de ${totalPages || 1}`;
+    
+    // Generar filas de la tabla
+    if (paginatedVehicles.length === 0) {
+        tableBody.innerHTML = `
+            <tr>
+                <td colspan="8" class="text-center">No se encontraron vehículos</td>
+            </tr>
+        `;
+        return;
+    }
+    
+    paginatedVehicles.forEach(vehicle => {
+        const row = document.createElement('tr');
+        
+        // Formato de fecha para el último servicio
+        const lastServiceDate = new Date(vehicle.lastService);
+        const formattedDate = lastServiceDate.toLocaleDateString('es-CO', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit'
+        });
+        
+        // Determinar clase de estado
+        let statusClass = '';
+        let statusText = '';
+        
+        switch (vehicle.status) {
+            case 'active':
+                statusClass = 'active';
+                statusText = 'Activo';
+                break;
+            case 'maintenance':
+                statusClass = 'maintenance';
+                statusText = 'En Mantenimiento';
+                break;
+            case 'complete':
+                statusClass = 'complete';
+                statusText = 'Completado';
+                break;
+        }
+        
+        row.innerHTML = `
+            <td>${vehicle.plate}</td>
+            <td>${vehicle.brand}</td>
+            <td>${vehicle.model}</td>
+            <td>${vehicle.year}</td>
+            <td>${vehicle.owner}</td>
+            <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+            <td>${formattedDate}</td>
+            <td>
+                <div class="action-column">
+                    <div class="action-icon view-btn" data-id="${vehicle.id}" title="Ver detalles">
+                        <i class="fas fa-eye"></i>
+                    </div>
+                    <div class="action-icon edit-btn" data-id="${vehicle.id}" title="Editar">
+                        <i class="fas fa-edit"></i>
+                    </div>
+                    <div class="action-icon delete-btn" data-id="${vehicle.id}" title="Eliminar">
+                        <i class="fas fa-trash-alt"></i>
+                    </div>
+                </div>
+            </td>
+        `;
+        
+        tableBody.appendChild(row);
+    });
+    
+    // Configurar event listeners para los botones de acción
+    document.querySelectorAll('.view-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const vehicleId = parseInt(btn.getAttribute('data-id'));
+            openVehicleDetailsModal(vehicleId);
+        });
+    });
+    
+    document.querySelectorAll('.edit-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const vehicleId = parseInt(btn.getAttribute('data-id'));
+            openEditVehicleModal(vehicleId);
+        });
+    });
+    
+    document.querySelectorAll('.delete-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const vehicleId = parseInt(btn.getAttribute('data-id'));
+            openDeleteConfirmationModal(vehicleId);
+        });
+    });
+}
+
+// Función para filtrar vehículos
+function filterVehicles() {
+    const searchTerm = document.getElementById('search-vehicle').value.toLowerCase();
+    const statusFilter = document.getElementById('filter-status').value;
+    const yearFilter = document.getElementById('filter-year').value;
+    
+    return vehiclesData.filter(vehicle => {
+        // Filtro de búsqueda
+        const matchesSearch = 
+            vehicle.plate.toLowerCase().includes(searchTerm) ||
+            vehicle.brand.toLowerCase().includes(searchTerm) ||
+            vehicle.model.toLowerCase().includes(searchTerm) ||
+            vehicle.owner.toLowerCase().includes(searchTerm);
+        
+        // Filtro de estado
+        const matchesStatus = statusFilter === '' || vehicle.status === statusFilter;
+        
+        // Filtro de año
+        let matchesYear = true;
+        if (yearFilter !== '') {
+            if (yearFilter === 'older') {
+                matchesYear = vehicle.year < 2022;
+            } else {
+                matchesYear = vehicle.year.toString() === yearFilter;
+            }
+        }
+        
+        return matchesSearch && matchesStatus && matchesYear;
+    });
+}
+
+// Función para manejar la búsqueda
+function handleSearch() {
+    currentPage = 1; // Resetear a la primera página al buscar
+    loadVehiclesTable();
+}
+
+// Función para abrir el modal de añadir vehículo
+function openAddVehicleModal() {
+    const modal = document.getElementById('vehicle-modal');
+    document.getElementById('modal-title').textContent = 'Agregar Nuevo Automóvil';
+    document.getElementById('vehicle-form').reset();
+    isEditing = false;
+    currentVehicleId = null;
+    
+    openModal(modal);
+}
+
+// Función para abrir el modal de edición de vehículo
+function openEditVehicleModal(vehicleId) {
+    const modal = document.getElementById('vehicle-modal');
+    document.getElementById('modal-title').textContent = 'Editar Automóvil';
+    isEditing = true;
+    currentVehicleId = vehicleId;
+    
+    const vehicle = vehiclesData.find(v => v.id === vehicleId);
+    if (vehicle) {
+        document.getElementById('plate').value = vehicle.plate;
+        document.getElementById('brand').value = vehicle.brand;
+        document.getElementById('model').value = vehicle.model;
+        document.getElementById('year').value = vehicle.year;
+        document.getElementById('color').value = vehicle.color;
+        document.getElementById('owner').value = vehicle.owner;
+        document.getElementById('phone').value = vehicle.phone;
+        document.getElementById('email').value = vehicle.email;
+        document.getElementById('status').value = vehicle.status;
+        document.getElementById('notes').value = vehicle.notes;
+    }
+    
+    openModal(modal);
+}
+
+// Función para abrir el modal de detalles del vehículo
+function openVehicleDetailsModal(vehicleId) {
+    const modal = document.getElementById('details-modal');
+    currentVehicleId = vehicleId;
+    
+    const vehicle = vehiclesData.find(v => v.id === vehicleId);
+    if (vehicle) {
+        // Llenar información del vehículo
+        document.getElementById('detail-brand-model').textContent = `${vehicle.brand} ${vehicle.model}`;
+        document.getElementById('detail-plate').textContent = vehicle.plate;
+        
+        let statusText = '';
+        let statusClass = '';
+        
+        switch (vehicle.status) {
+            case 'active':
+                statusText = 'Activo';
+                statusClass = 'active';
+                break;
+            case 'maintenance':
+                statusText = 'En Mantenimiento';
+                statusClass = 'maintenance';
+                break;
+            case 'complete':
+                statusText = 'Completado';
+                statusClass = 'complete';
+                break;
+        }
+        
+        const statusElement = document.getElementById('detail-status');
+        statusElement.textContent = statusText;
+        statusElement.className = 'status-badge ' + statusClass;
+        
+        document.getElementById('detail-year').textContent = vehicle.year;
+        document.getElementById('detail-color').textContent = vehicle.color;
+        document.getElementById('detail-owner').textContent = vehicle.owner;
+        document.getElementById('detail-phone').textContent = vehicle.phone || 'No registrado';
+        document.getElementById('detail-email').textContent = vehicle.email || 'No registrado';
+        document.getElementById('detail-notes').textContent = vehicle.notes || 'Sin notas adicionales';
+        
+        // Cargar historial de servicios
+        loadServicesHistory(vehicleId);
+    }
+    
+    openModal(modal);
+}
+
+// Función para cargar el historial de servicios
+function loadServicesHistory(vehicleId) {
+    const tableBody = document.getElementById('services-history');
+    tableBody.innerHTML = '';
+    
+    const vehicleServices = servicesData.filter(service => service.vehicleId === vehicleId);
+    
+    if (vehicleServices.length === 0) {
+        tableBody.innerHTML = `
+            <tr>
+                <td colspan="4" class="text-center">No hay servicios registrados</td>
+            </tr>
+        `;
+        return;
+    }
+    
+    // Ordenar servicios por fecha (más reciente primero)
+    vehicleServices.sort((a, b) => new Date(b.date) - new Date(a.date));
+    
+    // Mostrar los últimos 3 servicios
+    const recentServices = vehicleServices.slice(0, 3);
+    
+    recentServices.forEach(service => {
+        const row = document.createElement('tr');
+        
+        // Formato de fecha
+        const serviceDate = new Date(service.date);
+        const formattedDate = serviceDate.toLocaleDateString('es-CO', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit'
+        });
+        
+        // Determinar clase de estado
+        let statusClass = '';
+        let statusText = '';
+        
+        switch (service.status) {
+            case 'complete':
+                statusClass = 'active';
+                statusText = 'Completado';
+                break;
+            case 'in-progress':
+                statusClass = 'maintenance';
+                statusText = 'En Proceso';
+                break;
+            case 'pending':
+                statusClass = 'warning';
+                statusText = 'Pendiente';
+                break;
+        }
+        
+        row.innerHTML = `
+            <td>${formattedDate}</td>
+            <td>${service.type}</td>
+            <td>${service.description}</td>
+            <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+        `;
+        
+        tableBody.appendChild(row);
+    });
+}
+
+// Función para abrir el modal de confirmación de eliminación
+function openDeleteConfirmationModal(vehicleId) {
+    const modal = document.getElementById('delete-modal');
+    currentVehicleId = vehicleId;
+    openModal(modal);
+}
+
+// Función para manejar el envío del formulario de vehículo
+function handleVehicleFormSubmit(e) {
+    e.preventDefault();
+    
+    const formData = {
+        plate: document.getElementById('plate').value,
+        brand: document.getElementById('brand').value,
+        model: document.getElementById('model').value,
+        year: parseInt(document.getElementById('year').value),
+        color: document.getElementById('color').value,
+        owner: document.getElementById('owner').value,
+        phone: document.getElementById('phone').value,
+        email: document.getElementById('email').value,
+        status: document.getElementById('status').value,
+        notes: document.getElementById('notes').value,
+        lastService: new Date().toISOString().split('T')[0]
+    };
+    
+    if (isEditing) {
+        // Actualizar vehículo existente
+        const index = vehiclesData.findIndex(v => v.id === currentVehicleId);
+        if (index !== -1) {
+            vehiclesData[index] = { ...vehiclesData[index], ...formData };
+            showNotification('Vehículo actualizado correctamente', 'success');
+        }
+    } else {
+        // Crear nuevo vehículo
+        const newId = vehiclesData.length > 0 ? Math.max(...vehiclesData.map(v => v.id)) + 1 : 1;
+        vehiclesData.push({ id: newId, ...formData });
+        showNotification('Vehículo registrado correctamente', 'success');
+    }
+    
+    closeAllModals();
+    loadVehiclesTable();
+}
+
+// Función para eliminar un vehículo
+function deleteVehicle() {
+    const index = vehiclesData.findIndex(v => v.id === currentVehicleId);
+    if (index !== -1) {
+        vehiclesData.splice(index, 1);
+        showNotification('Vehículo eliminado correctamente', 'success');
+        
+        // Eliminar servicios asociados
+        servicesData = servicesData.filter(service => service.vehicleId !== currentVehicleId);
+        
+        closeAllModals();
+        loadVehiclesTable();
+    }
+}
+
+// Funciones para gestionar modales
+function openModal(modal) {
+    modal.style.display = 'block';
+    document.body.style.overflow = 'hidden'; // Prevenir scroll
+}
+
+function closeModal(modalId) {
+    const modal = document.getElementById(modalId);
+    modal.style.display = 'none';
+}
+
+function closeAllModals() {
+    document.querySelectorAll('.modal').forEach(modal => {
+        modal.style.display = 'none';
+    });
+    document.body.style.overflow = ''; // Restaurar scroll
+}
+
+// Función para mostrar una notificación (Simulada)
+function showNotification(message, type = 'info') {
+    // Esta función simula una notificación ya que no tenemos un sistema de notificaciones
+    // En una implementación real, se usaría un sistema de notificaciones
+    console.log(`Notificación (${type}): ${message}`);
+    
+    // Creamos un elemento de notificación temporal
+    const notification = document.createElement('div');
+    notification.className = `notification ${type}`;
+    notification.textContent = message;
+    
+    // Estilos básicos para la notificación
+    notification.style.position = 'fixed';
+    notification.style.top = '20px';
+    notification.style.right = '20px';
+    notification.style.padding = '15px 20px';
+    notification.style.borderRadius = '4px';
+    notification.style.zIndex = '2000';
+    
+    // Diferentes colores según el tipo
+    switch (type) {
+        case 'success':
+            notification.style.backgroundColor = '#d4edda';
+            notification.style.color = '#155724';
+            notification.style.border = '1px solid #c3e6cb';
+            break;
+        case 'error':
+            notification.style.backgroundColor = '#f8d7da';
+            notification.style.color = '#721c24';
+            notification.style.border = '1px solid #f5c6cb';
+            break;
+        default:
+            notification.style.backgroundColor = '#d1ecf1';
+            notification.style.color = '#0c5460';
+            notification.style.border = '1px solid #bee5eb';
+    }
+    
+    document.body.appendChild(notification);
+    
+    // Eliminar la notificación después de 3 segundos
+    setTimeout(() => {
+        notification.style.opacity = '0';
+        notification.style.transition = 'opacity 0.5s ease';
+        setTimeout(() => {
+            document.body.removeChild(notification);
+        }, 500);
+    }, 3000);
+}
+
+// Función de utilidad para debounce (retrasar la ejecución)
+function debounce(func, delay) {
+    let timeout;
+    return function() {
+        const context = this;
+        const args = arguments;
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func.apply(context, args), delay);
+    };
+}
+
+    </script>
+</body>
+</html>

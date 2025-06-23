@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Servicios</title>
+    <link rel="icon" href="{{ url_for('static', filename='IMG/logos/logo.png') }}" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/Cotizaciones.css') }}">
+    
+</head>
+<body>
+   
+    <nav id="navbar">
+        <div class="navbar-container">
+          <a href="#" class="navbar-brand">
+            <img src="{{ url_for('static', filename='IMG/logos/logo.png') }}" alt="FPC" class="navbar-logo">FULL PAINT CARS
+          </a>
+          <div class="navbar-nav">
+            <a href="{{ url_for('cotizaciones.inicio') }}" class="nav-link">INICIO</a>
+            <a href="{{ url_for('cotizaciones.home') }}" class="nav-link">SERVICIOS</a>
+            <a href="{{ url_for('cotizaciones.inicio') }}#galeria" class="nav-link">GALERÍA</a>
+            <a href="{{ url_for('cotizaciones.inicio') }}#testimonios" class="nav-link">TESTIMONIOS</a>
+            <a href="#contactanos" class="nav-link">CONTÁCTANOS</a>
+            <a class="nav-link login-btn" href="{{ url_for('index_bp.login') }}" title="Iniciar Sesión">Iniciar Sesión</a>
+          </div>
+        </div>
+      </nav>
+      
+      
+      
+    </div>
+  </nav>
+
+  <div class="carousel-item active hero-slide hero-1">
+    <div class="overlay-content text-white text-center d-flex align-items-center justify-content-center">
+      <div>
+        <h1 class="display-4">Tu automóvil, siempre bajo control</h1>
+        <p class="lead">Accede a un historial completo y detallado de tu vehículo. Gestiona su mantenimiento con facilidad.</p>
+        <a href="/app/templates/login.html" class="btn btn-primary">Comienza ahora</a>
+      </div>
+    </div>
+  </div>
+<br>
+  <div class="top-divider"></div>
+  <div class="top-divider"></div>
+  <div class="top-divider"></div>
+  <br>
+
+    <div class="container section-separator">
+        <br>
+        <br>
+        <div class="section-title">
+            <h2>Nuestros Servicios</h2>
+            <div class="separator-line"></div>
+            <p class="subtitle">Soluciones a la medida de tu vehículo</p>
+          </div>
+ <div class="top-divider"></div>
+        <div class="product-grid">
+            <div class="product-grid__item" data-id="1" data-name="Latonería y pintura automotriz" data-price="500.000">
+                <div class="product-grid__item-inner">
+                    <div class="product-grid__imagen">
+                        <img src="{{ url_for('static', filename='IMG/servicios/Latonería y pintura automotriz.jpg') }}" alt="Latonería y pintura automotriz" width="160" height="160">
+                    </div>
+                    <div class="product-grid__info">
+                        <p class="product-grid__name">Latonería y pintura automotriz</p>
+                        <p class="product-grid__description">Restauración completa de la carrocería y pintura de tu vehículo. Deja tu automóvil como nuevo.</p>
+                        <p class="product-grid__price">Desde $500.000</p>
+                        <a href="#" class="product-grid__btn btn-default" data-btn-action="add-btn-cart">Agregar al carrito</a>
+                    </div>
+                </div>
+            </div>
+
+    
+            <div class="product-grid__item" data-id="2" data-name="Porcelanizado" data-price="350.000">
+                <div class="product-grid__item-inner">
+                    <div class="product-grid__imagen">
+                        <img src="{{ url_for('static', filename='IMG/servicios/Porcilanizado.png') }}" alt="Porcelanizado" width="160" height="160">
+                    </div>
+                    <div class="product-grid__info">
+                        <p class="product-grid__name">Porcelanizado</p>
+                        <p class="product-grid__description">Restauración completa de la carrocería y pintura de tu vehículo. Deja tu automóvil como nuevo.</p>
+                        <p class="product-grid__price">Desde $350.000</p>
+                        <a href="#" class="product-grid__btn btn-default" data-btn-action="add-btn-cart">Agregar al carrito</a>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="product-grid__item" data-id="3" data-name="Brillada básica" data-price="40.000">
+                <div class="product-grid__item-inner">
+                    <div class="product-grid__imagen">
+                        <img src="{{ url_for('static', filename='IMG/servicios/Brillada Basica.jpg') }}" alt="Brillada básica" width="160" height="160">
+                    </div>
+                    <div class="product-grid__info">
+                        <p class="product-grid__name">Brillada básica</p>
+                        <p class="product-grid__description">Restauración completa de la carrocería y pintura de tu vehículo. Deja tu automóvil como nuevo.</p>
+                        <p class="product-grid__price">Desde $40.000</p>
+                        <a href="#" class="product-grid__btn btn-default" data-btn-action="add-btn-cart">Agregar al carrito</a>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="product-grid__item" data-id="4" data-name="Desmanchado" data-price="54.990">
+                <div class="product-grid__item-inner">
+                    <div class="product-grid__imagen">
+                        <img src="{{ url_for('static', filename='IMG/servicios/Desmanchado.jpg') }}" alt="Desmanchado" width="160" height="160">
+                    </div>
+                    <div class="product-grid__info">
+                        <p class="product-grid__name">Desmanchado</p>
+                        <p class="product-grid__description">Restauración completa de la carrocería y pintura de tu vehículo. Deja tu automóvil como nuevo.</p>
+                        <p class="product-grid__price">Desde $54.990</p>
+                        <a href="#" class="product-grid__btn btn-default" data-btn-action="add-btn-cart">Agregar al carrito</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-grid__item" data-id="5" data-name="Alistamiento interno" data-price="80.000">
+                <div class="product-grid__item-inner">
+                    <div class="product-grid__imagen">
+                        <img src="{{ url_for('static', filename='IMG/servicios/Alistamiento interno.jpg') }}" alt="Alistamiento interno" width="160" height="160">
+                    </div>
+                    <div class="product-grid__info">
+                        <p class="product-grid__name">Alistamiento interno</p>
+                        <p class="product-grid__description">Restauración completa de la carrocería y pintura de tu vehículo. Deja tu automóvil como nuevo.</p>
+                        <p class="product-grid__price">Desde $80.000</p>
+                        <a href="#" class="product-grid__btn btn-default" data-btn-action="add-btn-cart">Agregar al carrito</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-grid__item" data-id="6" data-name="Lavado de motor" data-price="80.000">
+                <div class="product-grid__item-inner">
+                    <div class="product-grid__imagen">
+                        <img src="{{ url_for('static', filename='IMG/servicios/Lavado motor.jpg') }}" alt="Lavado de motor" width="160" height="160">
+                    </div>
+                    <div class="product-grid__info">
+                        <p class="product-grid__name">Lavado de motor</p>
+                        <p class="product-grid__description">Restauración completa de la carrocería y pintura de tu vehículo. Deja tu automóvil como nuevo.</p>
+                        <p class="product-grid__price">Desde $80.000</p>
+                        <a href="#" class="product-grid__btn btn-default" data-btn-action="add-btn-cart">Agregar al carrito</a>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="product-grid__item" data-id="7" data-name="Pulido y encerado" data-price="150.000">
+                <div class="product-grid__item-inner">
+                    <div class="product-grid__imagen">
+                        <img src="{{ url_for('static', filename='IMG/servicios/Pulido y encerado.jpg') }}" alt="Pulido y encerado" width="160" height="160">
+                    </div>
+                    <div class="product-grid__info">
+                        <p class="product-grid__name">Pulido y encerado</p>
+                        <p class="product-grid__description">Restauración completa de la carrocería y pintura de tu vehículo. Deja tu automóvil como nuevo.</p>
+                        <p class="product-grid__price">Desde $150.000</p>
+                        <a href="#" class="product-grid__btn btn-default" data-btn-action="add-btn-cart">Agregar al carrito</a>
+                    </div>
+                </div>
+            </div>
+            <div class="product-grid__item" data-id="8" data-name="Restauración de faros" data-price="50.000">
+                <div class="product-grid__item-inner">
+                    <div class="product-grid__imagen">
+                        <img src="{{ url_for('static', filename='IMG/servicios/Restaurar faros.jpg') }}" alt="Restauración de faros" width="160" height="160">
+                    </div>
+                    <div class="product-grid__info">
+                        <p class="product-grid__name">Restauración de faros</p>
+                        <p class="product-grid__description">Restauración completa de la carrocería y pintura de tu vehículo. Deja tu automóvil como nuevo.</p>
+                        <p class="product-grid__price">Desde $50.000</p>
+                        <a href="#" class="product-grid__btn btn-default" data-btn-action="add-btn-cart">Agregar al carrito</a>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="product-grid__item" data-id="9" data-name="Protección de pintura con película transparente (PPF)" data-price="1.200.000">
+                <div class="product-grid__item-inner">
+                    <div class="product-grid__imagen">
+                        <img src="{{ url_for('static', filename='IMG/servicios/Protección de pintura con película transparente.jpg') }}" alt="Protección de pintura con película transparente (PPF)" width="160" height="160">
+                    </div>
+                    <div class="product-grid__info">
+                        <p class="product-grid__name">Protección de pintura con película transparente (PPF)</p>
+                        <p class="product-grid__description">Restauración completa de la carrocería y pintura de tu vehículo. Deja tu automóvil como nuevo.</p>
+                        <p class="product-grid__price">Desde $1.200.000</p>
+                        <a href="#" class="product-grid__btn btn-default" data-btn-action="add-btn-cart">Agregar al carrito</a>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="product-grid__item" data-id="10" data-name="Reparación de abolladuras sin pintura (PDR)" data-price="200.000">
+                <div class="product-grid__item-inner">
+                    <div class="product-grid__imagen">
+                        <img src="{{ url_for('static', filename='IMG/servicios/Reparación de abolladuras sin pintura.jpg') }}" alt="Reparación de abolladuras sin pintura (PDR)" width="160" height="160">
+                    </div>
+                    <div class="product-grid__info">
+                        <p class="product-grid__name">Reparación de abolladuras sin pintura (PDR)</p>
+                        <p class="product-grid__description">Restauración completa de la carrocería y pintura de tu vehículo. Deja tu automóvil como nuevo.</p>
+                        <p class="product-grid__price">Desde $200.000</p>
+                        <a href="#" class="product-grid__btn btn-default" data-btn-action="add-btn-cart">Agregar al carrito</a>
+                    </div>
+                </div>
+            </div>
+            
+
+    <div class="product-grid__item" data-id="9" data-name="Protección de pintura con película transparente (PPF)" data-price="1.200.000">
+      <div class="product-grid__item-inner">
+          <div class="product-grid__imagen">
+              <img src="{{ url_for('static', filename='IMG/servicios/polichado.jpeg') }}" alt="Protección de pintura con película transparente (PPF)" width="160" height="160">
+          </div>
+          <div class="product-grid__info">
+              <p class="product-grid__name">Polichado</p>
+              <p class="product-grid__description">Restauración completa de la carrocería y pintura de tu vehículo. Deja tu automóvil como nuevo.</p>
+              <p class="product-grid__price">Desde $1.200.000</p>
+              <a href="#" class="product-grid__btn btn-default" data-btn-action="add-btn-cart">Agregar al carrito</a>
+          </div>
+      </div>
+  </div>
+
+  <div class="product-grid__item" data-id="9" data-name="Protección de pintura con película transparente (PPF)" data-price="1.200.000">
+    <div class="product-grid__item-inner">
+        <div class="product-grid__imagen">
+            <img src="{{ url_for('static', filename='IMG/servicios/Limpieza y desinfección de interiores.jpg') }}" alt="Protección de pintura con película transparente (PPF)" width="160" height="160">
+        </div>
+        <div class="product-grid__info">
+            <p class="product-grid__name">Limpieza y desinfección</p>
+            <p class="product-grid__description">Restauración completa de la carrocería y pintura de tu vehículo. Deja tu automóvil como nuevo.</p>
+            <p class="product-grid__price">Desde $1.200.000</p>
+            <a href="#" class="product-grid__btn btn-default" data-btn-action="add-btn-cart">Agregar al carrito</a>
+        </div>
+    </div>
+</div>
+        </div>
+    </div>
+    
+        <!-- MODAL CARRITO -->
+<div class="modal" id="jsModalCarrito">
+    <div class="modal__container">
+        <button type="button" class="modal__close fa-solid fa-xmark jsModalClose"></button>
+        <div class="modal__info">
+            <div class="modal__header">
+                <h2><i class="fa-brands fa-opencart"></i> Carrito</h2>
+            </div>
+            <div class="modal__body">
+                <div class="modal__list" id="cartItems"></div>
+            </div>
+            <div class="modal__footer">
+                <div class="modal__list-price">
+                    <ul>
+                        <li>Subtotal: <strong id="subtotal">$000.000</strong></li>
+                        <li>Descuento: <strong>$000.000</strong></li>
+                    </ul>
+                    <h4 class="modal__total-cart" id="totalCart">Total: $000.000</h4>
+                </div>
+                <div class="modal__btns">
+                    <a href="http://127.0.0.1:5000/#" class="btn-border">Ir al carrito</a>
+                    <a href="http://127.0.0.1:5000/reservar" class="btn-primary">Agendar cita</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="top-divider"></div>
+<!-- Contacto con selección de servicios dinámica -->
+<section id="contact" class="py-5">
+    <div class="container">
+      <h2 class="text-center mb-4 title-divider"><center>Agenda tu servicio</center></h2>
+      <form onsubmit="return enviarMensaje(event)">
+        
+        <!-- Nombre -->
+        <div class="mb-3">
+          <label for="name" class="form-label">Nombre</label>
+          <input type="text" class="form-control" id="name" placeholder="Tu nombre" required>
+        </div>
+  
+        <!-- Email -->
+        <div class="mb-3">
+          <label for="email" class="form-label">Correo Electrónico</label>
+          <input type="email" class="form-control" id="email" placeholder="tu@correo.com" required>
+        </div>
+  
+        <!-- Servicios uno por uno -->
+        <div class="mb-3">
+          <label for="serviceSelector" class="form-label">Elige un servicio</label>
+          <select class="form-select" id="serviceSelector">
+            <option value="">Selecciona un servicio</option>
+            <option value="Mantenimiento">Mantenimiento</option>
+            <option value="Diagnóstico">Diagnóstico</option>
+            <option value="Revisión general">Revisión general</option>
+            <option value="Cambio de aceite">Cambio de aceite</option>
+            <option value="Reparación de frenos">Reparación de frenos</option>
+            <option value="Lavado y detallado">Lavado y detallado</option>
+          </select>
+        </div>
+  
+        <!-- Servicios seleccionados en chips -->
+        <div class="mb-3" id="selectedServicesContainer">
+          <label class="form-label">Servicios seleccionados:</label>
+          <div id="selectedServices" class="d-flex flex-wrap gap-2"></div>
+        </div>
+  
+        <!-- Fecha -->
+        <div class="mb-3">
+          <label for="date" class="form-label">Fecha</label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-calendar-event"></i></span>
+            <input type="date" class="form-control" id="date" required>
+          </div>
+        </div>
+  
+        <!-- Hora -->
+        <div class="mb-3">
+          <label for="time" class="form-label">Hora</label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-clock"></i></span>
+            <input type="time" class="form-control" id="time" required>
+          </div>
+        </div>
+  
+        <!-- Mensaje -->
+        <div class="mb-3">
+          <label for="message" class="form-label">Mensaje adicional</label>
+          <textarea class="form-control" id="message" rows="4" placeholder="Detalles adicionales"></textarea>
+        </div>
+  
+        <!-- Botón -->
+        <button type="submit" class="btn btn-primary w-100">Agendar</button>
+      </form>
+    </div>
+  </section>
+  
+    <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      
+      <!-- Logo y nombre -->
+      <div class="footer-logo">
+        <img src="{{ url_for('static', filename='IMG/logos/logo.png') }}" alt="FPC" class="navbar-logo">
+                <h2>Full Paint Cars</h2>
+      </div>
+  
+      <!-- Enlaces rápidos -->
+      <div class="footer-links">
+        <h3>Enlaces</h3>
+        <ul>
+          <li><a href="#hero">Inicio</a></li>
+          <li><a href="#soluciones">Servicios</a></li>
+          <li><a href="#insights">Galería</a></li>
+          <li><a href="#Testimonials">Testimonios</a></li>
+          <li><a href="#contact">Contáctanos</a></li>
+        </ul>
+      </div>
+  
+      <!-- Redes sociales con imágenes -->
+  <div class="footer-social">
+    <h3>Síguenos</h3>
+    <ul class="social-wrapper">
+      <li class="icon">
+        <a href="https://facebook.com" target="_blank">
+          <img src="{{ url_for('static', filename='IMG/logos/facebook.png') }}" alt="Facebook">
+        </a>
+      </li>
+      <li class="icon">
+        <a href="https://instagram.com" target="_blank">
+          <img src="{{ url_for('static', filename='IMG/logos/instagram.webp') }}" alt="Instagram">
+        </a>
+      </li>
+      <li class="icon">
+        <a href="https://wa.me/573200000000" target="_blank">
+          <img src="{{ url_for('static', filename='IMG/logos/whatsapp.webp') }}" alt="Whatsapp">
+        </a>
+      </li>
+    </ul>
+  </div>
+  
+  
+      <!-- Contacto -->
+      <div class="footer-contact">
+        <h3>Contacto</h3>
+        <p><i class="fas fa-map-marker-alt"></i> Bogotá, Colombia</p>
+        <p><i class="fas fa-envelope"></i> contacto@fullpaintcars.com</p>
+        <p><i class="fas fa-phone-alt"></i> +57 320 000 0000</p>
+      </div>
+  
+    </div>
+  
+    <div class="footer-bottom">
+      <p>&copy; 2025 Full Paint Cars. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+  <script src="{{ url_for('static', filename='js/Cotizaciones.js') }}"></script>
+</body>
+</html>
