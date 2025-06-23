@@ -1,0 +1,148 @@
+body {
+    display: flex;
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #f4f4f4;
+  }
+  
+  .sidebar {
+    width: 220px;
+    background: #0a2a43;
+    color: white;
+    height: 100vh;
+    padding: 20px;
+  }
+  
+  .brand {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  
+  .nav-links {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .nav-links li {
+    margin: 15px 0;
+  }
+  
+  .nav-links a {
+    color: white;
+    text-decoration: none;
+    display: block;
+    transition: background 0.3s;
+    padding: 10px;
+    border-radius: 5px;
+  }
+  
+  .nav-links a:hover {
+    background: #14466d;
+  }
+  
+  .chat-container {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+  }
+  
+  .chat-header {
+    margin-bottom: 20px;
+  }
+  
+  .vehicle-status {
+    margin-top: 10px;
+    font-weight: bold;
+  }
+  
+  .status {
+    padding: 5px 10px;
+    border-radius: 10px;
+    margin-left: 10px;
+  }
+  
+  .status.in-progress {
+    background-color: #ffc107;
+    color: #000;
+  }
+  
+  .status.completed {
+    background-color: #28a745;
+    color: white;
+  }
+  
+  .status.waiting {
+    background-color: #dc3545;
+    color: white;
+  }
+  
+  .chat-box {
+    flex-grow: 1;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    overflow-y: auto;
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .message {
+    max-width: 60%;
+    padding: 10px 15px;
+    border-radius: 20px;
+    word-wrap: break-word;
+  }
+  
+  .message.sent {
+    align-self: flex-end;
+    background-color: #14466d;
+    color: white;
+  }
+  
+  .message.received {
+    align-self: flex-start;
+    background-color: #e0e0e0;
+    color: #333;
+  }
+  
+  .chat-input {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+  }
+  
+  .chat-input input[type="text"] {
+    flex-grow: 1;
+    border: none;
+    padding: 10px;
+    border-radius: 10px;
+    outline: none;
+    background-color: #f0f0f0;
+  }
+  
+  .chat-input button {
+    background: #14466d;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  
+  .chat-input button:hover {
+    background: #0a2a43;
+  }
+  
+  .chat-input i {
+    color: #14466d;
+    font-size: 20px;
+    cursor: pointer;
+  }
+  

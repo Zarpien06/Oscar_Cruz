@@ -1,0 +1,1112 @@
+body {
+  scroll-behavior: smooth;
+  font-family: 'Montserrat', sans-serif;
+}
+
+/* Estilo para los enlaces del dropdown */
+.nav-item.dropdown:hover .dropdown-menu {
+  display: block;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+.dropdown-menu {
+  display: none;
+  background-color: #001f3f; /* color de fondo */
+  border-radius: 5px;
+  padding: 10px;
+  margin-top: 10px;
+}
+
+.dropdown-item {
+  color: #fff;
+  padding: 10px;
+  text-align: center;
+}
+
+.dropdown-item:hover {
+  background-color: #ddd;
+  color: #001f3f;
+}
+
+/* Hover para el enlace principal de Servicios */
+.nav-item.dropdown:hover .nav-link {
+  color: #ddd !important;
+}
+
+/* Carousel debe ocupar todo el ancho y alto de la ventana */
+#hero-carousel {
+  width: 100%;
+}
+
+/* Estilo base del carrusel */
+.hero-slide {
+  height: 100vh;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 100%;
+  opacity: 0;
+  transform: translateX(100%);
+  transition: transform 1.2s ease, opacity 1.2s ease;
+}
+
+/* Cuando está activa */
+.carousel-item.active.hero-slide {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Centrado de contenido */
+.overlay-content {
+  height: 100vh;
+  width: 100%;
+  padding: 0 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Animaciones de texto */
+.overlay-content h1,
+.overlay-content p,
+.overlay-content a {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 1s ease, transform 1s ease;
+}
+
+/* Mostrar elementos con delay */
+.carousel-item.active .overlay-content h1 {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.5s;
+}
+
+.carousel-item.active .overlay-content p {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 1s;
+}
+
+.carousel-item.active .overlay-content a {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 1.5s;
+  animation: pulse 1.5s infinite;
+}
+
+/* Estilo mejorado para el botón */
+.overlay-content a.btn-primary {
+  background-color: #0056b3;
+  border: none;
+  font-size: 1.2rem;
+  padding: 12px 30px;
+  border-radius: 30px;
+  box-shadow: 0 0 15px rgba(0, 86, 179, 0.6);
+}
+
+/* Animación de palpitación */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 rgba(0, 86, 179, 0.4);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 0 12px rgba(0, 86, 179, 0.8);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 rgba(0, 86, 179, 0.4);
+  }
+}
+
+/* Sombra de texto */
+.overlay-content h1,
+.overlay-content p,
+.overlay-content a {
+  text-shadow: 2px 2px 6px rgba(17, 0, 144, 0.8);
+}
+
+
+/* Imágenes específicas por slide */
+.hero-1 {
+  background-image: url('/static/IMG/banners/carusel1.jpg');
+  background-size: cover;
+}
+
+.hero-2 {
+  background-image: url('/static/IMG/banners/carusel1.5.webp');
+  background-size: cover;
+}
+
+.hero-3 {
+  background-image: url('/static/IMG/banners/carusel2.jpg');
+  background-size: cover;
+}
+
+/* carrito */
+.section-title {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.section-title h2 {
+  font-size: 2rem;
+  color: #001f3f;
+  margin-bottom: 0.5rem;
+}
+
+
+.section-title .subtitle {
+  font-size: 1.1rem;
+  color: #666;
+  margin: 0 auto;
+}
+
+.servicios-section .product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+  gap: 2rem;
+  padding: 6rem 2rem 3rem;
+  max-width: 1300px;
+  margin: auto;
+}
+
+.servicios-section .product-grid__item {
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  background-color: #fff;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.servicios-section .product-grid__item:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+}
+
+.servicios-section .product-grid__imagen img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  transition: opacity 0.3s ease;
+}
+
+.servicios-section .product-grid__item:hover .product-grid__imagen img {
+  opacity: 0.3;
+}
+
+.servicios-section .product-grid__imagen img.active {
+  opacity: 1;
+}
+
+.servicios-section .product-grid__info {
+  margin-top: 1.5rem;
+  text-align: center;
+}
+
+.servicios-section .product-grid__name {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #001f3f;
+  margin-bottom: 0.5rem;
+}
+
+.servicios-section .product-grid__price {
+  color: #555;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+
+.servicios-section .product-grid__btn {
+  background-color: #003366;
+  color: #ffffff;
+  padding: 12px 30px;
+  font-size: 1rem;
+  border-radius: 30px;
+  font-weight: bold;
+  text-decoration: none;
+  display: inline-block;
+  animation: bounceGlow 2s infinite ease-in-out;
+  transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+  box-shadow: 0 0 10px rgba(0, 51, 102, 0.3);
+}
+
+.servicios-section .product-grid__btn:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(0, 86, 179, 0.6);
+}
+
+/* Estilo para centrar el modal */
+.modal-dialog {
+  max-width: 40%; /* Se asegura de que el modal no ocupe más del 90% del ancho de la pantalla */
+  width: auto; /* Permite que el modal se ajuste según el contenido */
+  margin: 0 auto; /* Asegura el centrado horizontal */
+  position: fixed; /* Asegura que el modal se fije en la pantalla */
+  top: 30%; /* 50% de la altura de la pantalla */
+  left: 30%; /* 50% del ancho de la pantalla */
+  transform: translate(-30%, -25%); /* Ajuste para centrar el modal en ambos ejes */
+}
+
+/* Estilos del contenido del modal */
+.modal-content {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+.modal-header {
+  background-color: #070058;
+}
+
+.modal-footer .btn-primary {
+  background-color: #040743;
+  border-color: #040743;
+}
+
+.modal-footer .btn-secondary {
+  background-color: #6a0a0a;
+  border-color: #6a0a0a;
+}
+
+.modal-title {
+  color: #ffffff;
+  font-size: 1.3rem;
+}
+
+/* Responsividad: ajustando el tamaño de las fuentes y los márgenes en pantallas pequeñas */
+@media (max-width: 768px) {
+  .modal-dialog {
+    max-width: 95%; /* Permite un mayor espacio en pantallas más pequeñas */
+  }
+
+  .modal-title {
+    font-size: 1.2rem; /* Ajusta el tamaño del título */
+  }
+
+  .modal-body {
+    font-size: 1rem; /* Ajusta el tamaño del texto en el cuerpo */
+  }
+
+  .modal-footer .btn-primary,
+  .modal-footer .btn-secondary {
+    font-size: 0.9rem; /* Reduce el tamaño de los botones */
+  }
+}
+
+/* Responsividad para pantallas muy pequeñas (móviles) */
+@media (max-width: 480px) {
+  .modal-dialog {
+    max-width: 98%; /* Asegura que el modal no ocupe más del 98% del ancho */
+  }
+
+  .modal-title {
+    font-size: 1.1rem; /* Ajusta el tamaño del título en pantallas muy pequeñas */
+  }
+
+  .modal-body {
+    font-size: 0.95rem; /* Ajusta el tamaño del cuerpo en pantallas pequeñas */
+  }
+
+  .modal-footer .btn-primary,
+  .modal-footer .btn-secondary {
+    font-size: 0.8rem; /* Ajusta el tamaño de los botones */
+  }
+}
+
+ 
+/* Centrado del contenido */
+.overlay-content {
+  height: 100vh;
+  width: 100%;
+  padding: 0 15px;
+}
+
+.chip {
+  background-color: #003366;
+  color: white;
+  padding: 5px 12px;
+  border-radius: 20px;
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.9rem;
+  margin-right: 5px;
+}
+
+.chip .close-btn {
+  margin-left: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  color: #ffcccc;
+}
+
+/* Fade entre slides */
+.carousel-fade  {
+  transition: opacity 1s ease-in-out;
+}
+
+
+/* Estilo para el navbar */
+
+/* NAVBAR glassmorphism oscuro */
+#navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  padding: 10px 20px;
+  font-family: 'Montserrat', sans-serif;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  background: rgba(10, 10, 10, 0.65); /* más oscuro */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(10px);
+  transition: background-color 0.4s ease, box-shadow 0.4s ease, backdrop-filter 0.4s ease;
+  animation: fadeInTop 1s ease;
+}
+
+@keyframes fadeInTop {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Logo sin fondo y con animación */
+.navbar-logo {
+  width: 120px;
+  height: auto;
+  object-fit: contain;
+  margin-right: 10px;
+  background: none !important;
+  border: none;
+  transition: transform 0.3s ease;
+}
+
+.navbar-logo:hover {
+  transform: scale(1.1);
+}
+
+/* Marca */
+.navbar-brand {
+  font-size: 1.5rem;
+  color: #fff !important;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+/* NAV LINKS */
+.nav-link {
+  color: #fff !important;
+  font-size: 1.05rem;
+  padding: 10px 18px;
+  position: relative;
+  font-weight: 500;
+  opacity: 0;
+  animation: slideFadeIn 0.5s ease forwards;
+  transition: all 0.3s ease;
+}
+
+.nav-link:nth-child(1) { animation-delay: 0.3s; }
+.nav-link:nth-child(2) { animation-delay: 0.45s; }
+.nav-link:nth-child(3) { animation-delay: 0.6s; }
+.nav-link:nth-child(4) { animation-delay: 0.75s; }
+.nav-link:nth-child(5) { animation-delay: 0.9s; }
+
+@keyframes slideFadeIn {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.nav-link:not(.login-btn)::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 6px;
+  width: 0%;
+  height: 2px;
+  background-color: #fff;
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+
+.nav-link:hover {
+  color: #ddd !important;
+  transform: translateY(-2px);
+}
+
+/* BOTÓN LOGIN */
+.nav-link.login-btn {
+  background-color: #fff;
+  color: #001f3f !important;
+  border-radius: 50px;
+  padding: 8px 24px;
+  font-weight: bold;
+  margin-left: 15px;
+  transition: all 0.4s ease;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);
+  animation: pulseIn 1.5s ease forwards;
+  opacity: 0;
+}
+
+@keyframes pulseIn {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.nav-link.login-btn:hover {
+  background-color: #f2f2f2;
+  transform: scale(1.08);
+  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.4);
+}
+
+/* RESPONSIVE */
+@media (max-width: 992px) {
+  .nav-link {
+    width: 100%;
+    text-align: left;
+    padding: 12px 20px;
+    margin: 0;
+  }
+
+  .nav-link.login-btn {
+    width: 90%;
+    margin: 10px auto;
+    text-align: center;
+  }
+
+  .navbar-logo {
+    width: 100px;
+  }
+
+  .navbar-brand {
+    font-size: 1.3rem;
+  }
+}
+
+.navbar-toggler {
+  border: none;
+  filter: invert(100%);
+}
+
+
+
+
+/* El submenú inicialmente está oculto */
+.dropdown-menu {
+  display: none; /* Oculto por defecto */
+  background: rgba(0, 31, 63, 0.95);
+  border-radius: 10px;
+  border: none;
+  margin-top: 10px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: opacity 0.3s ease, visibility 0s linear 0.3s, transform 0.3s ease;
+  padding: 10px 0;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
+  z-index: 999;
+  min-width: 200px;
+}
+
+/* Al pasar el cursor sobre el nav-item (Inicio o Servicios), se muestra el submenú */
+.nav-item.dropdown:hover .dropdown-menu {
+  display: block; /* Lo muestra */
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0); /* Desplazamiento suave */
+  transition: opacity 0.3s ease, visibility 0s linear 0s, transform 0.3s ease;
+}
+/* Cuando el submenú tiene el foco, se queda visible hasta que el cursor salga */
+.nav-item.dropdown:hover .dropdown-menu,
+.nav-item.dropdown .dropdown-menu:hover {
+  display: block; /* Asegura que se quede visible */
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* Ítems del submenú */
+.dropdown-item {
+  color: #ccc;
+  font-size: 1rem;
+  padding: 10px 20px;
+  transition: all 0.3s ease;
+  border-radius: 5px;
+}
+
+/* Al pasar el cursor sobre un ítem del submenú */
+.dropdown-item:hover {
+  color: #fff;
+  background: linear-gradient(90deg, #003366, #005599);
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  transform: scale(1.02);
+}
+
+/* Asegura que el submenú no desaparezca antes de tiempo */
+.nav-item.dropdown {
+  position: relative;
+}
+
+.nav-item.dropdown:hover .dropdown-menu {
+  display: auto;
+}
+
+/* Para evitar que se cierre al mover el cursor entre los dos */
+.nav-item.dropdown:hover .dropdown-menu {
+  pointer-events: auto; /* Permite la interacción con el submenú */
+}
+
+/* Estilo para la sección de soluciones */
+.solucion-card {
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  background-color: #fff;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.solucion-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+}
+
+.solucion-img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  transition: opacity 0.3s ease;
+}
+
+/* Para el hover en la galería */
+.solucion-card:hover .solucion-img {
+  opacity: 0.3; /* Baja la opacidad cuando se pasa el mouse */
+}
+
+.solucion-card:hover .solucion-img.active {
+  opacity: 1; /* Vuelve la imagen activa completamente visible */
+}
+
+/* Botón con animación personalizada para "Ver más procesos" */
+.ctabtn {
+  background-color: #003366; /* Azul corporativo */
+  color: #ffffff;
+  padding: 12px 30px;
+  font-size: 1rem;
+  border-radius: 30px;
+  font-weight: bold;
+  text-decoration: none;
+  display: inline-block;
+  animation: bounceGlow 2s infinite ease-in-out;
+  transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+  box-shadow: 0 0 10px rgba(0, 51, 102, 0.3);
+}
+
+.ctabtn:hover {
+  background-color: #0056b3; /* Un azul más claro al pasar el mouse */
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(0, 86, 179, 0.6);
+}
+
+/* Animación tipo rebote con glow */
+@keyframes bounceGlow {
+  0%, 100% {
+    transform: translateY(0);
+    box-shadow: 0 0 10px rgba(0, 51, 102, 0.3);
+  }
+  50% {
+    transform: translateY(-6px);
+    box-shadow: 0 0 25px rgba(0, 86, 179, 0.6);
+  }
+}
+
+/* Contenedor de la imagen de antes y después */
+.before-after-container {
+  position: relative;
+  width: 100%;
+  height: 220px; /* Mismo tamaño de la imagen */
+  overflow: hidden;
+}
+
+.before-image,
+.after-image {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  transition: opacity 0.3s ease-in-out;
+  opacity: 0; /* Inicia con la imagen no visible */
+}
+
+.after-image {
+  opacity: 1;
+}
+
+.before-image.active,
+.after-image.active {
+  opacity: 1;
+}
+
+/* Estilo para las imágenes de perfil */
+.profile-pic {
+  width: 50px;
+  height: 50px;
+  overflow: hidden;
+  border-radius: 50%;
+}
+
+.profile-pic img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Estilo adicional para el contenedor de los testimonios */
+#testimonios .card {
+  border: none;
+  border-radius: 10px;
+  transition: transform 0.3s ease;
+}
+
+#testimonios .card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+#testimonios .card-text {
+  font-size: 1rem;
+  color: #333;
+}
+
+/* Estilo para el nombre y la valoración */
+#testimonios .d-flex {
+  display: flex;
+  align-items: center;
+}
+
+#testimonios .ms-3 {
+  margin-left: 10px;
+}
+
+.text-warning {
+  color: #ffcc00;
+}
+
+
+  /* Estilo para los logos */
+  .partner-logo {
+    max-height: 60px;
+    filter: grayscale(100%);
+    transition: filter 0.3s ease, transform 0.3s ease;
+  }
+
+  .partner-logo:hover {
+    filter: grayscale(0%);
+    transform: scale(1.1);
+  }
+
+/* Estilo para la sección de contacto */
+#contact {
+  background-color: #f9f9f9;
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+
+#contact h2 {
+  color: #001f3f;
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.partners-section {
+  background-color: #003366; /* azul oscuro */
+}
+
+.partner-logo {
+  max-width: 100px;
+  max-height: 60px;
+  object-fit: contain;
+  /*filter: brightness(0) invert(1); /* blanco aunque el logo sea negro */
+  transition: transform 0.3s ease;
+}
+
+.partner-logo:hover {
+  transform: scale(1.1);
+}
+
+/*banner*/
+/* Estilo base del banner */
+.cta-banner {
+  background-color: #003366;
+  color: white;
+  padding-top: 50px;
+  padding-bottom: 50px;
+  opacity: 0;
+  transform: translateY(50px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+/* Cuando entra en pantalla */
+.cta-banner.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Texto */
+.cta-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.cta-description {
+  font-size: 1.25rem;
+  margin-bottom: 30px;
+}
+
+/* Botón con animación */
+.cta-btn {
+  background-color: #ffffff;
+  color: #003366;
+  padding: 12px 30px;
+  font-size: 1rem;
+  border-radius: 30px;
+  font-weight: bold;
+  text-decoration: none;
+  animation: pulseMove 1.5s infinite ease-in-out;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.cta-btn:hover {
+  background-color: #0056b3;
+  color: #ffffff;
+}
+
+/* Animación de palpitar y moverse */
+@keyframes pulseMove {
+  0% {
+    transform: scale(1) translateY(0);
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
+  }
+  50% {
+    transform: scale(1.05) translateY(-4px);
+    box-shadow: 0 0 15px 0 rgba(255, 255, 255, 0.6);
+  }
+  100% {
+    transform: scale(1) translateY(0);
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
+  }
+}
+
+
+/* Estilo para el formulario */
+.form-control {
+  border-radius: 8px;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.12), 0 0 8px rgba(0, 0, 0, 0.08);
+  transition: box-shadow 0.3s ease;
+}
+
+.form-control:focus {
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.12), 0 0 8px rgba(0, 80, 255, 0.5);
+}
+
+button[type="submit"] {
+  background-color: #001f3f;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 20px;
+  transition: transform 0.3s ease;
+}
+
+button[type="submit"]:hover {
+  background-color: #003366;
+  transform: scale(1.05);
+}
+
+/* Efecto de línea al pasar por campos de formulario */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+textarea,
+select {
+  border: none;
+  border-bottom: 2px solid transparent;
+  outline: none;
+  transition: border-bottom 0.3s ease;
+}
+
+input[type="text"]:hover,
+input[type="email"]:hover,
+input[type="password"]:hover,
+textarea:hover,
+select:hover,
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+textarea:focus,
+select:focus {
+  border-bottom: 2px solid #001f3f;
+}
+
+.btn-block {
+  width: 100%;
+}
+
+/* marcas */
+/* Estilos generales */
+#marcas {
+  background-color: #0104102a;
+  padding: 60px;
+  text-align: center;
+}
+
+#marcas h2 {
+  color: #010000;
+  font-size: 2em;
+  margin-bottom: 30px;
+}
+
+/* Estilos del contenedor de marcas */
+.brands {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+  padding: 0 10px;
+}
+
+/* Estilos de cada marca */
+
+.brand {
+  background-color: #00010289;
+  border-radius: 10px;
+  border: 1px solid #C0C0C0;
+  padding: 20px;
+  text-align: center;
+  width: 200px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+  color: white;
+}
+
+
+/* Efecto al pasar el cursor sobre cada marca */
+.brand:hover {
+  transform: translateY(-10px);
+}
+
+/* Estilos de la imagen de cada marca */
+.brand img {
+  max-width: 100px;
+  height: auto;
+  margin-bottom: 15px;
+}
+
+/* Estilos del nombre de la marca */
+.brand p {
+  color: white;
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+
+/* FOOTER */
+
+.footer-content {
+  display: flex;
+  justify-content: space-around;
+  padding: 20px;
+  background: #000000;
+  color: #ffffff;
+  }
+  
+  /* General Footer Styles */
+  footer {
+  background: #1d1d1d;
+  color: #fff;
+  padding: 40px 20px;
+  font-family: 'Montserrat', sans-serif;
+  }
+  
+  /* Footer Content Layout */
+  .footer-content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 20px;
+  }
+  
+  .footer-section {
+  flex: 1 1 250px;
+  margin: 10px;
+  }
+  
+  /* About Section */
+  .footer-section.about img {
+  width: 120px;
+  margin-bottom: 5px;
+  filter: brightness(0) invert(1); /* Blanco puro para el logo */
+  }
+  
+  .footer-section.about p {
+  font-size: 14px;
+  line-height: 1.8;
+  }
+  
+  /* Section Titles */
+  .footer-section h2 {
+  color: #13226c; /* Azul oscuro */
+  margin-bottom: 15px;
+  font-size: 20px;
+  border-bottom: 2px solid #13226ca9;
+  display: inline-block;
+  }
+  
+  /* Links Section */
+  .footer-section ul {
+  list-style: none;
+  padding: 0;
+  }
+  
+  .footer-section ul li {
+  margin-bottom: 10px;
+  }
+  
+  .footer-section ul li a {
+  color: #b3c0e6; /* Azul claro */
+  text-decoration: none;
+  transition: color 0.3s;
+  }
+  
+  .footer-section ul li a:hover {
+  color: #ffffff;
+  }
+  
+  /* Contact Section */
+  .footer-section.contact p {
+  margin: 10px 0;
+  font-size: 14px;
+  }
+  
+  .footer-section.contact p i {
+  margin-right: 10px;
+  color: #13226c; /* Azul oscuro */
+  }
+  
+  .footer-section.social-media h3 {
+    color: #13226c;
+    margin-bottom: 15px;
+    font-size: 20px;
+    border-bottom: 2px solid #13226ca9;
+    display: inline-block;
+    padding-bottom: 5px;
+    text-align: center;
+}
+
+.wrapper {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    list-style: none;
+    padding: 0;
+    flex-wrap: wrap;
+}
+
+.icon {
+    position: relative;
+    width: 55px;
+    height: 55px;
+    background: #13226c;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 60px;
+    transition: background 0.3s, transform 0.3s;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.icon a {
+    color: white;
+    font-size: 35px;
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    line-height: 55px;
+}
+
+.icon:hover {
+    background: #ffffff30;
+    transform: scale(1.1);
+}
+
+/* Tooltip */
+.tooltip {
+    position: absolute;
+    top: -35px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #333;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0.3s, opacity 0.3s;
+}
+
+.icon:hover .tooltip {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Colores de redes */
+.icon.facebook { background: #3b5998; }
+.icon.instagram { background: #e4405f; }
+.icon.twitter { background: #1da1f2; }
+.icon.linkedin { background: #0077b5; }
+
+  .footer-bottom {
+    width: 100%;
+    text-align: center;
+    margin-top: 40px;
+    border-top: 1px solid #444;
+    padding-top: 15px;
+    font-size: 14px;
+    color: #ccc;
+    
+  }
+  
+  .footer-bottom p {
+    margin: 6px 0;
+  }
+  
+  .footer-bottom p a {
+    color: #05237d; /* Azul claro */
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  
+  .footer-bottom p a:hover {
+    text-decoration: underline;
+    color: #ffffff;
+  }
+  
+
+
+

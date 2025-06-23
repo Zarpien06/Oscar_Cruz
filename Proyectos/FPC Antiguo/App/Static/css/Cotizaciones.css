@@ -1,0 +1,862 @@
+/* ==== RESET BÁSICO ==== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f9f9f9;
+    color: #333;
+  }
+  
+  /* ==== NAVBAR ==== */
+  /* NAVBAR */
+#navbar {
+    background-color: #001f3f; /* Azul marino oscuro */
+    padding: 0.8rem 2rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.navbar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1300px;
+    margin: auto;
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    font-size: 1.2rem;
+    color: #fff;
+    font-weight: bold;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.navbar-logo {
+    width: 120px; /* Aumentado el tamaño del logo */
+    height: auto; /* Mantener la relación de aspecto */
+    object-fit: contain; /* Asegura que la imagen no se distorsione */
+    margin-right: 10px; /* Espacio entre el logo y el texto */
+    transition: transform 0.3s ease; /* Transición suave para el aumento */
+}
+
+.navbar-nav {
+    display: flex;
+    align-items: center;
+    gap: 1.6rem;
+}
+
+.nav-link {
+    position: relative; /* Agregar esto */
+    color: #fff;
+    text-decoration: none;
+    font-size: 0.95rem;
+    letter-spacing: 0.8px;
+    transition: color 0.3s ease;
+  }
+  
+  /* Línea debajo de los enlaces al pasar el cursor (excepto login) */
+  .nav-link:not(.login-btn)::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -3px; /* Ajusta para que quede justo abajo */
+    width: 0%;
+    height: 2px;
+    background-color: #fff;
+    transition: width 0.3s ease;
+  }
+  
+  .nav-link:hover::after {
+    width: 100%;
+  }
+  
+  .nav-link:hover {
+    color: #ddd !important;
+  }
+  
+
+.login-btn {
+    background-color: #ffffff;
+    color: #001f3f;
+    padding: 0.4rem 1rem;
+    border-radius: 999px;
+    font-weight: bold;
+    font-size: 0.9rem;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.nav-link.login-btn:hover {
+    background-color: #f0f0f0;
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    color: #001f3f !important;
+    text-decoration: none;
+  }
+
+  /* ==== CONTENEDOR PRINCIPAL ==== */
+  .container {
+    padding: 6rem 2rem 3rem;
+    max-width: 1300px;
+    margin: auto;
+  }
+  
+  .title {
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 2.2rem;
+    font-weight: bold;
+    color: #222;
+  }
+  
+  /* ==== CUADRÍCULA DE PRODUCTOS ==== */
+/* ==== NUESTROS SERVICIOS (Estilo similar a "soluciones") ==== */
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+    gap: 2rem;
+    padding: 6rem 2rem 3rem;
+    max-width: 1300px;
+    margin: auto;
+  }
+  
+  .product-grid__item {
+    border-radius: 20px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    background-color: #fff;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .product-grid__item:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+  }
+  
+  .product-grid__imagen img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    transition: opacity 0.3s ease;
+  }
+  
+  .product-grid__item:hover .product-grid__imagen img {
+    opacity: 0.3; /* Baja la opacidad cuando se pasa el mouse */
+  }
+  
+  /* Si tienes una imagen activa (por ejemplo, una imagen secundaria que aparece al pasar el cursor) */
+  .product-grid__imagen img.active {
+    opacity: 1; /* Imagen activa completamente visible */
+  }
+  
+  .product-grid__info {
+    margin-top: 1.5rem;
+    text-align: center;
+  }
+  
+  .product-grid__name {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #001f3f;
+    margin-bottom: 0.5rem;
+  }
+  
+  .product-grid__price {
+    color: #555;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .product-grid__btn {
+    background-color: #003366; /* Azul corporativo */
+    color: #ffffff;
+    padding: 12px 30px;
+    font-size: 1rem;
+    border-radius: 30px;
+    font-weight: bold;
+    text-decoration: none;
+    display: inline-block;
+    animation: bounceGlow 2s infinite ease-in-out;
+    transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+    box-shadow: 0 0 10px rgba(0, 51, 102, 0.3);
+  }
+  
+  .product-grid__btn:hover {
+    background-color: #0056b3; /* Azul más claro al pasar el mouse */
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(0, 86, 179, 0.6);
+  }
+  
+  /* Animación tipo rebote con glow */
+  @keyframes bounceGlow {
+    0%, 100% {
+      transform: translateY(0);
+      box-shadow: 0 0 10px rgba(0, 51, 102, 0.3);
+    }
+    50% {
+      transform: translateY(-6px);
+      box-shadow: 0 0 25px rgba(0, 86, 179, 0.6);
+    }
+  }
+    
+/* Imagen de fondo estática */
+.hero-1 {
+    background-image: url('../IMG/banners/carusel1.jpg');
+      background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh;
+    position: relative;
+    filter: brightness(0.95);
+  }
+  
+  /* Contenido centrado */
+  .overlay-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+    padding: 0 15px;
+    color: white;
+    text-align: center;
+  }
+  
+  /* Animación de entrada suave */
+  .text-box {
+    animation: fadeInSlide 1.5s ease both;
+  }
+  
+  /* === Título principal con palpitación suave === */
+  .overlay-content h1 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.6);
+    animation: pulseText 3s infinite;
+  }
+  
+  /* Texto descriptivo */
+  .overlay-content p {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.6);
+  }
+  
+  /* Botón llamativo con efecto bounce */
+  .overlay-content .btn-primary {
+    background-color: #0066cc;
+    border: none;
+    font-size: 1.2rem;
+    padding: 12px 30px;
+    border-radius: 30px;
+    color: white;
+    box-shadow: 0 0 15px rgba(0, 102, 204, 0.5);
+    animation: bounceBtn 3s infinite;
+    transition: all 0.3s ease;
+  }
+  
+  /* Hover moderno sin amarillo */
+  .overlay-content .btn-primary:hover {
+    background-color: #007bff;
+    box-shadow: 0 0 25px rgba(0, 150, 255, 0.8);
+    transform: scale(1.07);
+  }
+  
+  /* Animación de aparición */
+  @keyframes fadeInSlide {
+    0% {
+      opacity: 0;
+      transform: translateY(40px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Palpitación suave del título */
+  @keyframes pulseText {
+    0%, 100% {
+      transform: scale(1);
+      text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.6);
+    }
+    50% {
+      transform: scale(1.05);
+      text-shadow: 2px 2px 12px rgba(0, 120, 255, 0.8);
+    }
+  }
+  
+  /* Botón flotante tipo rebote */
+  @keyframes bounceBtn {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-5px);
+    }
+  }
+
+  .section-separator {
+    text-align: center;
+    padding-top: 50px;
+    padding-bottom: 30px;
+  }
+  
+  .section-title h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #003366;
+    margin-bottom: 10px;
+    animation: fadeInUp 1s ease-out;
+  }
+  
+  .section-title .separator-line {
+    width: 60px;
+    height: 4px;
+    background-color: #0066cc;
+    margin: 0 auto 10px auto;
+    border-radius: 10px;
+    animation: fadeIn 2s ease-out;
+  }
+  
+  .section-title .subtitle {
+    font-size: 1.1rem;
+    color: #555;
+    animation: fadeInUp 1.5s ease-out;
+  }
+  
+  /* Animaciones suaves */
+  @keyframes fadeInUp {
+    0% {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+
+  .top-divider {
+    width: 100%;
+    height: 8px;
+    background: linear-gradient(to right, #003366, #0056b3);
+  }
+  
+  
+/* ==== MODAL COMO BARRA LATERAL ==== */
+.modal {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-start;
+    position: fixed;
+    z-index: 999;
+    top: 0;
+    right: -100%;
+    width: 100%;
+    height: 100vh;
+    transition: right 0.3s ease;
+    background-color: transparent; /* Elimina el difuminado */
+    pointer-events: none; /* Evita la interacción cuando el modal está cerrado */
+  }
+  
+  .modal.active {
+    right: 0; /* Hace que se deslice hacia la izquierda */
+    pointer-events: auto; /* Permite la interacción cuando está abierto */
+  }
+  
+  .modal__container {
+    background-color: #f4f8fc;
+    width: 100%;
+    max-width: 400px;
+    height: 100%;
+    border-left: 3px solid #003366;
+    padding: 1.5rem;
+    box-shadow: -3px 0 10px rgba(0, 0, 0, 0.3);
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+    overflow-y: auto;
+    position: relative;
+    z-index: 1000;
+  }
+  
+  .modal.active .modal__container {
+    transform: translateX(0);
+  }
+  
+  .modal__close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 1.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #003366;
+    z-index: 1100;
+  }
+  
+  .modal__close:hover {
+    color: #0056b3;
+  }
+  
+  .modal__header h2 {
+    margin-bottom: 1rem;
+    font-size: 1.6rem;
+    color: #003366;
+    border-bottom: 2px solid #003366;
+    padding-bottom: 0.5rem;
+  }
+  
+  .modal__item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 1rem;
+  }
+  
+  .modal__thumb img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 6px;
+    margin-right: 1rem;
+  }
+  
+  .modal__text-product p {
+    margin: 0;
+    font-size: 1rem;
+  }
+  
+  .modal__text-product strong {
+    color: #003366;
+  }
+  
+  .remove-btn {
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+    background-color: transparent;
+    border: none;
+    color: #e74c3c;
+    cursor: pointer;
+  }
+  
+  .modal__footer {
+    margin-top: 2rem;
+    border-top: 1px solid #ccc;
+    padding-top: 1rem;
+  }
+  
+  .modal__list-price ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .modal__list-price li {
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+  }
+  
+  .modal__total-cart {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #003366;
+  }
+  
+  .modal__btns {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+    gap: 1rem;
+  }
+  
+  .btn-border {
+    border: 2px solid #003366;
+    color: #003366;
+    background-color: transparent;
+    padding: 0.6rem 1.2rem;
+    font-weight: bold;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+  }
+  
+  .btn-border:hover {
+    background-color: #003366;
+    color: #fff;
+  }
+  
+  .btn-primary {
+    background-color: #0056b3;
+    color: #fff;
+    font-weight: bold;
+    padding: 0.6rem 1.2rem;
+    border-radius: 6px;
+    border: none;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  
+  .btn-primary:hover {
+    background-color: #004099;
+    transform: scale(1.05);
+  }
+  
+  /* Estilo para empujar el contenido principal cuando se abre el modal */
+  .content-shift {
+    transition: transform 0.3s ease;
+  }
+  
+  .modal.active ~ .content-shift {
+    transform: translateX(-400px); /* Empuja el contenido a la izquierda cuando el modal está activo */
+  }
+  
+  /* Estilo para el formulario */
+/* Estilo general para los campos de formulario */
+.form-control,
+.form-select,
+textarea {
+  border-radius: 8px;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.12), 0 0 8px rgba(0, 0, 0, 0.08);
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+  width: 100%;
+  padding: 10px 15px;
+}
+
+/* Enfoque de los campos de formulario */
+.form-control:focus,
+.form-select:focus,
+textarea:focus {
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.12), 0 0 8px rgba(0, 80, 255, 0.5);
+  border-color: #001f3f;
+  outline: none;
+}
+
+/* Estilo para los botones */
+button[type="submit"] {
+  background-color: #001f3f;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 20px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  width: 100%;
+}
+
+/* Hover del botón de envío */
+button[type="submit"]:hover {
+  background-color: #003366;
+  transform: scale(1.05);
+}
+
+/* Estilo para las etiquetas */
+.form-label {
+  font-weight: bold;
+  color: #1c1c1c;
+  margin-bottom: 5px;
+}
+/* Estilo para la sección de "Agenda tu servicio" */
+.title-divider {
+    font-size: 2.5rem; /* Tamaño de fuente grande */
+    font-weight: bold; /* Peso de la fuente en negrita */
+    color: #001f3f; /* Color azul oscuro */
+    position: relative;
+    display: inline-block;
+    padding-bottom: 10px;
+}
+
+.title-divider::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 4px; /* Tamaño del separador debajo del texto */
+    background-color: #006bb3; /* Azul más claro */
+    border-radius: 5px;
+}
+
+/* Estilo general solo para el formulario de contacto */
+#contact .form-control,
+#contact .form-select,
+#contact textarea {
+  border-radius: 8px;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.12), 0 0 8px rgba(0, 0, 0, 0.08);
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+  width: 100%;
+  padding: 10px 15px;
+}
+
+/* Enfoque de los campos de formulario en contacto */
+#contact .form-control:focus,
+#contact .form-select:focus,
+#contact textarea:focus {
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.12), 0 0 8px rgba(0, 80, 255, 0.5);
+  border-color: #001f3f;
+  outline: none;
+}
+
+/* Estilo solo para el botón de envío en contacto */
+#contact button[type="submit"] {
+  background-color: #001f3f;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 20px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  width: 100%;
+}
+
+/* Hover del botón de envío solo en contacto */
+#contact button[type="submit"]:hover {
+  background-color: #003366;
+  transform: scale(1.05);
+}
+
+/* Estilo solo para las etiquetas en el formulario de contacto */
+#contact .form-label {
+  font-weight: bold;
+  color: #1c1c1c;
+  margin-bottom: 5px;
+}
+
+/* Estilo para la lista de servicios seleccionados (chips) */
+#contact #selectedServicesContainer {
+  margin-top: 10px;
+}
+
+#contact #selectedServices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+#contact #selectedServices .chip {
+  background-color: #001f3f;
+  color: white;
+  border-radius: 16px;
+  padding: 5px 10px;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+#contact #selectedServices .chip i {
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+#contact #selectedServices .chip:hover {
+  background-color: #003366;
+}
+
+/* Mejora solo para el contenedor del formulario de contacto */
+#contact {
+  background-color: #f7f9fc;
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+
+#contact .container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* Estilo solo para los inputs y select dentro de contacto */
+#contact input[type="text"],
+#contact input[type="email"],
+#contact input[type="password"],
+#contact input[type="date"],
+#contact input[type="time"],
+#contact select {
+  border: none;
+  border-bottom: 2px solid transparent;
+  outline: none;
+  transition: border-bottom 0.3s ease;
+}
+
+/* Estilo cuando se hace hover o enfoque en los inputs y select dentro de contacto */
+#contact input[type="text"]:hover,
+#contact input[type="email"]:hover,
+#contact input[type="password"]:hover,
+#contact textarea:hover,
+#contact select:hover,
+#contact input[type="text"]:focus,
+#contact input[type="email"]:focus,
+#contact input[type="password"]:focus,
+#contact textarea:focus,
+#contact select:focus {
+  border-bottom: 2px solid #001f3f;
+}
+
+#contact input[type="date"] {
+  padding-left: 35px;
+}
+
+/* Agrandar los iconos dentro de los input-group en contacto */
+#contact .input-group-text {
+  background-color: #fff;
+  border: none;
+  color: #1c1c1c;
+  padding: 10px;
+}
+
+/* Para los campos del formulario con iconos */
+#contact .input-group {
+  position: relative;
+}
+
+/* Mejora solo para los campos de texto en contacto */
+#contact textarea {
+  border-radius: 8px;
+  padding: 10px;
+  resize: vertical;
+}
+  
+  
+  /* FOOTER */
+  
+  .footer {
+    background-color: #001f3f;
+    color: #fff;
+    padding: 50px 20px 20px;
+    font-family: 'Segoe UI', sans-serif;
+  }
+  
+  .footer-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .footer-logo img {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  
+  .footer-logo h2 {
+    font-size: 1.6rem;
+    margin: 0;
+    color: #fff;
+  }
+  
+  .footer-links h3,
+  .footer-social h3,
+  .footer-contact h3 {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+    color: #f0f0f0;
+  }
+  
+  .footer-links ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .footer-links ul li {
+    margin-bottom: 10px;
+  }
+  
+  .footer-links ul li a {
+    text-decoration: none;
+    color: #ccc;
+    transition: color 0.3s ease;
+  }
+  
+  .footer-links ul li a:hover {
+    color: #fff;
+  }
+  
+  .footer-contact p {
+    margin: 8px 0;
+    font-size: 0.95rem;
+  }
+  
+  .footer-contact i {
+    margin-right: 8px;
+  }
+  
+  .footer-social {
+    color: #fff;
+    padding: 20px;
+  }
+  
+  .footer-social h3 {
+    margin-bottom: 20px;
+    font-weight: bold;
+  }
+  
+  .social-wrapper {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+    padding: 0;
+    margin: 0;
+    flex-wrap: wrap;
+  }
+  
+  .icon a img {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    transition: filter 0.3s ease, transform 0.3s ease;
+  }
+  
+  .icon a img:hover {
+    filter: brightness(1.4) saturate(1.5);
+    transform: scale(1.1);
+  }
+  
+  
+  .footer-bottom {
+    text-align: center;
+    margin-top: 40px;
+    font-size: 0.9rem;
+    border-top: 1px solid #ccc;
+    padding-top: 15px;
+    color: #ccc;
+  }
+  
+  /* ==== RESPONSIVE ==== */
+  @media (max-width: 768px) {
+    .navbar-nav {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+  
+    .modal__btns {
+      flex-direction: column;
+    }
+  
+    .product-grid {
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+  }
+  

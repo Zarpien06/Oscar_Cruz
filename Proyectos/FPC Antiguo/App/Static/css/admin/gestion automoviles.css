@@ -1,0 +1,623 @@
+/* Variables globales */
+:root {
+--primary-color: #002b5b; /* Azul oscuro como color principal */
+--secondary-color: #1a5f7a;
+--accent-color: #57c5b6;
+--light-accent: #159895;
+--text-color: #333;
+--light-text: #666;
+--lighter-text: #999;
+--background-color: #f5f5f5;
+--white: #ffffff;
+--border-color: #ddd;
+--success-color: #28a745;
+--warning-color: #ffc107;
+--danger-color: #dc3545;
+--box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+--sidebar-width: 250px;
+--header-height: 70px;
+--card-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+--transition: all 0.3s ease;
+}
+
+/* Estilos generales */
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+background-color: var(--background-color);
+color: var(--text-color);
+line-height: 1.6;
+}
+
+.container {
+display: flex;
+min-height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+width: var(--sidebar-width);
+background-color: #fff;
+box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+position: fixed;
+height: 100%;
+z-index: 1000;
+transition: var(--transition);
+}
+
+.logo {
+padding: 20px;
+text-align: center;
+border-bottom: 1px solid var(--border-color);
+}
+
+.logo h2 {
+color: var(--primary-color);
+font-weight: 700;
+}
+
+.menu {
+list-style: none;
+padding: 20px 0;
+}
+
+.menu li {
+margin-bottom: 5px;
+}
+
+.menu li a {
+display: flex;
+align-items: center;
+padding: 12px 20px;
+color: var(--text-color);
+text-decoration: none;
+transition: var(--transition);
+}
+
+.menu li a i {
+margin-right: 10px;
+font-size: 1.2rem;
+}
+
+.menu li.active a,
+.menu li a:hover {
+background-color: rgba(67, 97, 238, 0.1);
+color: var(--primary-color);
+border-left: 4px solid var(--primary-color);
+}
+
+.logout {
+position: absolute;
+bottom: 20px;
+width: 100%;
+padding: 0 20px;
+}
+
+.logout a {
+display: flex;
+align-items: center;
+padding: 12px 20px;
+color: var(--danger-color);
+text-decoration: none;
+transition: var(--transition);
+border-radius: 5px;
+}
+
+.logout a i {
+margin-right: 10px;
+}
+
+.logout a:hover {
+background-color: rgba(244, 67, 54, 0.1);
+}
+
+/* Contenido principal */
+.content {
+flex: 1;
+margin-left: 250px;
+padding: 1.5rem;
+}
+
+header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 2rem;
+padding-bottom: 1rem;
+border-bottom: 1px solid var(--border-color);
+}
+
+header h1 {
+color: var(--primary-color);
+font-size: 1.8rem;
+}
+
+.user-info {
+display: flex;
+align-items: center;
+gap: 0.5rem;
+color: var(--light-text);
+}
+
+.user-info i {
+font-size: 1.8rem;
+color: var(--primary-color);
+}
+
+/* Sección de gestión de vehículos */
+.vehicle-management {
+background-color: var(--white);
+border-radius: var(--border-radius);
+box-shadow: var(--box-shadow);
+padding: 1.5rem;
+}
+
+.section-header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 1.5rem;
+}
+
+.section-header h2 {
+color: var(--primary-color);
+font-size: 1.4rem;
+}
+
+/* Botones */
+.primary-btn, .secondary-btn, .action-btn, .danger-btn {
+padding: 0.6rem 1.2rem;
+border-radius: 4px;
+border: none;
+cursor: pointer;
+font-weight: 500;
+display: flex;
+align-items: center;
+gap: 0.5rem;
+transition: var(--transition);
+}
+
+.primary-btn {
+background-color: var(--primary-color);
+color: var(--white);
+}
+
+.primary-btn:hover {
+background-color: var(--secondary-color);
+}
+
+.secondary-btn {
+background-color: var(--white);
+color: var(--primary-color);
+border: 1px solid var(--primary-color);
+}
+
+.secondary-btn:hover {
+background-color: var(--background-color);
+}
+
+.action-btn {
+background-color: var(--light-accent);
+color: var(--white);
+}
+
+.action-btn:hover {
+background-color: var(--accent-color);
+}
+
+.danger-btn {
+background-color: var(--danger-color);
+color: var(--white);
+}
+
+.danger-btn:hover {
+background-color: #c82333;
+}
+
+/* Búsqueda y filtros */
+.search-filter {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 1.5rem;
+flex-wrap: wrap;
+gap: 1rem;
+}
+
+.search-bar {
+display: flex;
+flex: 1;
+max-width: 500px;
+}
+
+.search-bar input {
+flex: 1;
+padding: 0.6rem 1rem;
+border: 1px solid var(--border-color);
+border-radius: 4px 0 0 4px;
+outline: none;
+}
+
+.search-bar button {
+background-color: var(--primary-color);
+color: var(--white);
+border: none;
+padding: 0 1rem;
+border-radius: 0 4px 4px 0;
+cursor: pointer;
+}
+
+.filters {
+display: flex;
+gap: 0.5rem;
+}
+
+.filters select {
+padding: 0.6rem;
+border: 1px solid var(--border-color);
+border-radius: 4px;
+background-color: var(--white);
+outline: none;
+}
+
+/* Tabla de vehículos */
+.vehicles-list {
+overflow-x: auto;
+margin-bottom: 1.5rem;
+}
+
+table {
+width: 100%;
+border-collapse: collapse;
+}
+
+thead {
+background-color: var(--primary-color);
+color: var(--white);
+}
+
+th, td {
+padding: 0.8rem;
+text-align: left;
+border-bottom: 1px solid var(--border-color);
+}
+
+tbody tr:hover {
+background-color: #f9f9f9;
+}
+
+.badge {
+padding: 0.3rem 0.6rem;
+border-radius: 12px;
+font-size: 0.8rem;
+font-weight: 500;
+}
+
+.status-badge {
+display: inline-block;
+padding: 0.3rem 0.6rem;
+border-radius: 12px;
+font-size: 0.8rem;
+font-weight: 500;
+}
+
+.status-badge.active {
+background-color: #d1e7dd;
+color: #0f5132;
+}
+
+.status-badge.maintenance {
+background-color: #fff3cd;
+color: #664d03;
+}
+
+.status-badge.complete {
+background-color: #cff4fc;
+color: #055160;
+}
+
+.plate-badge {
+display: inline-block;
+padding: 0.3rem 0.6rem;
+border-radius: 4px;
+font-size: 0.9rem;
+font-weight: 600;
+background-color: var(--primary-color);
+color: var(--white);
+}
+
+/* Acciones en tabla */
+.action-column {
+display: flex;
+gap: 0.5rem;
+}
+
+.action-icon {
+width: 28px;
+height: 28px;
+display: flex;
+align-items: center;
+justify-content: center;
+border-radius: 4px;
+cursor: pointer;
+transition: var(--transition);
+}
+
+.view-btn {
+background-color: #e6f7ff;
+color: #0066cc;
+}
+
+.view-btn:hover {
+background-color: #cce5ff;
+}
+
+.edit-btn {
+background-color: #fff1d6;
+color: #cc8800;
+}
+
+.edit-btn:hover {
+background-color: #ffe8b3;
+}
+
+.delete-btn {
+background-color: #ffe6e6;
+color: #cc0000;
+}
+
+.delete-btn:hover {
+background-color: #ffcccc;
+}
+
+/* Paginación */
+.pagination {
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 1rem;
+}
+
+.pagination button {
+width: 32px;
+height: 32px;
+border-radius: 4px;
+border: 1px solid var(--border-color);
+background-color: var(--white);
+display: flex;
+align-items: center;
+justify-content: center;
+cursor: pointer;
+transition: var(--transition);
+}
+
+.pagination button:hover {
+background-color: var(--background-color);
+}
+
+#page-info {
+color: var(--light-text);
+}
+
+/* Modales */
+.modal {
+display: none;
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background-color: rgba(0, 0, 0, 0.5);
+z-index: 1000;
+overflow-y: auto;
+padding: 2rem 1rem;
+}
+
+.modal-content {
+background-color: var(--white);
+border-radius: var(--border-radius);
+max-width: 800px;
+margin: 0 auto;
+box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+animation: modalFadeIn 0.3s;
+}
+
+.modal-sm {
+max-width: 500px;
+}
+
+@keyframes modalFadeIn {
+from {opacity: 0; transform: scale(0.9);}
+to {opacity: 1; transform: scale(1);}
+}
+
+.modal-header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+padding: 1.2rem 1.5rem;
+border-bottom: 1px solid var(--border-color);
+}
+
+.modal-header h3 {
+color: var(--primary-color);
+font-size: 1.4rem;
+}
+
+.close-btn {
+background: none;
+border: none;
+font-size: 1.8rem;
+cursor: pointer;
+color: var(--light-text);
+transition: var(--transition);
+}
+
+.close-btn:hover {
+color: var(--text-color);
+}
+
+.modal-body {
+padding: 1.5rem;
+}
+
+/* Formulario */
+.form-group {
+margin-bottom: 1.2rem;
+}
+
+.form-row {
+display: flex;
+gap: 1rem;
+margin-bottom: 1.2rem;
+}
+
+.form-row .form-group {
+flex: 1;
+margin-bottom: 0;
+}
+
+label {
+display: block;
+margin-bottom: 0.5rem;
+font-weight: 500;
+color: var(--light-text);
+}
+
+input, select, textarea {
+width: 100%;
+padding: 0.8rem;
+border: 1px solid var(--border-color);
+border-radius: 4px;
+font-size: 1rem;
+transition: var(--transition);
+}
+
+input:focus, select:focus, textarea:focus {
+border-color: var(--accent-color);
+box-shadow: 0 0 0 3px rgba(87, 197, 182, 0.2);
+outline: none;
+}
+
+.form-actions {
+display: flex;
+justify-content: flex-end;
+gap: 1rem;
+margin-top: 1.5rem;
+}
+
+.form-actions.center {
+justify-content: center;
+}
+
+/* Detalles del vehículo */
+.vehicle-details {
+padding: 1rem 0;
+}
+
+.details-header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 1.5rem;
+}
+
+.vehicle-title {
+display: flex;
+align-items: center;
+gap: 1rem;
+}
+
+.vehicle-title h4 {
+font-size: 1.4rem;
+color: var(--primary-color);
+}
+
+.info-section {
+margin-bottom: 2rem;
+}
+
+.info-section h5 {
+font-size: 1.1rem;
+color: var(--primary-color);
+margin-bottom: 1rem;
+padding-bottom: 0.5rem;
+border-bottom: 1px solid var(--border-color);
+}
+
+.info-grid {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+gap: 1rem;
+}
+
+.info-item {
+display: flex;
+flex-direction: column;
+}
+
+.info-item .label {
+font-size: 0.9rem;
+color: var(--lighter-text);
+}
+
+.info-item .value {
+font-weight: 500;
+}
+
+.services-table {
+margin-top: 0.5rem;
+}
+
+.details-actions {
+display: flex;
+justify-content: flex-end;
+gap: 1rem;
+margin-top: 2rem;
+padding-top: 1rem;
+border-top: 1px solid var(--border-color);
+}
+
+/* Media queries para responsividad */
+@media (max-width: 1024px) {
+.sidebar {
+width: 200px;
+}
+.content {
+margin-left: 200px;
+}
+}
+
+@media (max-width: 768px) {
+.container {
+flex-direction: column;
+}
+.sidebar {
+width: 100%;
+height: auto;
+position: relative;
+padding: 1rem;
+}
+.content {
+margin-left: 0;
+}
+.form-row {
+flex-direction: column;
+gap: 0;
+}
+.search-filter {
+flex-direction: column;
+align-items: stretch;
+}
+.search-bar {
+max-width: none;
+}
+.filters {
+justify-content: space-between;
+}
+}
